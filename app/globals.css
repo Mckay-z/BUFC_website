@@ -1,0 +1,146 @@
+@import "tailwindcss";
+
+@theme {
+  /* Breakpoints */
+  --breakpoint-xs: 530px;
+  --breakpoint-xlg: 930px;
+  --breakpoint-2xlg: 1200px;
+  /* Main Colors */
+  --color-primary: #3f2a78;
+  --color-secondary: #ddeaef;
+  --color-primary-active: #1d0c40;
+  --color-tertiary-active: #a5b7be;
+  --color-primary-hover: #6e609c;
+  --color-tertiary-hover: #e6eff1;
+  --color-neutral-text: #2a2a2a;
+
+  /* Primary Purple Palette */
+  --color-prim-1: #f1eff6;
+  --color-prim-2: #d6d1e4;
+  --color-prim-3: #bbb4d2;
+  --color-prim-4: #a197c0;
+  --color-prim-5: #877bae;
+  --color-prim-6: #6e609c;
+  --color-prim-7: #56458a;
+  --color-prim-8: #3f2a78;
+  --color-prim-9: #332065;
+  --color-prim-10: #281652;
+  --color-prim-11: #1d0c40;
+
+  /* Secondary Palette */
+  --color-sec-1: #f0f3f4;
+  --color-sec-2: #e6eff1;
+  --color-sec-3: #ddeaef;
+  --color-sec-4: #c1d0d6;
+  --color-sec-5: #a5b7be;
+  --color-sec-6: #8b9ea7;
+  --color-sec-7: #718690;
+  --color-sec-8: #586f7a;
+  --color-sec-9: #3f5865;
+  --color-sec-10: #284350;
+  --color-sec-11: #112e3c;
+
+  /* Neutral Gray Palette */
+  --color-neutral-1: #ffffff;
+  --color-neutral-2: #f5f5f5;
+  --color-neutral-3: #ededed;
+  --color-neutral-4: #e0e0e0;
+  --color-neutral-5: #c2c2c2;
+  --color-neutral-6: #9e9e9e;
+  --color-neutral-7: #757575;
+  --color-neutral-8: #616161;
+  --color-neutral-9: #404040;
+  --color-neutral-10: #0a0a0a;
+  --color-neutral-11: #18171c;
+
+  /* === FONT SIZE SYSTEM === */
+  --font-size-xs: 10px;
+  --font-size-caption: 12px;
+  --font-size-bodyExtraSmall: 13px;
+  --font-size-bodySmall: 14px;
+  --font-size-navRegular: 15px;
+  --font-size-bodyRegular: 16px;
+  --font-size-subheadingRegular: 18px;
+  --font-size-heading6: 20px;
+  --font-size-heading5: 22px;
+  --font-size-heading4: 24px;
+  --font-size-heading3: 28px;
+  --font-size-heading2: 32px;
+  --font-size-heading1: 40px;
+  --font-size-hero: 50px;
+
+  /* Legacy Variables */
+  --background: var(--color-prim-1);
+  --foreground: var(--color-neutral-text);
+}
+
+@layer base {
+  ::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-prim-1);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary-hover);
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-reduce {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-prim-1) var(--color-neutral-2);
+  }
+}
+
+@layer components {
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+  .flex-start {
+    @apply flex items-center justify-start;
+  }
+  .flex-end {
+    @apply flex items-center justify-end;
+  }
+
+  .container-narrow {
+    @apply max-w-4xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .container-wide {
+    @apply max-w-360 mx-auto px-4 xs:px-6 sm:px-10 lg:px-12;
+  }
+
+  /* Spacing utilities */
+  .section-padding {
+    @apply py-10 sm:py-14 md:py-20;
+  }
+
+  .section-padding-sm {
+    @apply py-8 sm:py-12 md:py-16;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-montserrat), system-ui, sans-serif;
+}
