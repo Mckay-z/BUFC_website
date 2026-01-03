@@ -124,7 +124,7 @@
 
   /* Spacing utilities */
   .section-padding {
-    @apply py-10 sm:py-14 md:py-20;
+    @apply  py-16 md:py-20 lg:py-28;
   }
 
   .section-padding-sm {

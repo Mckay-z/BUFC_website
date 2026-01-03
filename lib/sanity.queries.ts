@@ -187,7 +187,9 @@ export const homePageSettingsQuery = groq`
     newsUpdatesSectionContent,
     newsUpdatesSectionLinkText,
     newsOnHomePageTitle,
-    newsOnHomePageSubtext
+    newsOnHomePageSubtext,
+    shopOnHomePageTitle,
+    shopOnHomePageSubtext
   }
 `;
 
@@ -227,6 +229,27 @@ export const sponsorSettingsQuery = groq`
       website,
       order
     } | order(order asc)
+  }
+`;
+
+// LIVE MATCHES SETTINGS
+export const liveMatchesSettingsQuery = groq`
+  *[_type == "liveMatchesSettings"][0] {
+    sectionTitle,
+    sectionSubtext,
+    videoThumbnail,
+    videoUrl,
+    isLive
+  }
+`;
+
+// NEWSLETTER SETTINGS
+export const newsletterSettingsQuery = groq`
+  *[_type == "newsletterSettings"][0] {
+    sectionTitle,
+    sectionSubtext,
+    inputPlaceholder,
+    buttonText
   }
 `;
 
@@ -271,5 +294,53 @@ export const oneProductPerCategoryQuery = groq`
   "jerseys": *[_type == "product" && category == "jerseys" && inStock == true] | order(_createdAt desc) [0],
   "lifestyle": *[_type == "product" && category == "lifestyle" && inStock == true] | order(_createdAt desc) [0],
   "accessories": *[_type == "product" && category == "accessories" && inStock == true] | order(_createdAt desc) [0]
+}
+`;
+
+export const threeJerseysQuery = groq`
+  *[_type == "product" && category == "jerseys" && inStock == true] | order(_createdAt desc) [0...3] {
+    _id,
+    name,
+    slug,
+    image,
+    price,
+    category,
+    productType,
+    displayTitle
+  }
+`;
+
+export const featuredJerseysQuery = groq`
+{
+  "homeJersey": *[_type == "product" && category == "jerseys" && productType == "home-jersey" && inStock == true] | order(_createdAt desc) [0] {
+    _id,
+    name,
+    slug,
+    image,
+    price,
+    category,
+    productType,
+    displayTitle
+  },
+  "awayJersey": *[_type == "product" && category == "jerseys" && productType == "away-jersey" && inStock == true] | order(_createdAt desc) [0] {
+    _id,
+    name,
+    slug,
+    image,
+    price,
+    category,
+    productType,
+    displayTitle
+  },
+  "trainingKit": *[_type == "product" && category == "jerseys" && productType == "training-kit" && inStock == true] | order(_createdAt desc) [0] {
+    _id,
+    name,
+    slug,
+    image,
+    price,
+    category,
+    productType,
+    displayTitle
+  }
 }
 `;

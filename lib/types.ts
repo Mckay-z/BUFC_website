@@ -140,6 +140,8 @@ export interface HomePageSettings {
   newsUpdatesSectionLinkText: string;
   newsOnHomePageTitle: string;
   newsOnHomePageSubtext: string;
+  shopOnHomePageTitle: string;
+  shopOnHomePageSubtext: string;
 }
 
 export interface ContactUsSettings {
@@ -178,8 +180,11 @@ export interface Product {
   name: string;
   slug: Slug;
   image: SanityImage;
+  otherImages?: SanityImage[];
   price: number;
   category: "jerseys" | "lifestyle" | "accessories";
+  productType?: "home-jersey" | "away-jersey" | "training-kit" | "other";
+  displayTitle?: string;
   description?: string;
   sizes?: string[];
   inStock: boolean;
@@ -230,6 +235,23 @@ export interface Sponsor {
 export interface SponsorSettings {
   sponsorSectionTitle: string;
   sponsors: Sponsor[];
+}
+
+// LIVE MATCHES SETTINGS INTERFACE
+export interface LiveMatchesSettings {
+  sectionTitle: string;
+  sectionSubtext: string;
+  videoThumbnail?: SanityImage;
+  videoUrl?: string;
+  isLive: boolean;
+}
+
+// NEWSLETTER SETTINGS INTERFACE
+export interface NewsletterSettings {
+  sectionTitle: string;
+  sectionSubtext: string;
+  inputPlaceholder: string;
+  buttonText: string;
 }
 
 // HOMEPAGE INTERFACE

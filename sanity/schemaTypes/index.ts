@@ -6,6 +6,8 @@ import { homePageSettingsType } from "./homePageSettings";
 import { contactUsSettingsType } from "./contactUsSettings";
 import footerSettings from "./footerSettings";
 import { sponsorSettingsType } from "./sponsorSettings";
+import { liveMatchesSettingsType } from "./liveMatchesSettings";
+import { newsletterSettingsType } from "./newsletterSettings";
 
 export const schemaTypes = [
   newsType,
@@ -16,4 +18,6 @@ export const schemaTypes = [
   contactUsSettingsType,
   footerSettings,
   sponsorSettingsType,
+  liveMatchesSettingsType,
+  newsletterSettingsType,
 ];

@@ -29,6 +29,13 @@ export const productType = defineType({
       },
     }),
     defineField({
+      name: "otherImages",
+      title: "Other Images",
+      type: "array",
+      of: [{ type: "image", options: { hotspot: true } }],
+      validation: (Rule) => Rule.max(4),
+    }),
+    defineField({
       name: "price",
       title: "Price (GH₵)",
       type: "number",
@@ -45,6 +52,29 @@ export const productType = defineType({
           { title: "Accessories", value: "accessories" },
         ],
       },
+    }),
+    defineField({
+      name: "productType",
+      title: "Product Type",
+      type: "string",
+      options: {
+        list: [
+          { title: "Home Jersey", value: "home-jersey" },
+          { title: "Away Jersey", value: "away-jersey" },
+          { title: "Training Kit", value: "training-kit" },
+          { title: "Other", value: "other" },
+        ],
+      },
+      description:
+        "Specify if this is a home jersey, away jersey, or training kit for homepage display",
+      hidden: ({ document }) => document?.category !== "jerseys",
+    }),
+    defineField({
+      name: "displayTitle",
+      title: "Display Title (for cards)",
+      type: "string",
+      description:
+        "Short title shown on product cards (e.g., 'Home Jersey'). If empty, uses full product name.",
     }),
     defineField({
       name: "description",
@@ -66,5 +96,5 @@ export const productType = defineType({
       type: "boolean",
       initialValue: true,
     }),
-  ]
+  ],
 });

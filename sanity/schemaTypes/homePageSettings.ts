@@ -51,6 +51,22 @@ export const homePageSettingsType = defineType({
         "Stay updated with the latest news, match reports, and announcements from Bechem United FC",
       validation: (Rule) => Rule.required(),
     }),
+    defineField({
+      name: "shopOnHomePageTitle",
+      title: "What is the Shop On Home Page Title?",
+      type: "string",
+      initialValue: "OUR CLUB STORE",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "shopOnHomePageSubtext",
+      title: "What is the Shop On Home Page Subtext?",
+      type: "string",
+      initialValue:
+        "Discover the latest official merchandise, new collections, and exclusive Bechem United FC store updates.",
+      validation: (Rule) => Rule.required(),
+    }),
+    
   ],
   preview: {
     select: {

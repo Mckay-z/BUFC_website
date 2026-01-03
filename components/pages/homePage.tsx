@@ -5,6 +5,8 @@ import {
   HomePageSettings,
   SponsorSettings,
   Product,
+  LiveMatchesSettings,
+  NewsletterSettings,
 } from "@/lib/types";
 import { urlFor } from "@/lib/sanity.client";
 import Image from "next/image";
@@ -16,6 +18,8 @@ import SectionHeader from "../layout/SectionHeader";
 import ImageFallback from "../ui/ImageFallBack";
 import SponsorSection from "../layout/SponsorSection";
 import ProductCard from "../ui/ProductCard";
+import LiveMatchesSection from "../layout/LiveMatchesSection";
+import Newsletter from "../layout/Newsletter";
 
 interface HomePageProps {
   heroNews: NewsArticle;
@@ -23,6 +27,8 @@ interface HomePageProps {
   settings: HomePageSettings;
   sponsorSettings: SponsorSettings;
   featuredProducts: Product[];
+  liveMatchesSettings: LiveMatchesSettings;
+  newsletterSettings: NewsletterSettings;
 }
 
 export default function HomePage({
@@ -31,6 +37,8 @@ export default function HomePage({
   settings,
   sponsorSettings,
   featuredProducts,
+  liveMatchesSettings,
+  newsletterSettings,
 }: HomePageProps) {
   return (
     <main>
@@ -258,44 +266,47 @@ export default function HomePage({
       {featuredProducts.length > 0 && (
         <section className="container-wide py-16 md:py-20 lg:py-28">
           <div className="flex flex-col gap-12 md:gap-16">
-            {/* Section Header */}
-            <div className="flex items-end justify-between">
-              <div>
-                <h2 className="text-neutral-text text-xl md:text-2xl lg:text-3xl font-bold mb-3">
-                  OUR CLUB STORE
-                </h2>
-                <p className="text-neutral-7 text-sm md:text-base max-w-2xl">
-                  Discover the latest official merchandise, new collections, and
-                  exclusive Bechem United FC store updates.
-                </p>
-              </div>
-            </div>
+            <SectionHeader
+              title={settings.shopOnHomePageTitle}
+              subtext={settings.shopOnHomePageSubtext}
+            />
 
             {/* Featured Products Grid */}
-            <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            <div className="flex-center flex-wrap gap-5">
               {featuredProducts.map((product) => (
                 <ProductCard key={product._id} product={product} />
               ))}
             </div>
-
             {/* Visit Store Link */}
             <div className="flex justify-end">
-              <Link
+              <Button
                 href="/shop"
-                className="group flex items-center gap-2 text-neutral-text hover:text-primary transition-colors duration-200"
+                variant="ghost"
+                size="lg"
+                rightIcon={
+                  <Icon
+                    icon="icons8:chevron-right-round"
+                    width="none"
+                    height="none"
+                    className="w-5 h-5 lg:w-6 lg:h-6"
+                  />
+                }
+                buttonClassName="!p-0 hover:!text-prim-6 transition-colors duration-300 ease-in-out text-base md:text-lg"
               >
-                <span className="text-sm md:text-base font-medium">
-                  Visit Store
-                </span>
-                <Icon
-                  icon="mdi:arrow-right-circle-outline"
-                  className="w-5 h-5 md:w-6 md:h-6 group-hover:translate-x-1 transition-transform duration-200"
-                />
-              </Link>
+                Visit Store
+              </Button>
             </div>
           </div>
         </section>
       )}
+
+      {/* Live Matches & Replays Section */}
+      {liveMatchesSettings && (
+        <LiveMatchesSection settings={liveMatchesSettings} />
+      )}
+
+      {/* Newsletter Section */}
+      {newsletterSettings && <Newsletter settings={newsletterSettings} />}
     </main>
   );
 }
