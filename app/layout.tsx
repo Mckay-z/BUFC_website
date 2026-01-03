@@ -31,7 +31,7 @@ export default async function RootLayout({
     await client.fetch<FooterSettings>(footerSettingsQuery);
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${monaSans.variable} ${montserrat.variable} antialiased relative min-w-[320px] bg-neutral-0`}
       >

@@ -3,6 +3,7 @@ import {
   contactUsSettingsQuery
 } from "@/lib/sanity.queries";
 import { ContactUsSettings } from "@/lib/types";
+import ContactPage from "@/components/pages/contactPage";
 
 export default async function Contact() {
     const [contactUsSettings] =
@@ -12,7 +13,6 @@ export default async function Contact() {
 
    
     return (
-      <main>
-      </main>
+      <ContactPage contactUsSettings={contactUsSettings} />
     );
 }
