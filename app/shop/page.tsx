@@ -44,10 +44,7 @@ export default async function ShopPage() {
             title="LIFESTYLE & CASUAL WEAR"
             products={lifestyleProducts}
           />
-          <ProductCategory
-            title="ACCESSORIES"
-            products={accessoriesProducts}
-          />
+          <ProductCategory title="ACCESSORIES" products={accessoriesProducts} />
         </div>
 
         {/* Visit Full Store Link */}
@@ -68,25 +65,4 @@ export default async function ShopPage() {
       </section>
     </main>
   );
-}
-                                    <button className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition">
-                                        Add to Cart
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-
-                {/* Promo Banner */}
-                <div className="bg-linear-to-r from-green-600 to-yellow-500 rounded-lg p-8 text-white text-center mb-8">
-                    <h2 className="text-3xl font-bold mb-4">Season Pass Holders Get 20% Off!</h2>
-                    <p className="text-lg mb-6">Show your season pass at checkout for exclusive discounts</p>
-                    <button className="bg-white text-green-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
-                        Learn More
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
 }

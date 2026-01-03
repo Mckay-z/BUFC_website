@@ -1,6 +1,11 @@
 "use client";
 
-import { NewsArticle, HomePageSettings, SponsorSettings, Product } from "@/lib/types";
+import {
+  NewsArticle,
+  HomePageSettings,
+  SponsorSettings,
+  Product,
+} from "@/lib/types";
 import { urlFor } from "@/lib/sanity.client";
 import Image from "next/image";
 import Link from "next/link";

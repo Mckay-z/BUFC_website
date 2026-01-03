@@ -41,4 +41,8 @@ export default async function Home() {
         nextFourRecentNews={nextFourRecentNews}
         settings={settings || defaultSettings}
         sponsorSettings={sponsorSettings}
-          featuredProducts={featuredProducts}
+        featuredProducts={productsData ? Object.values(productsData).filter(Boolean) as Product[] : []}
+      />
+    </main>
+  );
+}
