@@ -67,7 +67,7 @@ export default function Button({
   // Size styles
   const sizeStyles = {
     sm: "px-4 py-2 text-sm rounded-full",
-    md: "px-4.5 py-2.5 sm:px-5 xs:py-3 text-[13.5px] md:text-sm xl:text-[15px] rounded-full",
+    md: "px-4.5 py-3 sm:px-5 xs:py-3 text-[13.5px] md:text-sm xl:text-[15px] rounded-full",
     lg: "px-6 py-4 text-base rounded-full",
   };
 

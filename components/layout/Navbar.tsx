@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FiX, FiSearch, FiChevronDown, FiLogIn } from "react-icons/fi";
 import Button from "../ui/Button";
 import { Icon } from "@iconify/react";
@@ -83,7 +83,7 @@ export default function Navbar() {
       <header
         className={`w-full ${isScrolled ? "bg-neutral-1/80 backdrop-blur-md" : "bg-neutral-1"}`}
       >
-        <nav className="container-wide h-full flex items-center justify-between py-2.5 sm:py-3 md:py-3.5 lg:py-4">
+        <nav className="container-wide max-w-360 h-full mx-auto flex items-center justify-between py-2.5 sm:py-3 md:py-3.5 lg:py-4">
           {/* Left: Menu + Links */}
           <div className="flex items-center gap-8">
             {/* Mobile Menu Icon */}
@@ -98,14 +98,14 @@ export default function Navbar() {
             />
 
             {/* Desktop Links */}
-            <ul className="hidden lg:flex items-center gap-7">
+            <ul className="hidden lg:flex items-center gap-7 text-[15px] ">
               {desktopNavLinks.map((link, index) => {
                 const isActive = isActiveLink(link.href);
                 return (
                   <li key={index}>
                     <Link
                       href={link.href}
-                      className={`text-sm xl:text-[15px] transition-colors duration-300 ease-in-out font-medium ${
+                      className={` transition-colors duration-300 ease-in-out font-medium ${
                         isActive
                           ? "pb-1 border-b-2 border-primary text-primary "
                           : " text-neutral-9 hover:text-primary"
@@ -177,18 +177,21 @@ export default function Navbar() {
           <div className="p-5 md:p-6 border-b border-neutral-3">
             <div className="flex items-center justify-between mb-6">
               {/* Club Info */}
-              <div className="flex-center gap-3">
-                <Image
-                  src="/img/bufc_logo.png"
-                  alt="Bechem United FC"
-                  width={10000}
-                  height={10000}
-                  className="w-6 md:8 object-contain"
-                />
-                <span className="text-sm md:text-base font-semibold text-neutral-9">
-                  Bechem United FC
-                </span>
-              </div>
+              <Link href="/">
+                <div className="flex-center gap-3">
+                  <Image
+                    src="/img/bufc_logo.png"
+                    alt="Bechem United FC"
+                    width={10000}
+                    height={10000}
+                    className="w-6 md:8 object-contain"
+                  />
+                  <span className="text-sm md:text-base font-semibold text-neutral-9">
+                    Bechem United FC
+                  </span>
+                </div>
+              </Link>
+
               <button
                 onClick={() => setOpen(false)}
                 className="text-neutral-7 hover:text-neutral-text cursor-pointer transition-colors ease-in-out duration-300"

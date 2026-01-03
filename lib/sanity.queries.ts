@@ -205,6 +205,31 @@ export const contactUsSettingsQuery = groq`
   }
 `;
 
+// FOOTER SETTINGS
+export const footerSettingsQuery = groq`
+  *[_type == "footerSettings"][0] {
+    description,
+    location,
+    phone,
+    email,
+    socialMedia
+  }
+`;
+
+// SPONSOR SETTINGS
+export const sponsorSettingsQuery = groq`
+  *[_type == "sponsorSettings"][0] {
+    sponsorSectionTitle,
+    sponsors[] {
+      _key,
+      name,
+      logo,
+      website,
+      order
+    } | order(order asc)
+  }
+`;
+
 // PRODUCTS
 export const productsQuery = groq`
   *[_type == "product" && inStock == true] | order(_createdAt desc) {

@@ -4,6 +4,8 @@ import { playerType } from "./player";
 import { gplClubType } from "./gplCubType";
 import { homePageSettingsType } from "./homePageSettings";
 import { contactUsSettingsType } from "./contactUsSettings";
+import footerSettings from "./footerSettings";
+import { sponsorSettingsType } from "./sponsorSettings";
 
 export const schemaTypes = [
   newsType,
@@ -12,4 +14,6 @@ export const schemaTypes = [
   gplClubType,
   homePageSettingsType,
   contactUsSettingsType,
+  footerSettings,
+  sponsorSettingsType,
 ];

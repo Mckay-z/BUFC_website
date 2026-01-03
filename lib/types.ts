@@ -200,6 +200,38 @@ export interface Product {
 //   joinedDate?: string;
 // }
 
+// FOOTER SETTINGS INTERFACE
+export interface FooterSettings {
+  description: string;
+  location?: {
+    location?: string;
+    locationUrlOnMap?: string;
+  };
+  phone?: string;
+  email?: string;
+  socialMedia?: {
+    facebook?: string;
+    twitter?: string;
+    youtube?: string;
+    instagram?: string;
+    pinterest?: string;
+  };
+}
+
+// SPONSOR SETTINGS INTERFACE
+export interface Sponsor {
+  _key: string;
+  name: string;
+  logo: SanityImage;
+  website?: string;
+  order?: number;
+}
+
+export interface SponsorSettings {
+  sponsorSectionTitle: string;
+  sponsors: Sponsor[];
+}
+
 // HOMEPAGE INTERFACE
 // export interface Homepage {
 //   _id: string;
