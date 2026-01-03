@@ -5,16 +5,22 @@ import {
   homePageSettingsQuery,
   nextFourRecentNewsQuery,
   sponsorSettingsQuery,
+  oneProductPerCategoryQuery,
 } from "@/lib/sanity.queries";
-import { NewsArticle, HomePageSettings, SponsorSettings } from "@/lib/types";
+import { NewsArticle, HomePageSettings, SponsorSettings, Product } from "@/lib/types";
 
 export default async function Home() {
-  const [mostRecentNews, nextFourRecentNews, settings, sponsorSettings] =
-    await Promise.all([
-      client.fetch<NewsArticle>(mostRecentNewsQuery),
-      client.fetch<NewsArticle[]>(nextFourRecentNewsQuery),
-      client.fetch<HomePageSettings>(homePageSettingsQuery),
-      client.fetch<SponsorSettings>(sponsorSettingsQuery),
+    const [mostRecentNews, nextFourRecentNews, settings, sponsorSettings, productsData] =
+      await Promise.all([
+        client.fetch<NewsArticle>(mostRecentNewsQuery),
+        client.fetch<NewsArticle[]>(nextFourRecentNewsQuery),
+        client.fetch<HomePageSettings>(homePageSettingsQuery),
+        client.fetch<SponsorSettings>(sponsorSettingsQuery),
+        client.fetch<{
+          jerseys: Product | null;
+          lifestyle: Product | null;
+          accessories: Product | null;
+        }>(oneProductPerCategoryQuery),
     ]);
 
   // Fallback settings if none exist in Sanity
@@ -35,7 +41,4 @@ export default async function Home() {
         nextFourRecentNews={nextFourRecentNews}
         settings={settings || defaultSettings}
         sponsorSettings={sponsorSettings}
-      />
-    </main>
-  );
-}
+          featuredProducts={featuredProducts}

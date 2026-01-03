@@ -1,6 +1,6 @@
 "use client";
 
-import { NewsArticle, HomePageSettings, SponsorSettings } from "@/lib/types";
+import { NewsArticle, HomePageSettings, SponsorSettings, Product } from "@/lib/types";
 import { urlFor } from "@/lib/sanity.client";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,12 +10,14 @@ import { Icon } from "@iconify/react";
 import SectionHeader from "../layout/SectionHeader";
 import ImageFallback from "../ui/ImageFallBack";
 import SponsorSection from "../layout/SponsorSection";
+import ProductCard from "../ui/ProductCard";
 
 interface HomePageProps {
   heroNews: NewsArticle;
   nextFourRecentNews: NewsArticle[];
   settings: HomePageSettings;
   sponsorSettings: SponsorSettings;
+  featuredProducts: Product[];
 }
 
 export default function HomePage({
@@ -23,6 +25,7 @@ export default function HomePage({
   nextFourRecentNews,
   settings,
   sponsorSettings,
+  featuredProducts,
 }: HomePageProps) {
   return (
     <main>
@@ -245,6 +248,49 @@ export default function HomePage({
 
       {/* Sponsor Section */}
       {sponsorSettings && <SponsorSection settings={sponsorSettings} />}
+
+      {/* Shop Section */}
+      {featuredProducts.length > 0 && (
+        <section className="container-wide py-16 md:py-20 lg:py-28">
+          <div className="flex flex-col gap-12 md:gap-16">
+            {/* Section Header */}
+            <div className="flex items-end justify-between">
+              <div>
+                <h2 className="text-neutral-text text-xl md:text-2xl lg:text-3xl font-bold mb-3">
+                  OUR CLUB STORE
+                </h2>
+                <p className="text-neutral-7 text-sm md:text-base max-w-2xl">
+                  Discover the latest official merchandise, new collections, and
+                  exclusive Bechem United FC store updates.
+                </p>
+              </div>
+            </div>
+
+            {/* Featured Products Grid */}
+            <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              {featuredProducts.map((product) => (
+                <ProductCard key={product._id} product={product} />
+              ))}
+            </div>
+
+            {/* Visit Store Link */}
+            <div className="flex justify-end">
+              <Link
+                href="/shop"
+                className="group flex items-center gap-2 text-neutral-text hover:text-primary transition-colors duration-200"
+              >
+                <span className="text-sm md:text-base font-medium">
+                  Visit Store
+                </span>
+                <Icon
+                  icon="mdi:arrow-right-circle-outline"
+                  className="w-5 h-5 md:w-6 md:h-6 group-hover:translate-x-1 transition-transform duration-200"
+                />
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
     </main>
   );
 }

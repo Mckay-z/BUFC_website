@@ -243,13 +243,33 @@ export const productsQuery = groq`
 `;
 
 export const productsByCategoryQuery = groq`
-  *[_type == "product" && category == $category && inStock == true] {
+  *[_type == "product" && category == $category && inStock == true] | order(_createdAt desc) {
     _id,
     name,
     slug,
     image,
     price,
+    category,
     description,
     sizes
   }
+`;
+
+export const featuredProductsQuery = groq`
+  *[_type == "product" && inStock == true] | order(_createdAt desc) {
+    _id,
+    name,
+    slug,
+    image,
+    price,
+    category
+  }
+`;
+
+export const oneProductPerCategoryQuery = groq`
+{
+  "jerseys": *[_type == "product" && category == "jerseys" && inStock == true] | order(_createdAt desc) [0],
+  "lifestyle": *[_type == "product" && category == "lifestyle" && inStock == true] | order(_createdAt desc) [0],
+  "accessories": *[_type == "product" && category == "accessories" && inStock == true] | order(_createdAt desc) [0]
+}
 `;

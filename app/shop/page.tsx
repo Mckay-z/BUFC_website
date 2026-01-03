@@ -1,100 +1,74 @@
-import React from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+import { client } from "@/lib/sanity.client";
+import { productsByCategoryQuery } from "@/lib/sanity.queries";
+import { Product } from "@/lib/types";
+import PageHeader from "@/components/layout/PageHeader";
+import ProductCategory from "@/components/pages/ProductCategory";
+import Link from "next/link";
+import { Icon } from "@iconify/react";
 
-const products = [
-    {
-        id: 1,
-        name: 'Home Jersey 2024',
-        price: 'GH₵ 150.00',
-        image: '/images/jersey-home.jpg',
-        category: 'Jerseys'
-    },
-    {
-        id: 2,
-        name: 'Away Jersey 2024',
-        price: 'GH₵ 150.00',
-        image: '/images/jersey-away.jpg',
-        category: 'Jerseys'
-    },
-    {
-        id: 3,
-        name: 'Training Kit',
-        price: 'GH₵ 120.00',
-        image: '/images/training-kit.jpg',
-        category: 'Training Wear'
-    },
-    {
-        id: 4,
-        name: 'Club Scarf',
-        price: 'GH₵ 40.00',
-        image: '/images/scarf.jpg',
-        category: 'Accessories'
-    },
-    {
-        id: 5,
-        name: 'Supporters Cap',
-        price: 'GH₵ 35.00',
-        image: '/images/cap.jpg',
-        category: 'Accessories'
-    },
-    {
-        id: 6,
-        name: 'Club Hoodie',
-        price: 'GH₵ 180.00',
-        image: '/images/hoodie.jpg',
-        category: 'Apparel'
-    }
-];
+export default async function ShopPage() {
+  // Fetch products by category
+  const [jerseysProducts, lifestyleProducts, accessoriesProducts] =
+    await Promise.all([
+      client.fetch<Product[]>(productsByCategoryQuery, { category: "jerseys" }),
+      client.fetch<Product[]>(productsByCategoryQuery, {
+        category: "lifestyle",
+      }),
+      client.fetch<Product[]>(productsByCategoryQuery, {
+        category: "accessories",
+      }),
+    ]);
 
-export default function ShopPage() {
-    return (
-        <div className="min-h-screen bg-gray-50">
-            {/* Hero Section */}
-            <section className="bg-linear-to-r from-yellow-500 to-green-600 text-white py-16">
-                <div className="container mx-auto px-4 text-center">
-                    <h1 className="text-5xl font-bold mb-4">Official Club Shop</h1>
-                    <p className="text-xl">Support Bechem United - Get Your Official Merchandise</p>
-                </div>
-            </section>
+  return (
+    <main>
+      {/* Page Header */}
+      <PageHeader title="Shop" />
 
-            {/* Filter Section */}
-            <div className="container mx-auto px-4 py-8">
-                <div className="flex flex-wrap gap-4 justify-center mb-8">
-                    <button className="px-6 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition">
-                        All Products
-                    </button>
-                    <button className="px-6 py-2 bg-white border border-gray-300 rounded-full hover:bg-gray-100 transition">
-                        Jerseys
-                    </button>
-                    <button className="px-6 py-2 bg-white border border-gray-300 rounded-full hover:bg-gray-100 transition">
-                        Training Wear
-                    </button>
-                    <button className="px-6 py-2 bg-white border border-gray-300 rounded-full hover:bg-gray-100 transition">
-                        Accessories
-                    </button>
-                    <button className="px-6 py-2 bg-white border border-gray-300 rounded-full hover:bg-gray-100 transition">
-                        Apparel
-                    </button>
-                </div>
+      {/* Shop Content */}
+      <section className="container-wide py-12 md:py-16 lg:py-20">
+        {/* Page Description */}
+        <div className="mb-12 md:mb-16">
+          <h2 className="text-neutral-text text-xl md:text-2xl lg:text-3xl font-bold mb-4">
+            OUR CLUB STORE
+          </h2>
+          <p className="text-neutral-7 text-sm md:text-base max-w-3xl">
+            Discover the latest official merchandise, new collections, and
+            exclusive Bechem United FC store updates.
+          </p>
+        </div>
 
-                {/* Products Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-                    {products.map((product) => (
-                        <div
-                            key={product.id}
-                            className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
-                        >
-                            <div className="relative h-80 bg-gray-200">
-                                <div className="absolute inset-0 flex items-center justify-center text-gray-400">
-                                    <span className="text-6xl">🛍️</span>
-                                </div>
-                            </div>
-                            <div className="p-6">
-                                <span className="text-sm text-green-600 font-semibold">{product.category}</span>
-                                <h3 className="text-xl font-bold mt-2 mb-3">{product.name}</h3>
-                                <div className="flex items-center justify-between">
-                                    <span className="text-2xl font-bold text-yellow-600">{product.price}</span>
+        {/* Product Categories */}
+        <div className="space-y-12 md:space-y-16">
+          <ProductCategory title="JERSEYS & KITS" products={jerseysProducts} />
+          <ProductCategory
+            title="LIFESTYLE & CASUAL WEAR"
+            products={lifestyleProducts}
+          />
+          <ProductCategory
+            title="ACCESSORIES"
+            products={accessoriesProducts}
+          />
+        </div>
+
+        {/* Visit Full Store Link */}
+        <div className="mt-16 flex justify-end">
+          <Link
+            href="/shop"
+            className="group flex items-center gap-2 text-neutral-text hover:text-primary transition-colors duration-200"
+          >
+            <span className="text-sm md:text-base font-medium">
+              See Full Schedule
+            </span>
+            <Icon
+              icon="mdi:arrow-right-circle-outline"
+              className="w-5 h-5 md:w-6 md:h-6 group-hover:translate-x-1 transition-transform duration-200"
+            />
+          </Link>
+        </div>
+      </section>
+    </main>
+  );
+}
                                     <button className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition">
                                         Add to Cart
                                     </button>
