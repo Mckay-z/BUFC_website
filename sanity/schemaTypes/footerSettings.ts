@@ -6,6 +6,14 @@ export default defineType({
   type: "document",
   fields: [
     defineField({
+      name: "title",
+      title: "Settings Title",
+      type: "string",
+      initialValue: "Footer Settings",
+      readOnly: true,
+      description: "This is a singleton document - only one should exist",
+    }),
+    defineField({
       name: "description",
       title: "Footer Description",
       type: "text",
@@ -71,15 +79,13 @@ export default defineType({
           name: "pinterest",
           title: "Pinterest URL",
           type: "url",
-        }
+        },
       ],
     }),
   ],
   preview: {
-    prepare() {
-      return {
-        title: "Footer Settings",
-      };
+    select: {
+      title: "title",
     },
   },
 });

@@ -4,6 +4,9 @@ import { Player } from "@/lib/types";
 import Image from "next/image";
 import Link from "next/link";
 
+// Revalidate every 60 seconds
+export const revalidate = 60;
+
 interface PlayerPageProps {
   params: Promise<{ number: string }>;
 }
@@ -27,7 +30,7 @@ async function getCountryCode(countryName: string): Promise<string | null> {
 
 export default async function PlayerPage({ params }: PlayerPageProps) {
   const resolvedParams = await params;
-  
+
   const player = await client.fetch<Player>(singlePlayerQuery, {
     number: parseInt(resolvedParams.number),
   });
@@ -37,9 +40,16 @@ export default async function PlayerPage({ params }: PlayerPageProps) {
       <div className="min-h-screen bg-linear-to-br from-gray-50 to-green-50 flex items-center justify-center">
         <div className="text-center">
           <div className="text-6xl mb-4">❌</div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Player not found</h1>
-          <p className="text-gray-600 mb-6">The player you&apos;re looking for doesn&apos;t exist.</p>
-          <Link href="/players" className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-full font-medium transition-colors">
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+            Player not found
+          </h1>
+          <p className="text-gray-600 mb-6">
+            The player you&apos;re looking for doesn&apos;t exist.
+          </p>
+          <Link
+            href="/players"
+            className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-full font-medium transition-colors"
+          >
             Back to Players
           </Link>
         </div>

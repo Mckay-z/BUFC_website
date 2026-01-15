@@ -1,127 +1,172 @@
-import { client, urlFor } from "@/lib/sanity.client";
-import { newsQuery } from "@/lib/sanity.queries";
-import { NewsArticle } from "@/lib/types";
+import { client } from "@/lib/sanity.client";
+import {
+  newsQuery,
+  newsPageSettingsQuery,
+  featuredNewsQuery,
+} from "@/lib/sanity.queries";
+import { NewsArticle, NewsPageSettings } from "@/lib/types";
+import PageHeader from "@/components/layout/PageHeader";
+import NewsGrid from "@/components/pages/NewsGrid";
 import Image from "next/image";
 import Link from "next/link";
+import { Metadata } from "next";
+import { urlFor } from "@/lib/sanity.client";
+export const metadata: Metadata = {
+  title: "News | Bechem United FC",
+  description: "Latest news, updates, and announcements from Bechem United FC",
+};
+
+export const revalidate = 60;
 
 export default async function NewsPage() {
-  const articles = await client.fetch<NewsArticle[]>(newsQuery);
+  const [settings, featuredNews, allNews] = await Promise.all([
+    client.fetch<NewsPageSettings>(newsPageSettingsQuery),
+    client.fetch<NewsArticle[]>(featuredNewsQuery),
+    client.fetch<NewsArticle[]>(newsQuery),
+  ]);
 
-  const categoryColors: Record<string, string> = {
-    "club-news": "bg-green-500",
-    "match-report": "bg-blue-500",
-    "player-news": "bg-purple-500",
-    "transfer-news": "bg-orange-500",
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
   };
 
-  const categoryLabels: Record<string, string> = {
-    "club-news": "Club News",
-    "match-report": "Match Report",
-    "player-news": "Player News",
-    "transfer-news": "Transfer News",
+  const getCategoryColor = (category: string) => {
+    const colors: Record<string, string> = {
+      "Club News": "bg-prim-3",
+      "Player News": "bg-purple-500",
+      "Transfer News": "bg-orange-500",
+      "Match Report": "bg-blue-500",
+    };
+    return colors[category] || "bg-prim-3";
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-gray-50 to-green-50">
-      {/* Header Section */}
-      <div className="bg-linear-to-r from-green-700 to-yellow-600 text-white py-16 mb-12 shadow-lg">
-        <div className="container mx-auto px-4">
-          <h1 className="text-6xl font-bold mb-4">📰 Latest News</h1>
-          <p className="text-green-100 text-xl">
-            Stay updated with the latest from Bechem United FC
-          </p>
-        </div>
-      </div>
+    <main className="bg-neutral-1">
+      {/* Page Header with Banner */}
+      {settings?.newsPageBannerImage && (
+        <PageHeader
+          title="News"
+          backgroundImage={settings.newsPageBannerImage}
+        />
+      )}
 
-      <div className="container mx-auto px-4 pb-16">
-        {articles.length === 0 ? (
-          <div className="text-center py-20">
-            <div className="text-6xl mb-4">📰</div>
-            <h3 className="text-2xl font-semibold text-gray-700 mb-2">
-              No News Yet
-            </h3>
-            <p className="text-gray-600">
-              Check back soon for the latest updates
+      {/* Featured News Section */}
+      {featuredNews && featuredNews.length > 0 && (
+        <section className="container-wide py-12 md:py-16">
+          <div className="mb-8">
+            <h2 className="text-neutral-text text-2xl md:text-3xl lg:text-4xl font-bold mb-3">
+              {settings?.featuredNewsSectionTitle || "FEATURED NEWS"}
+            </h2>
+            <p className="text-neutral-7 text-sm md:text-base max-w-3xl">
+              {settings?.featuredNewsSectionSubtext ||
+                "Find the most important and timely news about Bechem United FC"}
             </p>
           </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {articles.map((article) => (
+
+          {/* Featured Articles Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+            {featuredNews.map((article) => (
               <Link
-                href={`/news/${article.slug.current}`}
                 key={article._id}
-                className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
+                href={`/news/${article.slug.current}`}
+                className="group"
               >
-                {/* Featured Image */}
-                <div className="relative h-56 overflow-hidden">
-                  {article.featuredImage ? (
-                    <Image
-                      src={urlFor(article.featuredImage)
-                        .width(600)
-                        .height(400)
-                        .url()}
-                      alt={article.title}
-                      fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                  ) : (
-                    <div className="absolute inset-0 bg-linear-to-br from-green-100 to-yellow-100 flex items-center justify-center">
-                      <span className="text-6xl">📰</span>
+                <article className="bg-neutral-2 rounded-[20px] overflow-hidden border border-neutral-3 hover:border-prim-3 transition-all duration-300 h-full">
+                  {/* Image */}
+                  <div className="relative aspect-video w-full overflow-hidden">
+                    {article.featuredImage && (
+                      <Image
+                        src={urlFor(article.featuredImage)
+                          .width(800)
+                          .height(450)
+                          .url()}
+                        alt={article.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    )}
+                    {/* Category Badge */}
+                    <div className="absolute top-4 left-4">
+                      <span
+                        className={`px-4 py-1.5 ${getCategoryColor(article.category)} text-white text-xs font-semibold rounded-full uppercase`}
+                      >
+                        {article.category}
+                      </span>
                     </div>
-                  )}
-                  {/* Category Badge */}
-                  <div className="absolute top-4 left-4">
-                    <span
-                      className={`${categoryColors[article.category] || "bg-gray-500"} text-white text-xs font-semibold px-3 py-1 rounded-full`}
-                    >
-                      {categoryLabels[article.category] || article.category}
-                    </span>
                   </div>
-                </div>
 
-                {/* Article Content */}
-                <div className="p-6">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-green-600 transition-colors line-clamp-2">
-                    {article.title}
-                  </h2>
-
-                  {article.excerpt && (
-                    <p className="text-gray-600 mb-4 line-clamp-3">
-                      {article.excerpt}
-                    </p>
-                  )}
-
-                  {/* Meta Info */}
-                  <div className="flex items-center justify-between text-sm text-gray-500 pt-4 border-t border-gray-100">
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium text-gray-700">
+                  {/* Content */}
+                  <div className="p-6">
+                    <div className="flex items-center gap-3 mb-3 text-neutral-7 text-sm">
+                      <span className="flex items-center gap-1.5">
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                          />
+                        </svg>
                         {article.author}
                       </span>
+                      <span>•</span>
+                      <span>{formatDate(article.publishedAt)}</span>
                     </div>
-                    <div className="flex items-center gap-4">
-                      {article.readTime && (
-                        <span className="flex items-center gap-1">
-                          ⏱️ {article.readTime} min
-                        </span>
-                      )}
-                      <span>
-                        {new Date(article.publishedAt).toLocaleDateString(
-                          "en-US",
-                          {
-                            month: "short",
-                            day: "numeric",
-                            year: "numeric",
-                          }
-                        )}
-                      </span>
-                    </div>
+
+                    <h3 className="text-neutral-text text-xl md:text-2xl font-bold mb-3 group-hover:text-prim-3 transition-colors line-clamp-2">
+                      {article.title}
+                    </h3>
+
+                    {article.excerpt && (
+                      <p className="text-neutral-7 text-sm md:text-base line-clamp-2 mb-4">
+                        {article.excerpt}
+                      </p>
+                    )}
+
+                    {article.readTime && (
+                      <div className="flex items-center gap-2 text-neutral-7 text-sm">
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                        <span>{article.readTime} min read</span>
+                      </div>
+                    )}
                   </div>
-                </div>
+                </article>
               </Link>
             ))}
           </div>
-        )}
-      </div>
-    </div>
+        </section>
+      )}
+
+      {/* Latest Updates Section with Client-side Filtering & Pagination */}
+      <NewsGrid
+        allArticles={allNews}
+        sectionTitle={settings?.latestUpdatesSectionTitle || "LATEST UPDATES"}
+        sectionSubtext={
+          settings?.latestUpdatesSectionSubtext ||
+          "Catch up on recent news and developments from around the club"
+        }
+      />
+    </main>
   );
 }

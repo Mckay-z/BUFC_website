@@ -1,12 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import {
-  FaFacebookF,
-  FaYoutube,
-  FaPinterestP,
-  FaInstagram,
-} from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
 import { FooterSettings } from "@/lib/types";
 import { Icon } from "@iconify/react";
 

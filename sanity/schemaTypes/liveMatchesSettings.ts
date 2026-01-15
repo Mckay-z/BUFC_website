@@ -14,16 +14,16 @@ export const liveMatchesSettingsType = defineType({
       description: "This is a singleton document - only one should exist",
     }),
     defineField({
-      name: "sectionTitle",
-      title: "Section Title",
+      name: "liveSectionTitle",
+      title: "Live Section Title",
       type: "string",
       initialValue: "LIVE MATCHES & REPLAYS",
       validation: (Rule) => Rule.required(),
       description: "The main heading for this section",
     }),
     defineField({
-      name: "sectionSubtext",
-      title: "Section Subtext",
+      name: "liveSectionSubtext",
+      title: "Live Section Subtext",
       type: "string",
       initialValue:
         "Tune in for live action or revisit your favorite goals and celebrations.",
@@ -50,8 +50,15 @@ export const liveMatchesSettingsType = defineType({
       title: "Show Live Indicator",
       type: "boolean",
       initialValue: false,
-      description: "Display 'LIVE' badge on the video thumbnail",
+      description: "Display 'LIVE' badge on the video thumbnail. If false, shows 'LAST MATCH' badge.",
     }),
+    defineField({
+      name:"liveSectionBtnText",
+      title: "Live Section Button Text",
+      type: "string",
+      initialValue: "Watch Past Matches",
+      description: "Text for the button that links to live matches or replays.",
+    })
   ],
   preview: {
     select: {

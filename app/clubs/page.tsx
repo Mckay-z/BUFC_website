@@ -4,6 +4,9 @@ import { GPLClub } from "@/lib/types";
 import Image from "next/image";
 import Link from "next/link";
 
+// Revalidate every 60 seconds
+export const revalidate = 60;
+
 export default async function ClubsPage() {
   const clubs = await client.fetch<GPLClub[]>(gplClubsQuery);
 

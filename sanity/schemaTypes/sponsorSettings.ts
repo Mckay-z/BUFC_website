@@ -51,7 +51,7 @@ export const sponsorSettingsType = defineType({
               name: "website",
               title: "Website URL",
               type: "url",
-              description: "Optional: Link to sponsor's website",
+              description: "Optional: Link to sponsor's website or any social media",
             }),
             defineField({
               name: "order",

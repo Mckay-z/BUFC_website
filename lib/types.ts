@@ -126,22 +126,86 @@ export interface NewsArticle {
   slug: Slug;
   excerpt?: string;
   featuredImage: SanityImage;
-  content: PortableTextBlock[];
+  content?: PortableTextBlock[];
   author: string;
   readTime?: number;
   publishedAt: string;
-  category: "club-news" | "match-report" | "player-news" | "transfer-news";
+  category: string;
+  isFeatured?: boolean;
+}
+
+// NEWS PAGE SETTINGS
+export interface NewsPageSettings {
+  newsPageBannerImage: SanityImage;
+  featuredNewsSectionTitle: string;
+  featuredNewsSectionSubtext: string;
+  latestUpdatesSectionTitle: string;
+  latestUpdatesSectionSubtext: string;
+}
+
+// MATCH FIXTURE INTERFACE
+export interface MatchFixture {
+  _id: string;
+  _type: "matchFixture";
+  competition: string;
+  matchday?: string;
+  homeTeam: string;
+  awayTeam: string;
+  matchDate: string;
+  venue?: string;
+  status: "upcoming" | "live" | "finished" | "postponed" | "cancelled";
+  homeScore?: number;
+  awayScore?: number;
+}
+
+// FIXTURES PAGE SETTINGS
+export interface FixturesPageSettings {
+  fixturesPageTitle: string;
+  fixturesPageBannerImage: SanityImage;
+  upcomingFixturesTitle: string;
+  upcomingFixturesSubtext: string;
+  resultsTitle: string;
+  resultsSubtext: string;
+  fixturesViewMoreText: string;
+  watchLiveCardText: string;
+  watchLiveCtaText: string;
+  highlightsCtaText: string;
+}
+
+// PLAYERS PAGE SETTINGS
+export interface PlayersPageSettings {
+  pageTitle: string;
+  pageBanner: SanityImage;
+  inputPlaceholderText: string;
+}
+
+// SHOP PAGE SETTINGS
+export interface ShopPageSettings {
+  pageTitle: string;
+  pageBanner?: SanityImage;
+  sectionTitle: string;
+  sectionSubtext: string;
 }
 
 // HOME PAGE SETTINGS INTERFACE
 export interface HomePageSettings {
-  newsUpdatesSectionTitle: string;
-  newsUpdatesSectionContent: string;
-  newsUpdatesSectionLinkText: string;
-  newsOnHomePageTitle: string;
-  newsOnHomePageSubtext: string;
-  shopOnHomePageTitle: string;
-  shopOnHomePageSubtext: string;
+  heroNewsBtnText: string;
+  newsSectionTitle: string;
+  newsSectionSubtext: string;
+  newsContentTitle: string;
+  newsContentSubtext: string;
+  newsContentBtnText: string;
+  fixtureSectionTitle: string;
+  fixtureSectionSubtext: string;
+  moreFixturesTitle: string;
+  moreFixturesSubtext: string;
+  fixtureSectionBtnText: string;
+  shopSectionTitle: string;
+  shopSectionSubtext: string;
+  shopSectionBtnText: string;
+  photoHighlightsTitle: string;
+  photoHighlightsSubtext: string;
+  photoHighlightsBtnText: string;
 }
 
 export interface ContactUsSettings {
@@ -239,11 +303,12 @@ export interface SponsorSettings {
 
 // LIVE MATCHES SETTINGS INTERFACE
 export interface LiveMatchesSettings {
-  sectionTitle: string;
-  sectionSubtext: string;
+  liveSectionTitle: string;
+  liveSectionDescription: string;
   videoThumbnail?: SanityImage;
   videoUrl?: string;
   isLive: boolean;
+  liveSectionBtnText: string;
 }
 
 // NEWSLETTER SETTINGS INTERFACE
@@ -252,6 +317,67 @@ export interface NewsletterSettings {
   sectionSubtext: string;
   inputPlaceholder: string;
   buttonText: string;
+}
+
+// PAST HIGHLIGHTS SETTINGS INTERFACE
+export interface PastHighlightsSettings {
+  pageTitle: string;
+  pageBanner: SanityImage;
+  sectionTitle: string;
+  sectionSubtitle: string;
+  viewMoreText: string;
+  watchLiveCard: {
+    title: string;
+    description: string;
+    buttonText: string;
+    backgroundImage?: SanityImage;
+  };
+}
+
+// COMPETITION INTERFACE
+export interface Competition {
+  _id: string;
+  _type: "competition";
+  name: string;
+  shortName: string;
+  icon: SanityImage;
+  competitionType: "league" | "cup" | "friendly" | "tournament";
+  season?: string;
+  isActive: boolean;
+}
+
+// MATCH HIGHLIGHT INTERFACE
+export interface MatchHighlight {
+  _id: string;
+  _type: "matchHighlight";
+  videoUrl: string;
+  title: string;
+  description?: string;
+  competition?: {
+    _type: "reference";
+    _ref: string;
+    // Populated fields (from query with ->)
+    _id?: string;
+    name?: string;
+    shortName?: string;
+    icon?: SanityImage;
+    competitionType?: string;
+  };
+  matchday?: string;
+  videoType?: "matchHighlight" | "playerHighlight";
+  thumbnail?: SanityImage;
+  thumbnailUrl?: string;
+  publishedAt?: string;
+  channel?: string;
+  relatedPlayer?: {
+    _type: "reference";
+    _ref: string;
+    // Populated fields (from query with ->)
+    _id?: string;
+    fullName?: string;
+    jerseyNumber?: number;
+    photo?: SanityImage;
+  };
 }
 
 // HOMEPAGE INTERFACE
@@ -288,3 +414,21 @@ export interface NewsletterSettings {
 //     buttonText: string;
 //   };
 // }
+
+// FIXTURE TYPES
+// Basic fixture data from mock/API
+export interface Fixture {
+  id: string;
+  homeTeam: string;
+  awayTeam: string;
+  date: string; // ISO 8601 format (YYYY-MM-DD)
+  time: string; // 24-hour format (HH:MM)
+  competition: string;
+  matchday: number;
+}
+
+// Fixture enriched with club data from Sanity
+export interface FixtureWithClubData extends Fixture {
+  homeClubData?: GPLClub | null;
+  awayClubData?: GPLClub | null;
+}

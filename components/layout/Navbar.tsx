@@ -177,7 +177,7 @@ export default function Navbar() {
           <div className="p-5 md:p-6 border-b border-neutral-3">
             <div className="flex items-center justify-between mb-6">
               {/* Club Info */}
-              <Link href="/">
+              <Link href="/" onClick={() => setOpen(false)}>
                 <div className="flex-center gap-3">
                   <Image
                     src="/img/bufc_logo.png"

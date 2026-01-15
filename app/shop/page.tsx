@@ -1,15 +1,29 @@
 import { client } from "@/lib/sanity.client";
-import { productsByCategoryQuery } from "@/lib/sanity.queries";
-import { Product } from "@/lib/types";
+import {
+  productsByCategoryQuery,
+  shopPageSettingsQuery,
+} from "@/lib/sanity.queries";
+import { Product, ShopPageSettings } from "@/lib/types";
 import PageHeader from "@/components/layout/PageHeader";
 import ProductCategory from "@/components/pages/ProductCategory";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Shop | Bechem United FC",
+  description:
+    "Shop official Bechem United FC merchandise - jerseys, lifestyle wear, and accessories",
+};
+
+// Revalidate every 60 seconds
+export const revalidate = 60;
 
 export default async function ShopPage() {
-  // Fetch products by category
-  const [jerseysProducts, lifestyleProducts, accessoriesProducts] =
+  // Fetch settings and products by category
+  const [settings, jerseysProducts, lifestyleProducts, accessoriesProducts] =
     await Promise.all([
+      client.fetch<ShopPageSettings>(shopPageSettingsQuery),
       client.fetch<Product[]>(productsByCategoryQuery, { category: "jerseys" }),
       client.fetch<Product[]>(productsByCategoryQuery, {
         category: "lifestyle",
@@ -20,20 +34,31 @@ export default async function ShopPage() {
     ]);
 
   return (
-    <main>
+    <main className="bg-neutral-1">
       {/* Page Header */}
-      <PageHeader title="Shop" />
+      {settings?.pageBanner ? (
+        <PageHeader
+          title={settings.pageTitle || "Shop"}
+          backgroundImage={settings.pageBanner}
+        />
+      ) : (
+        <div className="bg-prim-3 py-20 text-center">
+          <h1 className="text-white text-4xl md:text-5xl font-bold">
+            {settings?.pageTitle || "Shop"}
+          </h1>
+        </div>
+      )}
 
       {/* Shop Content */}
       <section className="container-wide py-12 md:py-16 lg:py-20">
         {/* Page Description */}
         <div className="mb-12 md:mb-16">
           <h2 className="text-neutral-text text-xl md:text-2xl lg:text-3xl font-bold mb-4">
-            OUR CLUB STORE
+            {settings?.sectionTitle || "OUR CLUB STORE"}
           </h2>
           <p className="text-neutral-7 text-sm md:text-base max-w-3xl">
-            Discover the latest official merchandise, new collections, and
-            exclusive Bechem United FC store updates.
+            {settings?.sectionSubtext ||
+              "Discover the latest official merchandise, new collections, and exclusive Bechem United FC store updates."}
           </p>
         </div>
 

@@ -12,6 +12,18 @@ export const gplClubsQuery = groq`
   }
 `;
 
+// Query to fetch clubs by their names (for fixtures)
+export const gplClubsByNamesQuery = groq`
+  *[_type == "gplClub" && clubName in $clubNames] {
+    _id,
+    clubName,
+    clubLogo,
+    founded,
+    stadium,
+    isActive
+  }
+`;
+
 export const singleClubQuery = groq`
   *[_type == "gplClub" && _id == $clubId][0] {
     _id,
@@ -182,19 +194,29 @@ export const nextFourRecentNewsQuery = groq`
 `;
 
 export const homePageSettingsQuery = groq`
-  *[_type == "homePageSettings"][0] {
-    newsUpdatesSectionTitle,
-    newsUpdatesSectionContent,
-    newsUpdatesSectionLinkText,
-    newsOnHomePageTitle,
-    newsOnHomePageSubtext,
-    shopOnHomePageTitle,
-    shopOnHomePageSubtext
+  *[_id == "homePageSettings"][0] {
+    heroNewsBtnText,
+    newsSectionTitle,
+    newsSectionDescription,
+    newsContentTitle,
+    newsContentDescription,
+    newsContentBtnText,
+    fixtureSectionTitle,
+    fixtureSectionDescription,
+    moreFixturesTitle,
+    moreFixturesDescription,
+    fixtureSectionBtnText,
+    shopSectionTitle,
+    shopSectionDescription,
+    shopSectionBtnText,
+    photoHighlightsTitle,
+    photoHighlightsDescription,
+    photoHighlightsBtnText
   }
 `;
 
 export const contactUsSettingsQuery = groq`
-  *[_type == "contactUsSettings"][0] {
+  *[_id == "contactUsSettings"][0] {
   pageTitle,
   pageBannerImage,
   contactInfoSectionTitle,
@@ -209,7 +231,7 @@ export const contactUsSettingsQuery = groq`
 
 // FOOTER SETTINGS
 export const footerSettingsQuery = groq`
-  *[_type == "footerSettings"][0] {
+  *[_id == "footerSettings"][0] {
     description,
     location,
     phone,
@@ -220,7 +242,7 @@ export const footerSettingsQuery = groq`
 
 // SPONSOR SETTINGS
 export const sponsorSettingsQuery = groq`
-  *[_type == "sponsorSettings"][0] {
+  *[_id == "sponsorSettings"][0] {
     sponsorSectionTitle,
     sponsors[] {
       _key,
@@ -234,18 +256,19 @@ export const sponsorSettingsQuery = groq`
 
 // LIVE MATCHES SETTINGS
 export const liveMatchesSettingsQuery = groq`
-  *[_type == "liveMatchesSettings"][0] {
-    sectionTitle,
-    sectionSubtext,
+  *[_id == "liveMatchesSettings"][0] {
+    liveSectionTitle,
+    liveSectionDescription,
     videoThumbnail,
     videoUrl,
-    isLive
+    isLive,
+    liveSectionBtnText
   }
 `;
 
 // NEWSLETTER SETTINGS
 export const newsletterSettingsQuery = groq`
-  *[_type == "newsletterSettings"][0] {
+  *[_id == "newsletterSettings"][0] {
     sectionTitle,
     sectionSubtext,
     inputPlaceholder,
@@ -343,4 +366,182 @@ export const featuredJerseysQuery = groq`
     displayTitle
   }
 }
+`;
+
+// PAST HIGHLIGHTS
+export const pastHighlightsSettingsQuery = groq`
+  *[_type == "pastHighlightsSettings"][0] {
+    pageTitle,
+    pageBanner,
+    sectionTitle,
+    sectionSubtitle,
+    viewMoreText,
+    watchLiveCard {
+      title,
+      description,
+      buttonText,
+      backgroundImage
+    }
+  }
+`;
+
+export const allMatchHighlightsQuery = groq`
+  *[_type == "matchHighlight"] | order(publishedAt desc) {
+    _id,
+    videoUrl,
+    title,
+    description,
+    competition-> {
+      _id,
+      name,
+      shortName,
+      icon,
+      competitionType
+    },
+    matchday,
+    videoType,
+    thumbnail,
+    publishedAt,
+    channel,
+    relatedPlayer-> {
+      _id,
+      fullName,
+      jerseyNumber,
+      photo
+    }
+  }
+`;
+
+export const featuredMatchHighlightsQuery = groq`
+  *[_type == "matchHighlight"] | order(publishedAt desc) [0...6] {
+    _id,
+    videoUrl,
+    title,
+    description,
+    competition-> {
+      _id,
+      name,
+      shortName,
+      icon,
+      competitionType
+    },
+    matchday,
+    videoType,
+    thumbnail,
+    thumbnailUrl,
+    publishedAt,
+    channel,
+    relatedPlayer-> {
+      _id,
+      fullName,
+      jerseyNumber,
+      photo
+    }
+  }
+`;
+
+// NEWS PAGE SETTINGS
+export const newsPageSettingsQuery = groq`
+  *[_id == "newsPageSettings"][0] {
+    newsPageBannerImage,
+    featuredNewsSectionTitle,
+    featuredNewsSectionSubtext,
+    latestUpdatesSectionTitle,
+    latestUpdatesSectionSubtext
+  }
+`;
+
+// NEWS BY CATEGORY
+export const newsByCategoryQuery = groq`
+  *[_type == "news" && category == $category] | order(publishedAt desc) {
+    _id,
+    title,
+    slug,
+    excerpt,
+    featuredImage,
+    author,
+    readTime,
+    publishedAt,
+    category,
+    isFeatured
+  }
+`;
+
+// FIXTURES PAGE SETTINGS
+export const fixturesPageSettingsQuery = groq`
+  *[_id == "fixturesPageSettings"][0] {
+    fixturesPageTitle,
+    fixturesPageBannerImage,
+    upcomingFixturesTitle,
+    upcomingFixturesSubtext,
+    resultsTitle,
+    resultsSubtext,
+    fixturesViewMoreText,
+    watchLiveCardText,
+    watchLiveCtaText,
+    highlightsCtaText
+  }
+`;
+
+// MATCH FIXTURES
+export const upcomingFixturesQuery = groq`
+  *[_type == "matchFixture" && status == "upcoming"] | order(matchDate asc) {
+    _id,
+    competition,
+    matchday,
+    homeTeam,
+    awayTeam,
+    matchDate,
+    venue,
+    status
+  }
+`;
+
+export const finishedFixturesQuery = groq`
+  *[_type == "matchFixture" && status == "finished"] | order(matchDate desc) {
+    _id,
+    competition,
+    matchday,
+    homeTeam,
+    awayTeam,
+    matchDate,
+    venue,
+    status,
+    homeScore,
+    awayScore
+  }
+`;
+
+export const allFixturesQuery = groq`
+  *[_type == "matchFixture"] | order(matchDate desc) {
+    _id,
+    competition,
+    matchday,
+    homeTeam,
+    awayTeam,
+    matchDate,
+    venue,
+    status,
+    homeScore,
+    awayScore
+  }
+`;
+
+// PLAYERS PAGE SETTINGS
+export const playersPageSettingsQuery = groq`
+  *[_id == "playersPageSettings"][0] {
+    pageTitle,
+    pageBanner,
+    inputPlaceholderText
+  }
+`;
+
+// SHOP PAGE SETTINGS
+export const shopPageSettingsQuery = groq`
+  *[_id == "shopPageSettings"][0] {
+    pageTitle,
+    pageBanner,
+    sectionTitle,
+    sectionSubtext
+  }
 `;

@@ -1,4 +1,3 @@
-import { em } from "framer-motion/client";
 import { defineField, defineType } from "sanity";
 
 export const contactUsSettingsType = defineType({
@@ -40,16 +39,18 @@ export const contactUsSettingsType = defineType({
     defineField({
       name: "contactFormSubtext",
       title: "Contact Form Subtext",
-      type: "text",
+      type: "string",
       initialValue:
         "Have questions or feedback? Reach out to us to learn more about Bechem United FC, stay updated on the latest news.",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "phoneNumber",
-      title: "Phone Number (start with number eg.050...)",
-      type: "number",
-      initialValue: 545464169,
+      title: "Phone Number",
+      type: "string",
+      initialValue: "+233 (545) 464169",
+      description: "Phone number with country code (e.g., +233 (545) 464169)",
+
       validation: (Rule) => Rule.required(),
     }),
     defineField({

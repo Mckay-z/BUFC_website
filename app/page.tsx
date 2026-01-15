@@ -1,5 +1,8 @@
 import HomePage from "@/components/pages/homePage";
 import { client } from "@/lib/sanity.client";
+
+// Revalidate every 60 seconds
+export const revalidate = 60;
 import {
   mostRecentNewsQuery,
   homePageSettingsQuery,
@@ -17,7 +20,10 @@ import {
   Product,
   LiveMatchesSettings,
   NewsletterSettings,
+  FixtureWithClubData,
 } from "@/lib/types";
+import { getUpcomingFixtures } from "@/lib/mockFixtures";
+import { enrichFixturesWithClubData } from "@/lib/fixtureHelpers";
 
 export default async function Home() {
   const [
@@ -42,6 +48,14 @@ export default async function Home() {
     client.fetch<NewsletterSettings>(newsletterSettingsQuery),
   ]);
 
+  // Fetch upcoming fixtures and enrich with club data from Sanity
+  const mockFixtures = getUpcomingFixtures(5); // Get next 5 fixtures
+  const enrichedFixtures = await enrichFixturesWithClubData(mockFixtures);
+
+  // Separate the next fixture and remaining fixtures
+  const nextFixture = enrichedFixtures[0];
+  const upcomingFixtures = enrichedFixtures.slice(1);
+
   // Prepare featured products - prioritize specific jersey types
   let featuredProducts: Product[] = [];
 
@@ -65,16 +79,28 @@ export default async function Home() {
 
   // Fallback settings if none exist in Sanity
   const defaultSettings: HomePageSettings = {
-    newsUpdatesSectionTitle: "NEWS & UPDATES",
-    newsUpdatesSectionContent:
-      "Welcome to the home of Bechem United FC news. Here you'll find everything from match day coverage and player spotlights to community initiatives and youth development programs that define who we are.\n\nThe Hunters are more than a team—we're a community. Stay updated with news that matters, from the pitch to the people who make this club special.",
-    newsUpdatesSectionLinkText: "Discover more",
-    newsOnHomePageTitle: "LATEST FROM HUNTERS",
-    newsOnHomePageSubtext:
+    heroNewsBtnText: "Full Story",
+    newsSectionTitle: "LATEST FROM HUNTERS",
+    newsSectionDescription:
       "Stay updated with the latest news, match reports, and announcements from Bechem United FC",
-    shopOnHomePageTitle: "OUR CLUB STORE",
-    shopOnHomePageSubtext:
+    newsContentTitle: "NEWS & UPDATES",
+    newsContentDescription:
+      "Welcome to the home of Bechem United FC news. Here you'll find everything from match day coverage and player spotlights to community initiatives and youth development programs that define who we are.\n\nThe Hunters are more than a team—we're a community. Stay updated with news that matters, from the pitch to the people who make this club special.",
+    newsContentBtnText: "Discover More",
+    fixtureSectionTitle: "UPCOMING FIXTURES",
+    fixtureSectionDescription:
+      "Don't miss a moment of the action. Check out our upcoming matches and get your tickets early.",
+    moreFixturesTitle: "What's Ahead",
+    moreFixturesDescription: "Mark your calendar for these upcoming clashes",
+    fixtureSectionBtnText: "Full Schedule",
+    shopSectionTitle: "OUR CLUB STORE",
+    shopSectionDescription:
       "Discover the latest official merchandise, new collections, and exclusive Bechem United FC store updates.",
+    shopSectionBtnText: "Visit Store",
+    photoHighlightsTitle: "PHOTO HIGHLIGHTS",
+    photoHighlightsDescription:
+      "Relive the best moments from recent matches, training sessions, and club events.",
+    photoHighlightsBtnText: "Explore Gallery",
   };
 
   return (
@@ -87,6 +113,8 @@ export default async function Home() {
         settings={settings || defaultSettings}
         sponsorSettings={sponsorSettings}
         featuredProducts={featuredProducts}
+        nextFixture={nextFixture}
+        upcomingFixtures={upcomingFixtures}
       />
     </main>
   );

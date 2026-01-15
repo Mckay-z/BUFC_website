@@ -63,12 +63,13 @@ export const newsType = defineType({
       type: "string",
       options: {
         list: [
-          { title: "Club News", value: "club-news" },
-          { title: "Match Report", value: "match-report" },
-          { title: "Player News", value: "player-news" },
-          { title: "Transfer News", value: "transfer-news" },
+          { title: "Club News", value: "Club News" },
+          { title: "Player News", value: "Player News" },
+          { title: "Transfer News", value: "Transfer News" },
+          { title: "Match Report", value: "Match Report" },
         ],
       },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "isFeatured",
@@ -76,7 +77,7 @@ export const newsType = defineType({
       type: "boolean",
       initialValue: false,
       description:
-        "⭐ Only 4 articles can be featured at once. Marking this will automatically unfeature the oldest article if limit is reached.",
+        "⭐ Only 4 articles can be featured at once. You must unfeature an existing article before featuring a new one.",
       validation: (Rule) =>
         Rule.custom(async (isFeatured, context) => {
           // Only validate if trying to set to true
@@ -85,14 +86,23 @@ export const newsType = defineType({
           const { document, getClient } = context;
           const client = getClient({ apiVersion: "2023-01-01" });
 
-          // Count current featured articles (excluding this document)
-          const featuredCount = await client.fetch<number>(
-            `count(*[_type == "news" && isFeatured == true && _id != $id])`,
+          // Check if this document is already featured
+          const currentDoc = await client.fetch(
+            `*[_id == $id][0]{isFeatured}`,
             { id: document?._id }
           );
 
+          // If already featured, allow it
+          if (currentDoc?.isFeatured === true) return true;
+
+          // Count current featured articles (excluding this document)
+          const featuredCount = (await client.fetch(
+            `count(*[_type == "news" && isFeatured == true && _id != $id])`,
+            { id: document?._id }
+          )) as number;
+
           if (featuredCount >= 4) {
-            return "⚠️ Maximum 4 featured articles allowed. The oldest featured article will be automatically unfeatured when you publish.";
+            return "❌ Maximum 4 featured articles allowed. Please unfeature one of the existing featured articles before featuring this one.";
           }
 
           return true;

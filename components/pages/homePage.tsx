@@ -7,6 +7,7 @@ import {
   Product,
   LiveMatchesSettings,
   NewsletterSettings,
+  FixtureWithClubData,
 } from "@/lib/types";
 import { urlFor } from "@/lib/sanity.client";
 import Image from "next/image";
@@ -20,6 +21,7 @@ import SponsorSection from "../layout/SponsorSection";
 import ProductCard from "../ui/ProductCard";
 import LiveMatchesSection from "../layout/LiveMatchesSection";
 import Newsletter from "../layout/Newsletter";
+import UpcomingFixtures from "../layout/UpcomingFixtures";
 
 interface HomePageProps {
   heroNews: NewsArticle;
@@ -29,6 +31,8 @@ interface HomePageProps {
   featuredProducts: Product[];
   liveMatchesSettings: LiveMatchesSettings;
   newsletterSettings: NewsletterSettings;
+  nextFixture: FixtureWithClubData;
+  upcomingFixtures: FixtureWithClubData[];
 }
 
 export default function HomePage({
@@ -39,6 +43,8 @@ export default function HomePage({
   featuredProducts,
   liveMatchesSettings,
   newsletterSettings,
+  nextFixture,
+  upcomingFixtures,
 }: HomePageProps) {
   return (
     <main>
@@ -95,7 +101,7 @@ export default function HomePage({
                   }
                   buttonClassName="!p-0 !text-neutral-1 hover:!text-prim-6 transition-colors duration-300 ease-in-out text-base md:text-lg"
                 >
-                  Full Story
+                  {settings.heroNewsBtnText || "Full Story"}
                 </Button>
               </div>
             </div>
@@ -109,8 +115,8 @@ export default function HomePage({
           <div className="flex flex-col gap-15 2xlg:gap-30 justify-between h-full">
             {/* Section Header */}
             <SectionHeader
-              title={settings.newsOnHomePageTitle}
-              subtext={settings.newsOnHomePageSubtext}
+              title={settings.newsSectionTitle}
+              subtext={settings.newsSectionDescription}
             />
 
             {/* News Grid */}
@@ -161,10 +167,10 @@ export default function HomePage({
                 <div className="bg-[#252424] rounded-[20px] px-5 sm:px-8 py-7.5 md:py-12 xlg:w-1/2 flex flex-col justify-between min-h-[350px] xlg:h-[420px] 2xlg:h-[460px]">
                   <div>
                     <h3 className="text-neutral-1 font-medium text-xl lg:text-2xl mb-4">
-                      {settings.newsUpdatesSectionTitle}
+                      {settings.newsContentTitle}
                     </h3>
                     <p className="text-neutral-4 text-sm xl:text-[15px] leading-relaxed whitespace-pre-line">
-                      {settings.newsUpdatesSectionContent}
+                      {settings.newsContentDescription}
                     </p>
                   </div>
                   <Button
@@ -176,7 +182,7 @@ export default function HomePage({
                     fullWidth={true}
                     rightIcon={<FiArrowUpRight className="w-5 h-5" />}
                   >
-                    Discover More
+                    {settings.newsContentBtnText || "Discover More"}
                   </Button>
                 </div>
 
@@ -262,15 +268,23 @@ export default function HomePage({
       {/* Sponsor Section */}
       {sponsorSettings && <SponsorSection settings={sponsorSettings} />}
 
+      {/* Upcoming Fixtures Section */}
+      {nextFixture && upcomingFixtures && (
+        <UpcomingFixtures
+          nextFixture={nextFixture}
+          upcomingFixtures={upcomingFixtures}
+          settings={settings}
+        />
+      )}
+
       {/* Shop Section */}
       {featuredProducts.length > 0 && (
-        <section className="container-wide py-16 md:py-20 lg:py-28">
-          <div className="flex flex-col gap-12 md:gap-16">
-            <SectionHeader
-              title={settings.shopOnHomePageTitle}
-              subtext={settings.shopOnHomePageSubtext}
-            />
-
+        <section className="min-h-screen container-wide py-16 md:py-20 lg:py-28 flex flex-col gap-15  justify-between">
+          <SectionHeader
+            title={settings.shopSectionTitle}
+            subtext={settings.shopSectionDescription}
+          />
+          <div className="flex flex-col gap-8 md:gap-12">
             {/* Featured Products Grid */}
             <div className="flex-center flex-wrap gap-5">
               {featuredProducts.map((product) => (
@@ -293,7 +307,7 @@ export default function HomePage({
                 }
                 buttonClassName="!p-0 hover:!text-prim-6 transition-colors duration-300 ease-in-out text-base md:text-lg"
               >
-                Visit Store
+                {settings.shopSectionBtnText || "Visit Store"}
               </Button>
             </div>
           </div>
