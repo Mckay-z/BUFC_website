@@ -1,10 +1,10 @@
 "use client";
 
+import Image from "next/image";
+import { Icon } from "@iconify/react";
+import Button from "./Button";
 import { SanityImage } from "@/lib/types";
 import { urlFor } from "@/lib/sanity.client";
-import Image from "next/image";
-import Button from "./Button";
-import { Icon } from "@iconify/react";
 
 interface WatchLiveCardProps {
   title: string;
@@ -20,49 +20,56 @@ export default function WatchLiveCard({
   backgroundImage,
 }: WatchLiveCardProps) {
   return (
-    <div className="relative rounded-[20px] overflow-hidden bg-gradient-to-br from-prim-3 to-prim-6 min-h-[300px] md:min-h-[350px] flex items-center">
-      {/* Background Image */}
-      {backgroundImage && (
-        <>
+    <div className="relative overflow-hidden rounded-[20px] h-[300px] md:h-[360px] flex bg-prim-9">
+      {/* LEFT PANEL */}
+      <div className="relative z-10 w-[55%] h-full bg-prim-9 flex items-center">
+        <div className="px-8 md:px-12 max-w-md">
+          <h2 className="text-white text-2xl md:text-3xl font-bold mb-4 leading-tight">
+            {title}
+          </h2>
+
+          <p className="text-neutral-2 text-base md:text-lg mb-6 leading-relaxed">
+            {description}
+          </p>
+
+          <Button
+            href="/"
+            variant="primary"
+            size="lg"
+            rightIcon={
+              <Icon
+                icon="material-symbols:play-arrow-rounded"
+                width="22"
+                height="22"
+              />
+            }
+            buttonClassName="!bg-white !text-prim-9 hover:!bg-neutral-2 px-6"
+          >
+            {buttonText}
+          </Button>
+        </div>
+      </div>
+
+      {/* DIAGONAL CUT */}
+      <div
+        className="absolute left-[52%] top-0 h-full w-[160px] bg-prim-9 z-20"
+        style={{
+          clipPath: "polygon(0 0, 100% 0, 0 100%)",
+        }}
+      />
+
+      {/* RIGHT IMAGE */}
+      <div className="absolute inset-0 left-[45%]">
+        {backgroundImage && (
           <Image
-            src={urlFor(backgroundImage).width(1200).height(600).url()}
+            src={urlFor(backgroundImage).width(1200).height(700).url()}
             alt={title}
             fill
             className="object-cover"
+            priority
           />
-          {/* Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-prim-9/95 via-prim-9/80 to-transparent" />
-        </>
-      )}
-
-      {/* Content */}
-      <div className="relative z-10 p-8 md:p-12 max-w-2xl">
-        <h2 className="text-white text-2xl md:text-3xl lg:text-4xl font-bold mb-4 leading-tight">
-          {title}
-        </h2>
-        <p className="text-neutral-2 text-base md:text-lg leading-relaxed mb-6 md:mb-8">
-          {description}
-        </p>
-        <Button
-          href="/"
-          variant="secondary"
-          size="lg"
-          rightIcon={
-            <Icon
-              icon="material-symbols:play-arrow-rounded"
-              width="24"
-              height="24"
-            />
-          }
-          buttonClassName="!bg-white !text-prim-9 hover:!bg-neutral-2 shadow-lg"
-        >
-          {buttonText}
-        </Button>
+        )}
       </div>
-
-      {/* Decorative Elements */}
-      <div className="absolute bottom-0 right-0 w-48 h-48 md:w-64 md:h-64 bg-prim-6/20 rounded-tl-full blur-3xl" />
-      <div className="absolute top-0 right-12 w-32 h-32 md:w-48 md:h-48 bg-prim-3/20 rounded-full blur-2xl" />
     </div>
   );
 }

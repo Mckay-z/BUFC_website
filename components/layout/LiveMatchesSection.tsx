@@ -5,7 +5,7 @@ import { urlFor } from "@/lib/sanity.client";
 import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
-import SectionHeader from "./SectionHeader";
+import SectionHeader from "./sectionHeader";
 import ImageFallback from "../ui/ImageFallBack";
 import Button from "../ui/Button";
 import { useState } from "react";

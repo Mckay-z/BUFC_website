@@ -81,24 +81,24 @@ export default async function Home() {
   const defaultSettings: HomePageSettings = {
     heroNewsBtnText: "Full Story",
     newsSectionTitle: "LATEST FROM HUNTERS",
-    newsSectionDescription:
+    newsSectionSubtext:
       "Stay updated with the latest news, match reports, and announcements from Bechem United FC",
     newsContentTitle: "NEWS & UPDATES",
-    newsContentDescription:
+    newsContentSubtext:
       "Welcome to the home of Bechem United FC news. Here you'll find everything from match day coverage and player spotlights to community initiatives and youth development programs that define who we are.\n\nThe Hunters are more than a team—we're a community. Stay updated with news that matters, from the pitch to the people who make this club special.",
     newsContentBtnText: "Discover More",
     fixtureSectionTitle: "UPCOMING FIXTURES",
-    fixtureSectionDescription:
+    fixtureSectionSubtext:
       "Don't miss a moment of the action. Check out our upcoming matches and get your tickets early.",
     moreFixturesTitle: "What's Ahead",
-    moreFixturesDescription: "Mark your calendar for these upcoming clashes",
+    moreFixturesSubtext: "Mark your calendar for these upcoming clashes",
     fixtureSectionBtnText: "Full Schedule",
     shopSectionTitle: "OUR CLUB STORE",
-    shopSectionDescription:
+    shopSectionSubtext:
       "Discover the latest official merchandise, new collections, and exclusive Bechem United FC store updates.",
     shopSectionBtnText: "Visit Store",
     photoHighlightsTitle: "PHOTO HIGHLIGHTS",
-    photoHighlightsDescription:
+    photoHighlightsSubtext:
       "Relive the best moments from recent matches, training sessions, and club events.",
     photoHighlightsBtnText: "Explore Gallery",
   };

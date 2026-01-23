@@ -3,7 +3,7 @@
 import { ContactUsSettings } from "@/lib/types";
 import { urlFor } from "@/lib/sanity.client";
 import Image from "next/image";
-import SectionHeader from "../layout/SectionHeader";
+import SectionHeader from "../layout/sectionHeader";
 import { CgPhone } from "react-icons/cg";
 import { RiMailFill } from "react-icons/ri";
 import { FaLocationDot } from "react-icons/fa6";
@@ -77,7 +77,7 @@ export default function ContactPage({ contactUsSettings }: ContactPageProps) {
 
                 <div className="flex items-start gap-4">
                   <span className="w-10 h-10 ml-2 mr-2 flex items-center justify-center mt-1">
-                  <FaLocationDot />
+                    <FaLocationDot />
 
                   </span>
                   <span className="text-sm font-medium leading-relaxed">

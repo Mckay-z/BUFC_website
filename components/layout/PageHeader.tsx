@@ -29,13 +29,12 @@ export default function PageHeader({
           <div className="absolute inset-0 bg-black/50" />
         </div>
       ) : (
-        // Fallback gradient background
         <div className="absolute inset-0 bg-gradient-to-br from-primary via-prim-7 to-prim-9" />
       )}
 
       {/* Content */}
-      <div className="relative h-full container-wide flex items-center justify-center">
-        <h1 className="text-neutral-1 text-3xl xs:text-4xl md:text-5xl lg:text-6xl font-bold text-center">
+      <div className="relative h-full container-wide flex items-end justify-start pb-6 md:pb-10">
+        <h1 className="text-neutral-1 text-3xl xs:text-4xl md:text-5xl lg:text-6xl font-bold">
           {title}
         </h1>
       </div>

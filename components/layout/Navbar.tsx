@@ -68,7 +68,7 @@ export default function Navbar() {
       name: "Contact",
     },
     {
-      href: "/highlights",
+      href: "/pastHighlights",
       icon: "bxs:videos",
       name: "Past Highlights",
     },
@@ -105,11 +105,10 @@ export default function Navbar() {
                   <li key={index}>
                     <Link
                       href={link.href}
-                      className={` transition-colors duration-300 ease-in-out font-medium ${
-                        isActive
+                      className={` transition-colors duration-300 ease-in-out font-medium ${isActive
                           ? "pb-1 border-b-2 border-primary text-primary "
                           : " text-neutral-9 hover:text-primary"
-                      }`}
+                        }`}
                     >
                       {link.name}
                     </Link>
@@ -168,9 +167,8 @@ export default function Navbar() {
 
       {/* Sidebar Menu */}
       <aside
-        className={`fixed top-0 left-0 h-full w-72  md:w-85 xl:w-90 bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${
-          open ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed top-0 left-0 h-full w-72  md:w-85 xl:w-90 bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${open ? "translate-x-0" : "-translate-x-full"
+          }`}
       >
         <div className="flex flex-col h-full">
           {/* Sidebar Header */}
