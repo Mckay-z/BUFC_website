@@ -9,7 +9,7 @@ import { Icon } from "@iconify/react";
 import FixtureCard from "../ui/FixtureCard";
 import ImageFallback from "../ui/ImageFallBack";
 import Button from "../ui/Button";
-import SectionHeader from "./SectionHeader";
+import SectionHeader from "./sectionHeader";
 import { FiArrowUpRight } from "react-icons/fi";
 
 interface UpcomingFixturesProps {
@@ -84,7 +84,7 @@ export default function UpcomingFixtures({
         {/* Section Header */}
         <SectionHeader
           title={settings.fixtureSectionTitle}
-          subtext={settings.fixtureSectionDescription}
+          subtext={settings.fixtureSectionSubtext}
           onColor
         />
 

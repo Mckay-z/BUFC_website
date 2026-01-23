@@ -197,20 +197,20 @@ export const homePageSettingsQuery = groq`
   *[_id == "homePageSettings"][0] {
     heroNewsBtnText,
     newsSectionTitle,
-    newsSectionDescription,
+    newsSectionSubtext,
     newsContentTitle,
-    newsContentDescription,
+    newsContentSubtext,
     newsContentBtnText,
     fixtureSectionTitle,
-    fixtureSectionDescription,
+    fixtureSectionSubtext,
     moreFixturesTitle,
-    moreFixturesDescription,
+    moreFixturesSubtext,
     fixtureSectionBtnText,
     shopSectionTitle,
-    shopSectionDescription,
+    shopSectionSubtext,
     shopSectionBtnText,
     photoHighlightsTitle,
-    photoHighlightsDescription,
+    photoHighlightsSubtext,
     photoHighlightsBtnText
   }
 `;

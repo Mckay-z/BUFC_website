@@ -15,7 +15,7 @@ import Link from "next/link";
 import { FiArrowUpRight } from "react-icons/fi";
 import Button from "../ui/Button";
 import { Icon } from "@iconify/react";
-import SectionHeader from "../layout/SectionHeader";
+import SectionHeader from "../layout/sectionHeader";
 import ImageFallback from "../ui/ImageFallBack";
 import SponsorSection from "../layout/SponsorSection";
 import ProductCard from "../ui/ProductCard";
@@ -116,7 +116,7 @@ export default function HomePage({
             {/* Section Header */}
             <SectionHeader
               title={settings.newsSectionTitle}
-              subtext={settings.newsSectionDescription}
+              subtext={settings.newsSectionSubtext}
             />
 
             {/* News Grid */}
@@ -170,7 +170,7 @@ export default function HomePage({
                       {settings.newsContentTitle}
                     </h3>
                     <p className="text-neutral-4 text-sm xl:text-[15px] leading-relaxed whitespace-pre-line">
-                      {settings.newsContentDescription}
+                      {settings.newsContentSubtext}
                     </p>
                   </div>
                   <Button
@@ -282,7 +282,7 @@ export default function HomePage({
         <section className="min-h-screen container-wide py-16 md:py-20 lg:py-28 flex flex-col gap-15  justify-between">
           <SectionHeader
             title={settings.shopSectionTitle}
-            subtext={settings.shopSectionDescription}
+            subtext={settings.shopSectionSubtext}
           />
           <div className="flex flex-col gap-8 md:gap-12">
             {/* Featured Products Grid */}
