@@ -108,9 +108,10 @@ export default function Footer({ settings }: FooterProps) {
               <Image
                 src="/img/bufc_logo.png"
                 alt="Bechem United FC"
-                width={10000}
-                height={10000}
-                className="w-9 xs:w-10 lg:w-11 object-cover shrink-0"
+                width={200}
+                height={200}
+                className="w-9 xs:w-10 lg:w-11 object-contain shrink-0"
+                unoptimized
               />
             </Link>
 

@@ -106,8 +106,8 @@ export default function Navbar() {
                     <Link
                       href={link.href}
                       className={` transition-colors duration-300 ease-in-out font-medium ${isActive
-                          ? "pb-1 border-b-2 border-primary text-primary "
-                          : " text-neutral-9 hover:text-primary"
+                        ? "pb-1 border-b-2 border-primary text-primary "
+                        : " text-neutral-9 hover:text-primary"
                         }`}
                     >
                       {link.name}
@@ -126,10 +126,11 @@ export default function Navbar() {
             <Image
               src="/img/bufc_logo.png"
               alt="Bechem United FC"
-              width={1000}
-              height={1000}
-              className="w-9 xs:w-10 lg:w-11 object-center object-cover"
+              width={200}
+              height={200}
+              className="w-9 xs:w-10 lg:w-11 object-center object-contain"
               priority
+              unoptimized
             />
           </Link>
 
@@ -139,10 +140,11 @@ export default function Navbar() {
             <Image
               src="/img/bufc_logo.png"
               alt="Bechem United FC"
-              width={1000}
-              height={1000}
-              className="w-9 xs:w-10 lg:w-11 object-center object-cover"
+              width={200}
+              height={200}
+              className="w-9 xs:w-10 lg:w-11 object-center object-contain"
               priority
+              unoptimized
             />
           </Link>
 
@@ -180,9 +182,10 @@ export default function Navbar() {
                   <Image
                     src="/img/bufc_logo.png"
                     alt="Bechem United FC"
-                    width={10000}
-                    height={10000}
+                    width={200}
+                    height={200}
                     className="w-6 md:8 object-contain"
+                    unoptimized
                   />
                   <span className="text-sm md:text-base font-semibold text-neutral-9">
                     Bechem United FC

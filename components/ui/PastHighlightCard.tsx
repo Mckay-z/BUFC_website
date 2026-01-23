@@ -45,151 +45,96 @@ export default function PastHighlightCard({
   const thumbnailUrl = getThumbnailUrl();
 
   return (
-    <div className="group rounded-[20px] overflow-hidden bg-neutral-2 border border-neutral-3 hover:border-prim-3 transition-all duration-300">
+    <div className="group bg-white rounded-[16px] overflow-hidden border border-neutral-3 hover:border-neutral-4 hover:shadow-lg transition-all duration-300 flex flex-col h-full">
       {/* Thumbnail */}
-      <div className="relative aspect-video w-full overflow-hidden">
+      <div className="relative aspect-video w-full overflow-hidden bg-neutral-2">
         {thumbnailUrl ? (
           <>
             <Image
               src={thumbnailUrl}
               alt={highlight.title}
               fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              className="object-cover group-hover:scale-105 transition-transform duration-500"
             />
-            {/* Overlay */}
-            <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors duration-300" />
+            {/* Minimal Overlay for depth */}
+            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-300" />
 
-            {/* Play Icon */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-prim-3/90 backdrop-blur-sm flex items-center justify-center group-hover:bg-prim-6 group-hover:scale-110 transition-all duration-300">
-                <Icon
-                  icon="ph:play-fill"
-                  width="24"
-                  height="24"
-                  className="text-white ml-0.5"
-                />
-              </div>
-            </div>
-
-            {/* Video Type Badge */}
+            {/* Video Type Badge (Left Top) */}
             {highlight.videoType && (
-              <div className="absolute top-3 left-3 px-3 py-1.5 bg-neutral-9/80 backdrop-blur-sm rounded-full">
-                <span className="text-white text-xs font-medium uppercase">
-                  {highlight.videoType === "matchHighlight" &&
-                    "Match Highlight"}
-                  {highlight.videoType === "playerHighlight" &&
-                    "Player Highlight"}
+              <div className="absolute top-3 left-3 px-2.5 py-1 bg-black/40 backdrop-blur-md rounded-md border border-white/10">
+                <span className="text-white text-[10px] sm:text-xs font-semibold uppercase tracking-wide">
+                  {highlight.videoType === "matchHighlight"
+                    ? "Match"
+                    : "Player"}
                 </span>
               </div>
             )}
           </>
         ) : (
-          <div className="w-full h-full bg-neutral-3 flex items-center justify-center">
-            <ImageFallback icon="mdi:video-outline" width="64" height="64" />
+          <div className="w-full h-full flex items-center justify-center text-neutral-4">
+            <ImageFallback icon="mdi:video-outline" width="48" height="48" />
           </div>
         )}
       </div>
 
       {/* Content */}
-      <div className="p-4 md:p-5">
-        {/* Competition & Matchday Header */}
-        <div className="flex items-center justify-between gap-2 mb-3">
-          {/* Competition Info */}
-          {highlight.competition && (
-            <div className="flex items-center gap-2">
-              {highlight.competition.icon && (
-                <div className="relative w-5 h-5 md:w-6 md:h-6 shrink-0">
-                  <Image
-                    src={urlFor(highlight.competition.icon)
-                      .width(32)
-                      .height(32)
-                      .url()}
-                    alt={highlight.competition.name || "Competition"}
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-              )}
-              <span className="text-xs md:text-sm font-medium text-neutral-text">
-                {highlight.competition.shortName || highlight.competition.name}
-              </span>
-            </div>
-          )}
+      <div className="p-4 flex flex-col flex-grow">
+        {/* Header: Competition & Matchday */}
+        <div className="flex items-center justify-between mb-3">
+          {/* Competition */}
+          <div className="flex items-center gap-1.5 overflow-hidden">
+            {highlight.competition?.icon && (
+              <div className="relative w-4 h-4 shrink-0">
+                <Image
+                  src={urlFor(highlight.competition.icon).width(32).height(32).url()}
+                  alt={highlight.competition.name || "Competition"}
+                  fill
+                  className="object-contain"
+                />
+              </div>
+            )}
+            <span className="text-[11px] font-bold text-neutral-8 truncate uppercase tracking-tight">
+              {highlight.competition?.shortName || highlight.competition?.name || "LEAGUE"}
+            </span>
+          </div>
 
           {/* Matchday */}
           {highlight.matchday && (
-            <span className="text-xs md:text-sm text-neutral-6">
+            <span className="text-[11px] font-medium text-prim-9 bg-prim-1 px-2 py-0.5 rounded-full shrink-0">
               {highlight.matchday}
             </span>
           )}
         </div>
 
         {/* Title */}
-        <h3 className="text-sm md:text-base font-semibold text-neutral-text mb-2 line-clamp-2 group-hover:text-prim-3 transition-colors duration-300">
+        <h3 className="text-sm font-bold text-neutral-9 mb-3 line-clamp-2 leading-tight group-hover:text-prim-9 transition-colors">
           {highlight.title}
         </h3>
 
-        {/* Related Player Info */}
-        {highlight.relatedPlayer &&
-          highlight.videoType === "playerHighlight" && (
-            <div className="flex items-center gap-2 mb-2">
-              {highlight.relatedPlayer.photo && (
-                <div className="relative w-6 h-6 rounded-full overflow-hidden">
-                  <Image
-                    src={urlFor(highlight.relatedPlayer.photo)
-                      .width(32)
-                      .height(32)
-                      .url()}
-                    alt={highlight.relatedPlayer.fullName || "Player"}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              )}
-              <span className="text-xs text-neutral-6">
-                #{highlight.relatedPlayer.jerseyNumber}{" "}
-                {highlight.relatedPlayer.fullName}
-              </span>
-            </div>
-          )}
-
-        {/* Description */}
-        {highlight.description && (
-          <p className="text-xs md:text-sm text-neutral-6 line-clamp-2 mb-3">
-            {highlight.description}
-          </p>
-        )}
-
-        {/* Footer */}
-        <div className="flex items-center justify-between pt-3 border-t border-neutral-3">
-          {/* Date & Channel */}
-          <div className="flex items-center gap-2 text-xs text-neutral-6">
-            {highlight.publishedAt && (
-              <span>{formatDate(highlight.publishedAt)}</span>
-            )}
-            {highlight.channel && highlight.publishedAt && <span>•</span>}
+        <div className="mt-auto pt-3 flex items-end justify-between border-t border-neutral-2">
+          {/* Metadata: Channel & Date */}
+          <div className="flex flex-col gap-0.5">
             {highlight.channel && (
-              <span className="flex items-center gap-1">
-                <Icon icon="mdi:youtube" width="14" height="14" />
-                {highlight.channel}
+              <span className="text-[11px] font-semibold text-neutral-6 flex items-center gap-1">
+                @{highlight.channel}
+              </span>
+            )}
+            {highlight.publishedAt && (
+              <span className="text-[11px] text-neutral-5">
+                {formatDate(highlight.publishedAt)}
               </span>
             )}
           </div>
 
-          {/* Watch Link */}
+          {/* Watch Button */}
           {highlight.videoUrl && (
             <Link
               href={highlight.videoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 text-xs font-medium text-prim-3 hover:text-prim-6 transition-colors duration-300"
+              className="bg-prim-9 text-white hover:bg-prim-8 text-xs font-bold px-5 py-1.5 rounded-full transition-colors duration-200"
             >
               Watch
-              <Icon
-                icon="material-symbols:play-arrow-rounded"
-                width="18"
-                height="18"
-              />
             </Link>
           )}
         </div>

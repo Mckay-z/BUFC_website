@@ -7,19 +7,25 @@ import Image from "next/image";
 interface PageHeaderProps {
   title: string;
   backgroundImage?: SanityImage;
+  staticImage?: string;
 }
 
 export default function PageHeader({
   title,
   backgroundImage,
+  staticImage,
 }: PageHeaderProps) {
   return (
     <section className="relative h-[200px] xs:h-[250px] md:h-[300px] lg:h-[350px] w-full overflow-hidden">
       {/* Background Image */}
-      {backgroundImage ? (
+      {backgroundImage || staticImage ? (
         <div className="absolute inset-0">
           <Image
-            src={urlFor(backgroundImage).width(1920).height(600).url()}
+            src={
+              backgroundImage
+                ? urlFor(backgroundImage).width(1920).height(600).url()
+                : (staticImage as string)
+            }
             alt={title}
             fill
             className="object-cover"
