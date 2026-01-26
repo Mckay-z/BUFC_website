@@ -5,7 +5,7 @@ import { urlFor } from "@/lib/sanity.client";
 import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
-import SectionHeader from "./sectionHeader";
+import SectionHeader from "./SectionHeader";
 import ImageFallback from "../ui/ImageFallBack";
 import Button from "../ui/Button";
 import { useState } from "react";
@@ -32,7 +32,7 @@ export default function LiveMatchesSection({
         {/* Section Header */}
         <SectionHeader
           title={settings.liveSectionTitle}
-          subtext={settings.liveSectionDescription}
+          subtext={settings.liveSectionSubtext}
         />
 
         {/* Video Player Container */}
@@ -44,7 +44,7 @@ export default function LiveMatchesSection({
                 {/* YouTube Embedded Player */}
                 <iframe
                   src={`https://www.youtube.com/embed/${extractYouTubeId(
-                    settings.videoUrl
+                    settings.videoUrl,
                   )}?autoplay=1&mute=0`}
                   title={settings.liveSectionTitle}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

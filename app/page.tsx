@@ -49,7 +49,7 @@ export default async function Home() {
   ]);
 
   // Fetch upcoming fixtures and enrich with club data from Sanity
-  const mockFixtures = getUpcomingFixtures(5); // Get next 5 fixtures
+  const mockFixtures = getUpcomingFixtures(); // Get next 5 fixtures
   const enrichedFixtures = await enrichFixturesWithClubData(mockFixtures);
 
   // Separate the next fixture and remaining fixtures

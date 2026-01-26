@@ -9,7 +9,7 @@ import { Icon } from "@iconify/react";
 import FixtureCard from "../ui/FixtureCard";
 import ImageFallback from "../ui/ImageFallBack";
 import Button from "../ui/Button";
-import SectionHeader from "./sectionHeader";
+import SectionHeader from "./SectionHeader";
 import { FiArrowUpRight } from "react-icons/fi";
 
 interface UpcomingFixturesProps {
@@ -70,7 +70,7 @@ export default function UpcomingFixtures({
   // Get stadium name - use home team's stadium if available
   const getStadiumName = () => {
     return nextFixture.homeClubData?.stadium || "Stadium TBA";
-  };
+  };  
 
   return (
     <section
@@ -89,7 +89,7 @@ export default function UpcomingFixtures({
         />
 
         {/* UP NEXT Featured Card */}
-        <div className="relative w-[90%] lg:max-w-[1200px] h-[470px] lg:h-[450px] flex justify-center items-end lg:items-center py-10 px-4 overflow-hidden">
+        <div className="relative w-full xxs:w-[90%] lg:max-w-[1200px] h-[470px] lg:h-[450px] flex justify-center items-end lg:items-center py-10 px-4 overflow-hidden">
           {/* Background Image with Overlay */}
           <div className="absolute inset-0 z-0 ">
             <Image
@@ -107,7 +107,7 @@ export default function UpcomingFixtures({
             variant="ghost"
             size="lg"
             textClassName="font-normal group-hover:underline"
-            buttonClassName="group absolute top-2 right-2 !text-sm lg:!text-base !p-0 !text-neutral-1  !justify-end"
+            buttonClassName="group absolute top-2.5 right-2.5 !text-sm lg:!text-base !p-0 !text-neutral-1  !justify-end"
             rightIcon={<FiArrowUpRight className="w-5 h-5" />}
           >
             Get Tickets
@@ -157,8 +157,8 @@ export default function UpcomingFixtures({
                   {nextFixture.homeClubData?.clubLogo ? (
                     <Image
                       src={urlFor(nextFixture.homeClubData.clubLogo)
-                        .width(10000)
-                        .height(10000)
+                        .width(256)
+                        .height(256)
                         .url()}
                       alt={nextFixture.homeClubData.clubName}
                       fill
@@ -249,7 +249,7 @@ export default function UpcomingFixtures({
                     key={index}
                     className="flex flex-col items-center gap-1 bg-black/50 backdrop-blur-sm rounded-lg md:rounded-xl px-4 py-3 md:px-5.5 md:py-4 min-w-15 lg:min-w-20"
                   >
-                    <span className="text-neutral-1 text-xl lg:text-[22px] font-semibold xl:font-bold tabular-nums">
+                    <span className="text-neutral-1 text-xl lg:text-[22px] font-bold tabular-nums">
                       {String(item.value).padStart(2, "0")}
                     </span>
                     <span className="text-neutral-1 text-xs lg:text-sm font-medium ">
@@ -263,14 +263,14 @@ export default function UpcomingFixtures({
         </div>
 
         {/* What's Ahead Section */}
-        <div className=" w-[90%] lg:max-w-[1200px] flex flex-col items-start gap-6 md:gap-8">
+        <div className=" w-full xxs:w-[90%] lg:max-w-[1200px] flex flex-col items-start gap-6 md:gap-8">
           {/* Section Title */}
           <div className="flex items-center justify-between w-full">
             <div className="flex flex-col gap-1">
-              <h3 className="text-white text-xl md:text-2xl font-bold">
+              <h3 className="text-white text-[15px] sm:text-base 2xlg:text-lg xl:text-[22px] font-semibold">
                 What&apos;s ahead
               </h3>
-              <p className="text-neutral-4 text-sm md:text-base">
+              <p className="text-neutral-4 text-sm lg:text-[15px] 2xlg:text-base">
                 Mark your calendar for these upcoming clashes
               </p>
             </div>
@@ -307,21 +307,21 @@ export default function UpcomingFixtures({
             </div>
           </div>
 
-          {/* See Full Schedule Link */}
-          <div className="w-full flex justify-center md:justify-end">
+          {/* Full Schedule Link */}
+          <div className="w-full flex justify-end">
             <Button
               href="/fixtures"
               variant="ghost"
-              size="md"
+              size="lg"
               rightIcon={
                 <Icon
-                  icon="mdi:arrow-right"
+                  icon="icons8:chevron-right-round"
                   width="none"
                   height="none"
-                  className="w-5 h-5"
+                  className="w-5 h-5 lg:w-6 lg:h-6"
                 />
               }
-              buttonClassName="!p-0 hover:!text-prim-4 transition-colors duration-300"
+              buttonClassName="!p-0 !text-neutral-1 hover:!text-primary-hover transition-colors duration-300 ease-in-out text-base md:text-lg"
             >
               {settings.fixtureSectionBtnText || "Full Schedule"}
             </Button>

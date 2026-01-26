@@ -128,6 +128,7 @@ export interface NewsArticle {
   featuredImage: SanityImage;
   content?: PortableTextBlock[];
   author: string;
+  authorImage: SanityImage;
   readTime?: number;
   publishedAt: string;
   category: string;
@@ -136,7 +137,8 @@ export interface NewsArticle {
 
 // NEWS PAGE SETTINGS
 export interface NewsPageSettings {
-  newsPageBannerImage: SanityImage;
+  pageTitle: string;
+  pageBannerImage: SanityImage;
   featuredNewsSectionTitle: string;
   featuredNewsSectionSubtext: string;
   latestUpdatesSectionTitle: string;
@@ -304,7 +306,7 @@ export interface SponsorSettings {
 // LIVE MATCHES SETTINGS INTERFACE
 export interface LiveMatchesSettings {
   liveSectionTitle: string;
-  liveSectionDescription: string;
+  liveSectionSubtext: string;
   videoThumbnail?: SanityImage;
   videoUrl?: string;
   isLive: boolean;
@@ -425,6 +427,7 @@ export interface Fixture {
   time: string; // 24-hour format (HH:MM)
   competition: string;
   matchday: number;
+  isFeatured?: boolean;
 }
 
 // Fixture enriched with club data from Sanity

@@ -30,19 +30,17 @@ export default function FixtureCard({ fixture }: FixtureCardProps) {
   };
 
   return (
-    <div className="flex flex-col items-start gap-3 md:gap-4.5 w-62.5 md:w-85 h-40 md:h-50 px-4 md:px-8 py-5 rounded-[20px] md:rounded-[28px] border border-prim-2 bg-neutral-1 shrink-0">
+    <div className="relative flex flex-col items-start gap-3 md:gap-4.5 w-62.5 md:w-85 h-40 md:h-50 px-4 md:px-8 py-5 rounded-3xl md:rounded-[28px] border border-prim-2 text-prim-1 shrink-0">
       {/* Match Date and Time */}
       <div className="flex items-center justify-between w-full">
-        <p className="text-neutral-8 text-xs md:text-sm font-medium">
+        <p className=" text-xs md:text-sm font-semibold">
           {formatDate(fixture.date)}
         </p>
-        <p className="text-neutral-7 text-xs md:text-sm font-medium">
-          {fixture.time}
-        </p>
+        <p className=" text-xs md:text-sm font-semibold">{fixture.time}</p>
       </div>
 
       {/* Teams Display */}
-      <div className="flex items-center justify-between w-full">
+      <div className="flex items-center justify-around w-full">
         {/* Home Team */}
         <div className="flex flex-col items-center gap-2 md:gap-2.5 max-w-20 md:max-w-25">
           {/* Home Team Logo */}
@@ -50,8 +48,8 @@ export default function FixtureCard({ fixture }: FixtureCardProps) {
             {fixture.homeClubData?.clubLogo ? (
               <Image
                 src={urlFor(fixture.homeClubData.clubLogo)
-                  .width(128)
-                  .height(128)
+                  .width(256)
+                  .height(256)
                   .url()}
                 alt={fixture.homeClubData.clubName}
                 fill
@@ -67,17 +65,19 @@ export default function FixtureCard({ fixture }: FixtureCardProps) {
             )}
           </div>
           {/* Home Team Name */}
-          <p className="text-neutral-9 text-[10px] md:text-xs font-semibold text-center line-clamp-2">
-            {fixture.homeClubData?.clubName || fixture.homeTeam}
+          <p className="text-xs md:text-sm font-semibold text-center">
+            {/* {fixture.homeClubData?.clubName || fixture.homeTeam} */}Home
           </p>
         </div>
 
         {/* VS Divider */}
-        <div className="flex items-center justify-center shrink-0 mx-2">
-          <span className="text-neutral-6 text-base md:text-xl font-bold italic">
-            VS
-          </span>
-        </div>
+        <Image
+          src="/img/vs_logo.png"
+          alt="VS Logo"
+          width={1000}
+          height={1000}
+          className="w-14 md:w-21.25 object-cover object-center"
+        />
 
         {/* Away Team */}
         <div className="flex flex-col items-center gap-2 md:gap-2.5 max-w-20 md:max-w-25">
@@ -86,8 +86,8 @@ export default function FixtureCard({ fixture }: FixtureCardProps) {
             {fixture.awayClubData?.clubLogo ? (
               <Image
                 src={urlFor(fixture.awayClubData.clubLogo)
-                  .width(128)
-                  .height(128)
+                  .width(256)
+                  .height(256)
                   .url()}
                 alt={fixture.awayClubData.clubName}
                 fill
@@ -103,22 +103,19 @@ export default function FixtureCard({ fixture }: FixtureCardProps) {
             )}
           </div>
           {/* Away Team Name */}
-          <p className="text-neutral-9 text-[10px] md:text-xs font-semibold text-center line-clamp-2">
-            {fixture.awayClubData?.clubName || fixture.awayTeam}
+          <p className="text-xs md:text-sm font-semibold text-center">
+            {/* {fixture.awayClubData?.clubName || fixture.awayTeam} */}Away
           </p>
         </div>
       </div>
 
-      {/* Competition Badge */}
-      <div className="flex items-center gap-1.5 md:gap-2">
-        <Icon
-          icon="mdi:soccer-field"
-          className="w-4 h-4 md:w-5 md:h-5 text-primary"
-        />
-        <p className="text-neutral-7 text-[10px] md:text-xs font-medium">
-          {fixture.competition}
-        </p>
-      </div>
+      {/* Is Fixture Featured */}
+      {fixture.isFeatured && (
+        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex-center gap-1 text-primary-hover rounded-full">
+          <Icon icon="mdi:thunder" className="w-3.25 h-3.25 md:w-6 md:h-6" />
+          <p className="text-xs md:text-sm font-semibold">Featured</p>
+        </div>
+      )}
     </div>
   );
 }

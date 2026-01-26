@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { PastHighlightsSettings, MatchHighlight } from "@/lib/types";
 import PageHeader from "../layout/PageHeader";
-import SectionHeader from "../layout/sectionHeader";
+import SectionHeader from "../layout/SectionHeader";
 import PastHighlightCard from "../ui/PastHighlightCard";
 import WatchLiveCard from "../ui/WatchLiveCard";
 import Button from "../ui/Button";

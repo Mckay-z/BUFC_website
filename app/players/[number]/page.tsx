@@ -15,7 +15,7 @@ interface PlayerPageProps {
 async function getCountryCode(countryName: string): Promise<string | null> {
   try {
     const response = await fetch(
-      `https://restcountries.com/v3.1/name/${encodeURIComponent(countryName)}?fullText=true`
+      `https://restcountries.com/v3.1/name/${encodeURIComponent(countryName)}?fullText=true`,
     );
 
     if (!response.ok) return null;
@@ -146,7 +146,7 @@ export default async function PlayerPage({ params }: PlayerPageProps) {
                 >
                   {clubLogo && (
                     <Image
-                      src={urlFor(clubLogo).width(1000).url()}
+                      src={urlFor(clubLogo).width(256).url()}
                       alt={clubName || "Club"}
                       width={60}
                       height={60}

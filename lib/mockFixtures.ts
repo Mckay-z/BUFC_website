@@ -18,6 +18,7 @@ export interface MockFixture {
   time: string; // 24-hour format (e.g., "15:00")
   competition: string;
   matchday: number;
+  isFeatured?: boolean;
 }
 
 // Ghana Premier League 2026 Mock Fixtures
@@ -30,15 +31,7 @@ export const mockFixtures: MockFixture[] = [
     time: "15:00",
     competition: "Ghana Premier League",
     matchday: 15,
-  },
-  {
-    id: "gpl-2026-002",
-    homeTeam: "Hearts of Oak SC",
-    awayTeam: "Bechem United FC",
-    date: "2026-02-01",
-    time: "19:00",
-    competition: "Ghana Premier League",
-    matchday: 16,
+    isFeatured: true,
   },
   {
     id: "gpl-2026-003",
@@ -47,7 +40,8 @@ export const mockFixtures: MockFixture[] = [
     date: "2026-02-10",
     time: "19:00",
     competition: "Ghana Premier League",
-    matchday: 17,
+    matchday: 16,
+    isFeatured: false,
   },
   {
     id: "gpl-2026-004",
@@ -56,7 +50,18 @@ export const mockFixtures: MockFixture[] = [
     date: "2026-02-20",
     time: "19:00",
     competition: "Ghana Premier League",
+    matchday: 17,
+    isFeatured: true,
+  },
+  {
+    id: "gpl-2026-002",
+    homeTeam: "Hearts of Oak SC",
+    awayTeam: "Bechem United FC",
+    date: "2026-02-01",
+    time: "19:00",
+    competition: "Ghana Premier League",
     matchday: 18,
+    isFeatured: true,
   },
   {
     id: "gpl-2026-005",
@@ -66,6 +71,7 @@ export const mockFixtures: MockFixture[] = [
     time: "15:00",
     competition: "Ghana Premier League",
     matchday: 19,
+    isFeatured: false,
   },
   {
     id: "gpl-2026-006",
@@ -75,6 +81,7 @@ export const mockFixtures: MockFixture[] = [
     time: "15:00",
     competition: "Ghana Premier League",
     matchday: 20,
+    isFeatured: true,
   },
   {
     id: "gpl-2026-007",
@@ -84,6 +91,7 @@ export const mockFixtures: MockFixture[] = [
     time: "19:00",
     competition: "Ghana Premier League",
     matchday: 21,
+    isFeatured: false,
   },
   {
     id: "gpl-2026-008",
@@ -93,6 +101,7 @@ export const mockFixtures: MockFixture[] = [
     time: "15:00",
     competition: "Ghana Premier League",
     matchday: 22,
+    isFeatured: true,
   },
 ];
 
@@ -147,7 +156,7 @@ export function getTimeUntilFixture(date: string, time: string) {
   // Calculate time units
   const days = Math.floor(difference / (1000 * 60 * 60 * 24));
   const hours = Math.floor(
-    (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+    (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
   );
   const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((difference % (1000 * 60)) / 1000);

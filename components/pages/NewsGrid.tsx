@@ -5,6 +5,7 @@ import { urlFor } from "@/lib/sanity.client";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import SectionHeader from "../layout/SectionHeader";
 
 interface NewsGridProps {
   allArticles: NewsArticle[];
@@ -76,12 +77,7 @@ export default function NewsGrid({
   return (
     <section className="container-wide pb-16 md:pb-20">
       <div className="mb-8">
-        <h2 className="text-neutral-text text-2xl md:text-3xl lg:text-4xl font-bold mb-3">
-          {sectionTitle}
-        </h2>
-        <p className="text-neutral-7 text-sm md:text-base max-w-3xl">
-          {sectionSubtext}
-        </p>
+        <SectionHeader title={sectionTitle} subtext={sectionSubtext || ""} />
       </div>
 
       {/* Category Tabs */}
