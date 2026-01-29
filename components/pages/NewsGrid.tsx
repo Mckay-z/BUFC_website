@@ -4,8 +4,10 @@ import { NewsArticle } from "@/lib/types";
 import { urlFor } from "@/lib/sanity.client";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import SectionHeader from "../layout/SectionHeader";
+import { ExtraSmallFeaturedCard } from "./FeaturedNewsCards";
+import { Icon } from "@iconify/react";
 
 interface NewsGridProps {
   allArticles: NewsArticle[];
@@ -13,7 +15,7 @@ interface NewsGridProps {
   sectionSubtext?: string;
 }
 
-const ITEMS_PER_PAGE = 9;
+const ITEMS_PER_PAGE = 6;
 
 export default function NewsGrid({
   allArticles,
@@ -22,6 +24,7 @@ export default function NewsGrid({
 }: NewsGridProps) {
   const [activeCategory, setActiveCategory] = useState("All News");
   const [currentPage, setCurrentPage] = useState(1);
+  const articlesGridRef = useRef<HTMLDivElement>(null);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -63,7 +66,19 @@ export default function NewsGrid({
   // Handle page change
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    // Scroll to the articles grid
+    if (articlesGridRef.current) {
+      const offset = 180; // Adjust this value to control spacing from top
+      const elementPosition =
+        articlesGridRef.current.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
   };
 
   const categories = [
@@ -81,15 +96,15 @@ export default function NewsGrid({
       </div>
 
       {/* Category Tabs */}
-      <div className="flex flex-wrap gap-3 mb-8">
+      <div className="flex-center flex-wrap gap-3 mb-8">
         {categories.map((category) => (
           <button
             key={category}
             onClick={() => handleCategoryChange(category)}
-            className={`px-6 py-2.5 rounded-full font-medium text-sm transition-all ${
+            className={`px-4 md:px-6 py-2.5 rounded-full font-medium text-[13px] xs:text-sm transition-all ${
               activeCategory === category
-                ? "bg-prim-3 text-white"
-                : "bg-neutral-3 text-neutral-7 hover:bg-neutral-4"
+                ? "bg-primary-active text-prim-1"
+                : "bg-neutral-1/70 text-neutral-8 hover:bg-neutral-4"
             }`}
           >
             {category}
@@ -98,73 +113,27 @@ export default function NewsGrid({
       </div>
 
       {/* Results count */}
-      <div className="mb-6 text-neutral-7 text-sm">
+      <div className="text-right mb-6 text-neutral-7 text-sm">
         Showing {startIndex + 1}-{Math.min(endIndex, filteredArticles.length)}{" "}
         of {filteredArticles.length} articles
       </div>
 
       {/* Latest News Grid */}
-      {paginatedArticles.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {paginatedArticles.map((article) => (
-            <Link
-              key={article._id}
-              href={`/news/${article.slug.current}`}
-              className="group"
-            >
-              <article className="bg-neutral-2 rounded-[20px] overflow-hidden border border-neutral-3 hover:border-prim-3 transition-all duration-300 h-full">
-                {/* Image */}
-                <div className="relative aspect-video w-full overflow-hidden">
-                  {article.featuredImage && (
-                    <Image
-                      src={urlFor(article.featuredImage)
-                        .width(600)
-                        .height(340)
-                        .url()}
-                      alt={article.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  )}
-                  {/* Category Badge */}
-                  <div className="absolute top-3 left-3">
-                    <span
-                      className={`px-3 py-1 ${getCategoryColor(article.category)} text-white text-xs font-semibold rounded-full uppercase`}
-                    >
-                      {article.category}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="p-5">
-                  <div className="flex items-center gap-2 mb-2 text-neutral-7 text-xs">
-                    <span>{article.author}</span>
-                    <span>•</span>
-                    <span>{formatDate(article.publishedAt)}</span>
-                  </div>
-
-                  <h3 className="text-neutral-text text-lg font-bold mb-2 group-hover:text-prim-3 transition-colors line-clamp-2">
-                    {article.title}
-                  </h3>
-
-                  {article.excerpt && (
-                    <p className="text-neutral-7 text-sm line-clamp-3">
-                      {article.excerpt}
-                    </p>
-                  )}
-                </div>
-              </article>
-            </Link>
-          ))}
-        </div>
-      ) : (
-        <div className="text-center py-12">
-          <p className="text-neutral-7 text-lg">
-            No articles found in this category.
-          </p>
-        </div>
-      )}
+      <div ref={articlesGridRef}>
+        {paginatedArticles.length > 0 ? (
+          <div className="flex justify-around flex-wrap gap-x-4 gap-y-7 md:gap-6">
+            {paginatedArticles.map((article) => (
+              <ExtraSmallFeaturedCard key={article._id} article={article} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-neutral-7 text-lg">
+              No articles found in this category.
+            </p>
+          </div>
+        )}
+      </div>
 
       {/* Pagination */}
       {totalPages > 1 && (
@@ -175,23 +144,16 @@ export default function NewsGrid({
             disabled={currentPage === 1}
             className={`w-10 h-10 flex items-center justify-center rounded-lg transition-colors ${
               currentPage === 1
-                ? "bg-neutral-3 text-neutral-5 cursor-not-allowed"
-                : "bg-neutral-3 text-neutral-7 hover:bg-neutral-4"
+                ? " text-neutral-text/30 cursor-not-allowed"
+                : " text-neutral-text cursor-pointer group hover:text-primary-hover  transition-all ease-in-out duration-300"
             }`}
           >
-            <svg
-              className="w-5 h-5 rotate-180"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
+            <Icon
+              icon="mynaui:chevron-left"
+              width="24"
+              height="24"
+              className="w-6 h-6 group-hover:scale-[110%] transition-transform duration-300"
+            />
           </button>
 
           {/* Page Numbers */}
@@ -206,10 +168,10 @@ export default function NewsGrid({
                 <button
                   key={page}
                   onClick={() => handlePageChange(page)}
-                  className={`w-10 h-10 flex items-center justify-center rounded-lg font-semibold transition-colors ${
+                  className={`cursor-pointer w-10 h-10 flex items-center justify-center rounded-lg font-medium transition-colors ${
                     currentPage === page
-                      ? "bg-prim-3 text-white"
-                      : "bg-neutral-3 text-neutral-7 hover:bg-neutral-4"
+                      ? "bg-primary text-prim-1 outline-none shadow-sm shadow-black/30"
+                      : " text-neutral-8 hover:bg-neutral-4"
                   }`}
                 >
                   {page}
@@ -231,23 +193,16 @@ export default function NewsGrid({
             disabled={currentPage === totalPages}
             className={`w-10 h-10 flex items-center justify-center rounded-lg transition-colors ${
               currentPage === totalPages
-                ? "bg-neutral-3 text-neutral-5 cursor-not-allowed"
-                : "bg-neutral-3 text-neutral-7 hover:bg-neutral-4"
+                ? " text-neutral-text/30 cursor-not-allowed"
+                : " text-neutral-text cursor-pointer group hover:text-primary-hover transition-all ease-in-out duration-300"
             }`}
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
+            <Icon
+              icon="mynaui:chevron-right"
+              width="24"
+              height="24"
+              className="w-6 h-6 group-hover:scale-[110%] transition-transform duration-300"
+            />
           </button>
         </div>
       )}

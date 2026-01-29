@@ -21,7 +21,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
       </h2>
 
       <p
-        className={`text-sm lg:text-[15px] 2xlg:text-base text-left xl:text-right ${onColor ? "text-prim-1" : "text-neutral-8"} w-full xl:max-w-122.5`}
+        className={`text-sm lg:text-[15px] 2xlg:text-base text-left xl:text-right ${onColor ? "text-prim-1" : "text-neutral-8"} w-full xl:max-w-110`}
       >
         {subtext}
       </p>

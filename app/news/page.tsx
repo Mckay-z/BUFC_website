@@ -30,7 +30,7 @@ export default async function NewsPage() {
   ]);
 
   return (
-    <main className="bg-neutral-1">
+    <main className="">
       {/* Page Header with Banner */}
       {settings?.pageBannerImage && (
         <PageHeader
@@ -51,15 +51,16 @@ export default async function NewsPage() {
               }
             />
           </div>
+
           {/* Large Featured Article */}
           <FirstFeaturedCard article={featuredNews[0]} />
           {/* Second Featured Article */}
-          <div className="grid grid-cols-1 xlg:grid-cols-2 gap-6 lg:gap-8">
+          <div className="max-w-[1080px] w-full mx-auto flex flex-col md:flex-row xlg:justify-between xlg:items-center gap-6 lg:gap-8 xl:gap-0">
             <DefaultFeaturedCard
               key={featuredNews[1]._id}
               article={featuredNews[1]}
             />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+            <div className="grid grid-cols-1 xlg:grid-cols-1 gap-6 lg:gap-8">
               {featuredNews.slice(2).map((article) => (
                 <SmallFeaturedCard key={article._id} article={article} />
               ))}
