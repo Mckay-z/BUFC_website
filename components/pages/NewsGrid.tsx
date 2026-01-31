@@ -2,12 +2,10 @@
 
 import { NewsArticle } from "@/lib/types";
 import { urlFor } from "@/lib/sanity.client";
-import SectionHeader from "@/components/layout/sectionHeader";
+import SectionHeader from "@/components/layout/SectionHeader";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef } from "react";
-import SectionHeader from "../layout/SectionHeader";
-import { ExtraSmallFeaturedCard } from "./FeaturedNewsCards";
 import { Icon } from "@iconify/react";
 
 interface NewsGridProps {

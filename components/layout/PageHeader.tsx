@@ -35,15 +35,15 @@ export default function PageHeader({
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.25)_40%,rgb(0,0,0)_100%)]" />
         </div>
       ) : (
-        <div className="absolute inset-0 bg-gradient-to-br from-primary via-prim-7 to-prim-9" />
+        <div className="absolute inset-0 bg-linear-to-br from-primary via-prim-7 to-prim-9" />
       )}
 
-        {/* Content */}
-        <div className="relative h-full container-wide flex items-end justify-start pb-5 md:pb-10">
-          <h1 className="text-neutral-1 text-[32px] xs:text-4xl md:text-5xl lg:text-[56px] font-bold">
-            {title}
-          </h1>
-        </div>
-      </section>
-    );
+      {/* Content */}
+      <div className="relative h-full container-wide flex items-end justify-start pb-5 md:pb-10">
+        <h1 className="text-neutral-1 text-[32px] xs:text-4xl md:text-5xl lg:text-[56px] font-bold">
+          {title}
+        </h1>
+      </div>
+    </section>
+  );
 }

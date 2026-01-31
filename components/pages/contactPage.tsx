@@ -1,7 +1,7 @@
 "use client";
 
 import { ContactUsSettings } from "@/lib/types";
-import SectionHeader from "../layout/sectionHeader";
+import SectionHeader from "../layout/SectionHeader";
 import PageHeader from "../layout/PageHeader";
 import { CgPhone } from "react-icons/cg";
 import { RiMailFill } from "react-icons/ri";

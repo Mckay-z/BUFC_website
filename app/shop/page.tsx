@@ -5,7 +5,7 @@ import {
 } from "@/lib/sanity.queries";
 import { Product, ShopPageSettings } from "@/lib/types";
 import PageHeader from "@/components/layout/PageHeader";
-import SectionHeader from "@/components/layout/sectionHeader";
+import SectionHeader from "@/components/layout/SectionHeader";
 import ProductCategory from "@/components/pages/ProductCategory";
 import Link from "next/link";
 import { Metadata } from "next";

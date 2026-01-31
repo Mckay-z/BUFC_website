@@ -8,7 +8,7 @@ import { useState } from "react";
 import Button from "@/components/ui/Button";
 import ProductCard from "@/components/ui/ProductCard";
 import { Icon } from "@iconify/react";
-import SectionHeader from "@/components/layout/sectionHeader";
+import SectionHeader from "@/components/layout/SectionHeader";
 
 interface ProductDetailClientProps {
     product: Product;

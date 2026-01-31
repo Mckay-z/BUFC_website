@@ -4,7 +4,7 @@ import { Player, NewsArticle, MatchHighlight } from "@/lib/types";
 import Image from "next/image";
 import Link from "next/link";
 import { PortableText } from "@portabletext/react";
-import SectionHeader from "@/components/layout/sectionHeader";
+import SectionHeader from "@/components/layout/SectionHeader";
 import { Icon } from "@iconify/react";
 
 // Revalidate every 60 seconds

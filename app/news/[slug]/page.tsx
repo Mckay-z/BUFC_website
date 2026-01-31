@@ -4,7 +4,7 @@ import { NewsArticle } from "@/lib/types";
 import { PortableText } from "@portabletext/react";
 import Image from "next/image";
 import Link from "next/link";
-import SectionHeader from "@/components/layout/sectionHeader";
+import SectionHeader from "@/components/layout/SectionHeader";
 import { Icon } from "@iconify/react";
 
 // Revalidate every 60 seconds

@@ -7,18 +7,13 @@ import {
 } from "@/lib/sanity.queries";
 import { NewsArticle, NewsPageSettings, NewsletterSettings } from "@/lib/types";
 import PageHeader from "@/components/layout/PageHeader";
-import SectionHeader from "@/components/layout/sectionHeader";
+import SectionHeader from "@/components/layout/SectionHeader";
 import NewsGrid from "@/components/pages/NewsGrid";
 import Newsletter from "@/components/layout/Newsletter";
 import Image from "next/image";
 import Link from "next/link";
 import { Metadata } from "next";
-import SectionHeader from "@/components/layout/SectionHeader";
-import {
-  DefaultFeaturedCard,
-  FirstFeaturedCard,
-  SmallFeaturedCard,
-} from "@/components/pages/FeaturedNewsCards";
+import { urlFor } from "@/lib/sanity.client";
 export const metadata: Metadata = {
   title: "News | Bechem United FC",
   description: "Latest news, updates, and announcements from Bechem United FC",
@@ -55,11 +50,11 @@ export default async function NewsPage() {
   };
 
   return (
-    <main className="bg-[#F1EFF6">
+    <main className="bg-[#F1EFF6]">
       {/* Page Header with Banner */}
       <PageHeader
         title="News"
-        backgroundImage={settings?.newsPageBannerImage}
+        backgroundImage={settings?.pageBannerImage}
         staticImage="/img/banner.jpg"
       />
 
@@ -86,12 +81,10 @@ export default async function NewsPage() {
               >
                 {featuredNews[0].featuredImage && (
                   <Image
-                    src={urlFor(featuredNews[0].featuredImage)
-                      .width(1600)
-                      .height(700)
-                      .url()}
+                    src={urlFor(featuredNews[0].featuredImage).url()}
                     alt={featuredNews[0].title}
                     fill
+                    priority
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                 )}
@@ -128,10 +121,7 @@ export default async function NewsPage() {
                   <div className="relative aspect-4/3 w-full rounded-[24px] overflow-hidden mb-5">
                     {featuredNews[1].featuredImage && (
                       <Image
-                        src={urlFor(featuredNews[1].featuredImage)
-                          .width(800)
-                          .height(600)
-                          .url()}
+                        src={urlFor(featuredNews[1].featuredImage).url()}
                         alt={featuredNews[1].title}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -169,10 +159,7 @@ export default async function NewsPage() {
                       <div className="relative aspect-video sm:aspect-square sm:w-40 lg:w-48 shrink-0 rounded-[20px] overflow-hidden">
                         {article!.featuredImage && (
                           <Image
-                            src={urlFor(article!.featuredImage)
-                              .width(400)
-                              .height(400)
-                              .url()}
+                            src={urlFor(article!.featuredImage).url()}
                             alt={article!.title}
                             fill
                             className="object-cover group-hover:scale-105 transition-transform duration-500"
