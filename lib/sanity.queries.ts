@@ -135,6 +135,7 @@ export const newsQuery = groq`
     excerpt,
     featuredImage,
     author,
+    authorImage,
     readTime,
     publishedAt,
     category
@@ -149,6 +150,7 @@ export const singleNewsQuery = groq`
     content,
     featuredImage,
     author,
+    authorImage,
     readTime,
     publishedAt,
     category
@@ -162,17 +164,21 @@ export const homePageNewsQuery = groq`
     title,
     slug,
     excerpt,
+    author,
+    authorImage,
     featuredImage,
     publishedAt
   }
 `;
 
 export const featuredNewsQuery = groq`
-  *[_type == "news" && isFeatured == true] | order(publishedAt desc) [0...4] {
+  *[_type == "news" && isFeatured == true] | order(publishedAt desc) {
     _id,
     title,
     slug,
     excerpt,
+    author,
+    authorImage,
     featuredImage,
     publishedAt,
     category,
@@ -186,6 +192,8 @@ export const latestNonFeaturedNewsQuery = groq`
     title,
     slug,
     excerpt,
+    author,
+    authorImage,
     featuredImage,
     publishedAt,
     category,
@@ -199,6 +207,8 @@ export const mostRecentNewsQuery = groq`
     title,
     slug,
     excerpt,
+    author,
+    authorImage,
     featuredImage,
     publishedAt,
     category,
@@ -283,7 +293,7 @@ export const sponsorSettingsQuery = groq`
 export const liveMatchesSettingsQuery = groq`
   *[_id == "liveMatchesSettings"][0] {
     liveSectionTitle,
-    liveSectionDescription,
+    liveSectionSubtext,
     videoThumbnail,
     videoUrl,
     isLive,
@@ -497,7 +507,8 @@ export const featuredMatchHighlightsQuery = groq`
 // NEWS PAGE SETTINGS
 export const newsPageSettingsQuery = groq`
   *[_id == "newsPageSettings"][0] {
-    newsPageBannerImage,
+  pageTitle,
+    pageBannerImage,
     featuredNewsSectionTitle,
     featuredNewsSectionSubtext,
     latestUpdatesSectionTitle,

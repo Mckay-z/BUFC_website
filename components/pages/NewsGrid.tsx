@@ -5,7 +5,10 @@ import { urlFor } from "@/lib/sanity.client";
 import SectionHeader from "@/components/layout/sectionHeader";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import SectionHeader from "../layout/SectionHeader";
+import { ExtraSmallFeaturedCard } from "./FeaturedNewsCards";
+import { Icon } from "@iconify/react";
 
 interface NewsGridProps {
   allArticles: NewsArticle[];
@@ -13,7 +16,7 @@ interface NewsGridProps {
   sectionSubtext?: string;
 }
 
-const ITEMS_PER_PAGE = 9;
+const ITEMS_PER_PAGE = 6;
 
 export default function NewsGrid({
   allArticles,
@@ -22,6 +25,7 @@ export default function NewsGrid({
 }: NewsGridProps) {
   const [activeCategory, setActiveCategory] = useState("All News");
   const [currentPage, setCurrentPage] = useState(1);
+  const articlesGridRef = useRef<HTMLDivElement>(null);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -63,7 +67,19 @@ export default function NewsGrid({
   // Handle page change
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    // Scroll to the articles grid
+    if (articlesGridRef.current) {
+      const offset = 180; // Adjust this value to control spacing from top
+      const elementPosition =
+        articlesGridRef.current.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
   };
 
   const categories = [
@@ -97,7 +113,7 @@ export default function NewsGrid({
       </div>
 
       {/* Results count */}
-      <div className="mb-6 text-neutral-7 text-sm">
+      <div className="text-right mb-6 text-neutral-7 text-sm">
         Showing {startIndex + 1}-{Math.min(endIndex, filteredArticles.length)}{" "}
         of {filteredArticles.length} articles
       </div>
@@ -177,19 +193,12 @@ export default function NewsGrid({
               : "border-neutral-3 text-neutral-7 hover:border-primary hover:text-primary"
               }`}
           >
-            <svg
-              className="w-5 h-5 rotate-180"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
+            <Icon
+              icon="mynaui:chevron-left"
+              width="24"
+              height="24"
+              className="w-6 h-6 group-hover:scale-[110%] transition-transform duration-300"
+            />
           </button>
 
           {/* Page Numbers */}
@@ -232,19 +241,12 @@ export default function NewsGrid({
               : "border-neutral-3 text-neutral-7 hover:border-primary hover:text-primary"
               }`}
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
+            <Icon
+              icon="mynaui:chevron-right"
+              width="24"
+              height="24"
+              className="w-6 h-6 group-hover:scale-[110%] transition-transform duration-300"
+            />
           </button>
         </div>
       )}

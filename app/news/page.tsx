@@ -13,7 +13,12 @@ import Newsletter from "@/components/layout/Newsletter";
 import Image from "next/image";
 import Link from "next/link";
 import { Metadata } from "next";
-import { urlFor } from "@/lib/sanity.client";
+import SectionHeader from "@/components/layout/SectionHeader";
+import {
+  DefaultFeaturedCard,
+  FirstFeaturedCard,
+  SmallFeaturedCard,
+} from "@/components/pages/FeaturedNewsCards";
 export const metadata: Metadata = {
   title: "News | Bechem United FC",
   description: "Latest news, updates, and announcements from Bechem United FC",

@@ -38,12 +38,12 @@ export default function PageHeader({
         <div className="absolute inset-0 bg-gradient-to-br from-primary via-prim-7 to-prim-9" />
       )}
 
-      {/* Content */}
-      <div className="relative h-full container-wide flex items-end justify-start pb-6 md:pb-10">
-        <h1 className="text-neutral-1 text-3xl xs:text-4xl md:text-5xl lg:text-6xl font-bold">
-          {title}
-        </h1>
-      </div>
-    </section>
-  );
+        {/* Content */}
+        <div className="relative h-full container-wide flex items-end justify-start pb-5 md:pb-10">
+          <h1 className="text-neutral-1 text-[32px] xs:text-4xl md:text-5xl lg:text-[56px] font-bold">
+            {title}
+          </h1>
+        </div>
+      </section>
+    );
 }

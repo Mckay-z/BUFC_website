@@ -15,7 +15,7 @@ import Link from "next/link";
 import { FiArrowUpRight } from "react-icons/fi";
 import Button from "../ui/Button";
 import { Icon } from "@iconify/react";
-import SectionHeader from "../layout/sectionHeader";
+import SectionHeader from "../layout/SectionHeader";
 import ImageFallback from "../ui/ImageFallBack";
 import SponsorSection from "../layout/SponsorSection";
 import ProductCard from "../ui/ProductCard";
@@ -120,7 +120,7 @@ export default function HomePage({
             />
 
             {/* News Grid */}
-            <div className="flex flex-col 2xlg:flex-row gap-2.5 w-full">
+            <div className="max-w-[1000px] 2xlg:max-w-fit mx-auto flex flex-col 2xlg:flex-row gap-2.5 w-full">
               {/* First Featured News Card */}
               <div className="group 2xlg:w-1/3">
                 <Link
@@ -164,7 +164,7 @@ export default function HomePage({
 
               <div className="flex flex-col xlg:flex-row gap-2.5 w-full 2xlg:w-2/3">
                 {/* News & Updates Info Card */}
-                <div className="bg-[#252424] rounded-[20px] px-5 sm:px-8 py-7.5 md:py-12 xlg:w-1/2 flex flex-col justify-between min-h-[350px] xlg:h-[420px] 2xlg:h-[460px]">
+                <div className="bg-[#252424] rounded-[20px] px-8 xs:px-12 sm:px-16 py-10 md:py-12 xlg:w-1/2 flex flex-col justify-between xlg:h-[420px] 2xlg:h-[460px]">
                   <div>
                     <h3 className="text-neutral-1 font-medium text-xl lg:text-2xl mb-4">
                       {settings.newsContentTitle}

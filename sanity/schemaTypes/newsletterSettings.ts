@@ -32,8 +32,8 @@ export const newsletterSettingsType = defineType({
       description: "Image to display as the background of the newsletter section",
     }),
     defineField({
-      name: "sectionDescription",
-      title: "Section Description",
+      name: "sectionSubtext",
+      title: "Section Subtext",
       type: "string",
       initialValue:
         "Get match updates, news, and exclusive offers delivered to your inbox.",

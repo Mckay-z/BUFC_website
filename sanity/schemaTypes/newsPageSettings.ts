@@ -6,7 +6,14 @@ export const newsPageSettingsType = defineType({
   title: "News Page Settings",
   fields: [
     {
-      name: "newsPageBannerImage",
+      name: "pageTitle",
+      type: "string",
+      title: "Page Title",
+      initialValue: "News",
+      validation: (Rule) => Rule.required(),
+    },
+    {
+      name: "pageBannerImage",
       type: "image",
       title: "News Page Banner Image",
       options: {

@@ -18,7 +18,7 @@ interface PlayerPageProps {
 async function getCountryCode(countryName: string): Promise<string | null> {
   try {
     const response = await fetch(
-      `https://restcountries.com/v3.1/name/${encodeURIComponent(countryName)}?fullText=true`
+      `https://restcountries.com/v3.1/name/${encodeURIComponent(countryName)}?fullText=true`,
     );
     if (!response.ok) return null;
     const data = await response.json();

@@ -47,6 +47,14 @@ export const newsType = defineType({
       type: "string",
     }),
     defineField({
+      name: "authorImage",
+      title: "Image of Author",
+      type: "image",
+      options: {
+        hotspot: true,
+      },
+    }),
+    defineField({
       name: "readTime",
       title: "Read Time (minutes)",
       type: "number",
@@ -77,7 +85,7 @@ export const newsType = defineType({
       type: "boolean",
       initialValue: false,
       description:
-        "⭐ Only 4 articles can be featured at once. You must unfeature an existing article before featuring a new one.",
+        "⭐ Maximum 4 featured articles allowed (1 large hero + 3 smaller cards). Unfeature an existing article before featuring a new one.",
       validation: (Rule) =>
         Rule.custom(async (isFeatured, context) => {
           // Only validate if trying to set to true
@@ -86,19 +94,23 @@ export const newsType = defineType({
           const { document, getClient } = context;
           const client = getClient({ apiVersion: "2023-01-01" });
 
-          // Check if this document is already featured
+          // Get the base document ID (without draft prefix)
+          const baseId = document?._id?.replace(/^drafts\./, "");
+          const draftId = `drafts.${baseId}`;
+
+          // Check if this document (draft or published) is already featured
           const currentDoc = await client.fetch(
-            `*[_id == $id][0]{isFeatured}`,
-            { id: document?._id }
+            `*[_id in [$id, $draftId]][0]{isFeatured}`,
+            { id: baseId, draftId },
           );
 
           // If already featured, allow it
           if (currentDoc?.isFeatured === true) return true;
 
-          // Count current featured articles (excluding this document)
+          // Count current featured articles (excluding both draft and published versions of this document)
           const featuredCount = (await client.fetch(
-            `count(*[_type == "news" && isFeatured == true && _id != $id])`,
-            { id: document?._id }
+            `count(*[_type == "news" && isFeatured == true && !(_id in [$id, $draftId])])`,
+            { id: baseId, draftId },
           )) as number;
 
           if (featuredCount >= 4) {
