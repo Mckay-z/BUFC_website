@@ -7,9 +7,9 @@ import { urlFor } from "@/lib/sanity.client";
 import Image from "next/image";
 import { Icon } from "@iconify/react";
 import FixtureCard from "../ui/FixtureCard";
-import ImageFallback from "../ui/ImageFallBack";
+import ImageFallback from "../ui/ImageFallback";
 import Button from "../ui/Button";
-import SectionHeader from "./SectionHeader";
+import SectionHeader from "@/components/layout/SectionHeader";
 import { FiArrowUpRight } from "react-icons/fi";
 
 interface UpcomingFixturesProps {
@@ -70,7 +70,7 @@ export default function UpcomingFixtures({
   // Get stadium name - use home team's stadium if available
   const getStadiumName = () => {
     return nextFixture.homeClubData?.stadium || "Stadium TBA";
-  };  
+  };
 
   return (
     <section

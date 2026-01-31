@@ -4,8 +4,7 @@ import { MatchHighlight } from "@/lib/types";
 import { urlFor } from "@/lib/sanity.client";
 import Image from "next/image";
 import Link from "next/link";
-import { Icon } from "@iconify/react";
-import ImageFallback from "./ImageFallBack";
+import ImageFallback from "./ImageFallback";
 import { getYouTubeThumbnail } from "@/lib/youtubeHelpers";
 
 interface PastHighlightCardProps {
@@ -78,7 +77,7 @@ export default function PastHighlightCard({
       </div>
 
       {/* Content */}
-      <div className="p-4 flex flex-col flex-grow">
+      <div className="p-4 flex flex-col grow">
         {/* Header: Competition & Matchday */}
         <div className="flex items-center justify-between mb-3">
           {/* Competition */}

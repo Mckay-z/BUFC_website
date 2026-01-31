@@ -1,7 +1,7 @@
 import { FixtureWithClubData } from "@/lib/types";
 import { urlFor } from "@/lib/sanity.client";
 import Image from "next/image";
-import ImageFallback from "./ImageFallBack";
+import ImageFallback from "./ImageFallback";
 import { Icon } from "@iconify/react";
 
 interface FixtureCardProps {

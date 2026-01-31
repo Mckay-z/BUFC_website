@@ -4,7 +4,7 @@ import { GalleryImage, GalleryPageSettings } from "@/lib/types";
 import { urlFor } from "@/lib/sanity.client";
 import { useState, useMemo } from "react";
 import Image from "next/image";
-import SectionHeader from "../layout/SectionHeader";
+import SectionHeader from "@/components/layout/SectionHeader";
 import { Icon } from "@iconify/react";
 
 interface GalleryContentProps {

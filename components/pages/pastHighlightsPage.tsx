@@ -3,7 +3,6 @@
 import { useState, useMemo } from "react";
 import { PastHighlightsSettings, MatchHighlight } from "@/lib/types";
 import PageHeader from "../layout/PageHeader";
-import SectionHeader from "../layout/SectionHeader";
 import PastHighlightCard from "../ui/PastHighlightCard";
 import WatchLiveCard from "../ui/WatchLiveCard";
 import { Icon } from "@iconify/react";
@@ -18,10 +17,7 @@ export default function PastHighlightsPage({
   highlights,
 }: PastHighlightsPageProps) {
   const [filterType, setFilterType] = useState<"team" | "player">("team");
-  const [selectedSeason, setSelectedSeason] = useState("2024/25");
-
-  // Mock seasons for dropdown - in a real app this might come from props or API
-  const seasons = ["2024/25", "2023/24"];
+  const [selectedSeason] = useState("2024/25");
 
   const filteredHighlights = useMemo(() => {
     return highlights.filter((h) => {
@@ -35,7 +31,7 @@ export default function PastHighlightsPage({
       // proper implementation would check h.season or date range
       return true;
     });
-  }, [highlights, filterType, selectedSeason]);
+  }, [highlights, filterType]);
 
   // Group by Month
   const groupedHighlights = useMemo(() => {

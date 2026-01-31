@@ -1,3 +1,5 @@
+import React from "react";
+
 interface SectionHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
   subtext: string;

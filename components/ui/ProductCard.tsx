@@ -5,7 +5,7 @@ import { urlFor } from "@/lib/sanity.client";
 import Image from "next/image";
 import Link from "next/link";
 import Button from "../ui/Button";
-import ImageFallback from "../ui/ImageFallBack";
+import ImageFallback from "../ui/ImageFallback";
 
 interface ProductCardProps {
   product: Product;

@@ -3,9 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   // Allow access from any device on your local network (for development)
-  experimental: {
-    allowedOrigins: ["*"],
-  },
+  experimental: {},
   images: {
     remotePatterns: [
       {
