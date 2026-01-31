@@ -16,14 +16,14 @@ export default function PageHeader({
   staticImage,
 }: PageHeaderProps) {
   return (
-    <section className="relative h-[200px] xs:h-[250px] md:h-[300px] lg:h-[350px] w-full overflow-hidden">
+    <section className="relative h-[200px] xs:h-[250px] md:h-[300px] lg:h-[415px] w-full overflow-hidden">
       {/* Background Image */}
       {backgroundImage || staticImage ? (
         <div className="absolute inset-0">
           <Image
             src={
               backgroundImage
-                ? urlFor(backgroundImage).width(1920).height(600).url()
+                ? urlFor(backgroundImage).width(1728).height(415).url()
                 : (staticImage as string)
             }
             alt={title}
@@ -32,7 +32,7 @@ export default function PageHeader({
             priority
           />
           {/* Dark overlay */}
-          <div className="absolute inset-0 bg-black/50" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.25)_40%,rgb(0,0,0)_100%)]" />
         </div>
       ) : (
         <div className="absolute inset-0 bg-gradient-to-br from-primary via-prim-7 to-prim-9" />

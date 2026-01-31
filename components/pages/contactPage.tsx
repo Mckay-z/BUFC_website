@@ -1,9 +1,8 @@
 "use client";
 
 import { ContactUsSettings } from "@/lib/types";
-import { urlFor } from "@/lib/sanity.client";
-import Image from "next/image";
 import SectionHeader from "../layout/sectionHeader";
+import PageHeader from "../layout/PageHeader";
 import { CgPhone } from "react-icons/cg";
 import { RiMailFill } from "react-icons/ri";
 import { FaLocationDot } from "react-icons/fa6";
@@ -15,30 +14,11 @@ interface ContactPageProps {
 export default function ContactPage({ contactUsSettings }: ContactPageProps) {
   return (
     <main>
-      {/* Hero Section */}
-      <section className="relative min-h-[60vh] w-full overflow-hidden">
-        <div className="absolute inset-0">
-          <Image
-            src={urlFor(contactUsSettings.pageBannerImage)
-              .width(1920)
-              .height(900)
-              .url()}
-            alt={contactUsSettings.pageTitle}
-            fill
-            priority
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.25)_40%,rgb(0,0,0)_100%)]" />
-        </div>
-
-        <div className="absolute bottom-0 w-full">
-          <div className="container-wide pb-16">
-            <h1 className="text-neutral-1 text-3xl md:text-4xl lg:text-5xl font-bold">
-              {contactUsSettings.pageTitle}
-            </h1>
-          </div>
-        </div>
-      </section>
+      {/* Page Header */}
+      <PageHeader
+        title={contactUsSettings.pageTitle}
+        backgroundImage={contactUsSettings.pageBannerImage}
+      />
 
       {/* Contact Info + Form Section */}
       <section className="bg-[#F4F3F7] py-20">
@@ -62,7 +42,7 @@ export default function ContactPage({ contactUsSettings }: ContactPageProps) {
                     <CgPhone />
                   </span>
                   <span className="text-sm font-medium">
-                    +233 {contactUsSettings.phoneNumber}
+                    {contactUsSettings.phoneNumber}
                   </span>
                 </div>
 

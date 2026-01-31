@@ -5,6 +5,7 @@ import { urlFor } from "@/lib/sanity.client";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import SectionHeader from "@/components/layout/sectionHeader";
 
 interface PlayersGridProps {
   allPlayers: Player[];
@@ -29,7 +30,7 @@ const PlayerCard = ({ player }: { player: Player }) => {
       className="group relative overflow-hidden rounded-[20px] bg-neutral-2 border border-neutral-3 hover:border-prim-3 transition-all duration-300 hover:shadow-lg"
     >
       {/* Player Image */}
-      <div className="relative w-full aspect-[3/4] overflow-hidden bg-neutral-3">
+      <div className="relative w-full aspect-3/4 overflow-hidden bg-neutral-3">
         {player.photo ? (
           <Image
             src={urlFor(player.photo).width(400).height(533).url()}
@@ -49,33 +50,27 @@ const PlayerCard = ({ player }: { player: Player }) => {
           </div>
         )}
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/95 via-black/40 to-transparent" />
       </div>
 
       {/* Player Info Overlay */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 text-white z-10">
-        <div className="flex items-center gap-2 mb-2">
-          <span className="text-sm font-bold px-3 py-1 bg-prim-3 rounded-full">
-            #{player.jerseyNumber}
-          </span>
-          <span className="text-xs font-medium text-neutral-2 bg-black/40 px-3 py-1 rounded-full backdrop-blur-sm">
-            {player.positionDetail ||
-              player.position.charAt(0).toUpperCase() +
-                player.position.slice(1)}
-          </span>
+      <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6 text-white z-10">
+        <div className="flex flex-col gap-1.5 mb-4">
+          <p className="text-base md:text-lg font-semibold tracking-wide flex items-center gap-1.5">
+            {player.jerseyNumber} <span className="text-white/60">•</span> {player.positionDetail || player.position.charAt(0).toUpperCase() + player.position.slice(1)}
+          </p>
+          <div className="h-[2px] w-8 bg-primary" />
         </div>
-        <h3 className="text-lg md:text-xl font-bold leading-tight">
+
+        <h3 className="text-xl md:text-2xl font-bold uppercase leading-[1.1] tracking-tight">
           {firstName}
           {restName && (
             <>
               <br />
-              <span className="text-base">{restName}</span>
+              {restName}
             </>
           )}
         </h3>
-        {player.nationality && (
-          <p className="text-xs text-neutral-3 mt-1">{player.nationality}</p>
-        )}
       </div>
     </Link>
   );
@@ -84,22 +79,18 @@ const PlayerCard = ({ player }: { player: Player }) => {
 const PositionSection = ({
   title,
   players,
-  colorClass,
+  subtext = "",
 }: {
   title: string;
   players: Player[];
-  colorClass: string;
+  subtext?: string;
 }) => {
   if (players.length === 0) return null;
 
   return (
     <div className="mb-12">
-      <div className="flex items-center gap-3 mb-6">
-        <div className={`h-1 w-16 ${colorClass} rounded`} />
-        <h2 className="text-2xl md:text-3xl font-bold text-neutral-text uppercase tracking-wide">
-          {title}
-        </h2>
-        <div className={`h-1 flex-1 ${colorClass} opacity-20 rounded`} />
+      <div className="mb-6">
+        <SectionHeader title={title} subtext={subtext} />
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
         {players.map((player) => (
@@ -191,22 +182,22 @@ export default function PlayersGrid({
           <PositionSection
             title="Goalkeepers"
             players={goalkeepers}
-            colorClass="bg-blue-500"
+            subtext="The last line of defense, guarding our goal with agility and precision"
           />
           <PositionSection
             title="Defenders"
             players={defenders}
-            colorClass="bg-green-500"
+            subtext="The backbone of our team, maintaining a solid wall against every attack"
           />
           <PositionSection
             title="Midfielders"
             players={midfielders}
-            colorClass="bg-purple-500"
+            subtext="The engine room, controlling the game and connecting play across the pitch"
           />
           <PositionSection
             title="Forwards"
             players={forwards}
-            colorClass="bg-red-500"
+            subtext="The primary goal scorers, leading the charge with speed and finishing skills"
           />
         </>
       )}

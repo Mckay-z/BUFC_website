@@ -7,7 +7,6 @@ import SectionHeader from "../layout/sectionHeader";
 import PastHighlightCard from "../ui/PastHighlightCard";
 import WatchLiveCard from "../ui/WatchLiveCard";
 import { Icon } from "@iconify/react";
-import Button from "../ui/Button";
 
 interface PastHighlightsPageProps {
   settings: PastHighlightsSettings;

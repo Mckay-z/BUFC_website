@@ -432,3 +432,31 @@ export interface FixtureWithClubData extends Fixture {
   homeClubData?: GPLClub | null;
   awayClubData?: GPLClub | null;
 }
+
+// GALLERY IMAGE INTERFACE
+export interface GalleryImage {
+  _id: string;
+  _type: "galleryImage";
+  title: string;
+  image: SanityImage;
+  altText: string;
+  uploadDate: string;
+  category:
+  | "match-day"
+  | "team-photos"
+  | "trophy-moments"
+  | "our-fans"
+  | "training-session"
+  | "behind-the-scenes";
+  isFeatured?: boolean;
+  featuredPriority?: number;
+}
+
+// GALLERY PAGE SETTINGS
+export interface GalleryPageSettings {
+  pageTitle: string;
+  pageBannerImage?: SanityImage;
+  featuredSectionTitle: string;
+  featuredSectionSubtext: string;
+  loadMoreButtonText: string;
+}

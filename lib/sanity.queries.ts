@@ -101,6 +101,31 @@ export const singlePlayerQuery = groq`
   }
 `;
 
+export const playerRelatedNewsQuery = groq`
+  *[_type == "news" && (title match $playerName || excerpt match $playerName || content[].children[].text match $playerName)] | order(publishedAt desc) [0...4] {
+    _id,
+    title,
+    slug,
+    featuredImage,
+    publishedAt,
+    category
+  }
+`;
+
+export const playerRelatedHighlightsQuery = groq`
+  *[_type == "matchHighlight" && relatedPlayer._ref == $playerId] | order(publishedAt desc) [0...4] {
+    _id,
+    title,
+    videoUrl,
+    thumbnail,
+    competition-> {
+      name,
+      icon
+    },
+    publishedAt
+  }
+`;
+
 // NEWS
 export const newsQuery = groq`
   *[_type == "news"] | order(publishedAt desc) {
@@ -318,6 +343,35 @@ export const oneProductPerCategoryQuery = groq`
   "lifestyle": *[_type == "product" && category == "lifestyle" && inStock == true] | order(_createdAt desc) [0],
   "accessories": *[_type == "product" && category == "accessories" && inStock == true] | order(_createdAt desc) [0]
 }
+`;
+
+export const singleProductQuery = groq`
+  *[_type == "product" && slug.current == $slug][0] {
+    _id,
+    name,
+    slug,
+    image,
+    otherImages,
+    price,
+    category,
+    productType,
+    displayTitle,
+    description,
+    sizes,
+    inStock
+  }
+`;
+
+export const relatedProductsQuery = groq`
+  *[_type == "product" && category == $category && _id != $productId && inStock == true] | order(_createdAt desc) [0...4] {
+    _id,
+    name,
+    slug,
+    image,
+    price,
+    category,
+    displayTitle
+  }
 `;
 
 export const threeJerseysQuery = groq`
@@ -543,5 +597,43 @@ export const shopPageSettingsQuery = groq`
     pageBanner,
     sectionTitle,
     sectionSubtext
+  }
+`;
+
+// GALLERY PAGE SETTINGS
+export const galleryPageSettingsQuery = groq`
+  *[_id == "galleryPageSettings"][0] {
+    pageTitle,
+    pageBannerImage,
+    featuredSectionTitle,
+    featuredSectionSubtext,
+    loadMoreButtonText
+  }
+`;
+
+// GALLERY IMAGES
+export const galleryImagesQuery = groq`
+  *[_type == "galleryImage"] | order(uploadDate desc) {
+    _id,
+    title,
+    image,
+    altText,
+    uploadDate,
+    category,
+    isFeatured,
+    featuredPriority
+  }
+`;
+
+export const featuredGalleryImagesQuery = groq`
+  *[_type == "galleryImage" && isFeatured == true] | order(featuredPriority asc) {
+    _id,
+    title,
+    image,
+    altText,
+    uploadDate,
+    category,
+    isFeatured,
+    featuredPriority
   }
 `;

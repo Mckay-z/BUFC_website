@@ -34,6 +34,7 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${monaSans.variable} ${montserrat.variable} antialiased relative min-w-[320px] bg-neutral-0`}
+        suppressHydrationWarning
       >
         <Navbar />
         {children}

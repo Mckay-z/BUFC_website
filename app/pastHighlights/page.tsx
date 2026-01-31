@@ -1,6 +1,5 @@
 import { client } from "@/lib/sanity.client";
 import {
-  pastHighlightsSettingsQuery,
   allMatchHighlightsQuery,
 } from "@/lib/sanity.queries";
 import { PastHighlightsSettings, MatchHighlight } from "@/lib/types";
@@ -25,7 +24,7 @@ export const metadata: Metadata = {
 
 export default async function PastHighlights() {
   const [settings, highlights] = await Promise.all([
-    client.fetch<PastHighlightsSettings>(pastHighlightsSettingsQuery),
+    client.fetch<PastHighlightsSettings>(`*[_type == "pastHighlightsSettings"] | order(_updatedAt desc)[0]`),
     client.fetch<MatchHighlight[]>(allMatchHighlightsQuery),
   ]);
 

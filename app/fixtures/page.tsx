@@ -57,18 +57,10 @@ export default async function FixturesPage() {
   return (
     <main className="bg-neutral-1">
       {/* Page Header with Banner */}
-      {settings?.fixturesPageBannerImage ? (
-        <PageHeader
-          title={settings.fixturesPageTitle || "Fixtures"}
-          backgroundImage={settings.fixturesPageBannerImage}
-        />
-      ) : (
-        <div className="bg-prim-3 py-20 text-center">
-          <h1 className="text-white text-4xl md:text-5xl font-bold">
-            Fixtures & Results
-          </h1>
-        </div>
-      )}
+      <PageHeader
+        title={settings?.fixturesPageTitle || "Fixtures"}
+        backgroundImage={settings?.fixturesPageBannerImage}
+      />
 
       {/* Upcoming Fixtures Section */}
       {upcomingFixtures && upcomingFixtures.length > 0 ? (
@@ -284,11 +276,10 @@ export default async function FixturesPage() {
                         <div className="flex-1">
                           <div className="flex items-center justify-between mb-3">
                             <span
-                              className={`text-base md:text-lg font-semibold ${
-                                bechemIsHome && isBechem
+                              className={`text-base md:text-lg font-semibold ${bechemIsHome && isBechem
                                   ? "text-prim-3"
                                   : "text-neutral-text"
-                              }`}
+                                }`}
                             >
                               {fixture.homeTeam}
                             </span>
@@ -298,11 +289,10 @@ export default async function FixturesPage() {
                           </div>
                           <div className="flex items-center justify-between">
                             <span
-                              className={`text-base md:text-lg font-semibold ${
-                                !bechemIsHome && isBechem
+                              className={`text-base md:text-lg font-semibold ${!bechemIsHome && isBechem
                                   ? "text-prim-3"
                                   : "text-neutral-text"
-                              }`}
+                                }`}
                             >
                               {fixture.awayTeam}
                             </span>

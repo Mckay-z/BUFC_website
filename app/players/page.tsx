@@ -22,16 +22,10 @@ export default async function PlayersPage() {
   return (
     <main className="bg-neutral-1">
       {/* Page Header with Banner */}
-      {settings?.pageBanner ? (
-        <PageHeader
-          title={settings.pageTitle || "Players"}
-          backgroundImage={settings.pageBanner}
-        />
-      ) : (
-        <div className="bg-prim-3 py-20 text-center">
-          <h1 className="text-white text-4xl md:text-5xl font-bold">Players</h1>
-        </div>
-      )}
+      <PageHeader
+        title={settings?.pageTitle || "Players"}
+        backgroundImage={settings?.pageBanner}
+      />
 
       {/* Players Grid with Search */}
       <PlayersGrid
