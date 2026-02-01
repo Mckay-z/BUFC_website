@@ -183,7 +183,7 @@ export default function Footer({ settings }: FooterProps) {
             </p>
             <p className="w-0.5 h-7 bg-neutral-3 rotate-90 xs:rotate-none"></p>
             <div className="flex-center gap-5 md:gap-7">
-              {socialMediaLinks.map((link, index) =>
+              {socialMediaLinks.map((link) =>
                 link.href ? (
                   <Link
                     key={link.key}

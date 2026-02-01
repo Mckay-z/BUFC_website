@@ -26,7 +26,7 @@ export default function AdminNavigation() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-green-900 to-slate-900">
+    <div className="min-h-screen bg-linear-to-br from-slate-900 via-green-900 to-slate-900">
       {/* Header */}
       <div className="container mx-auto px-4 py-12">
         <div className="text-center mb-16">
@@ -51,7 +51,7 @@ export default function AdminNavigation() {
               }}
             >
               <div
-                className={`absolute inset-0 bg-gradient-to-br ${card.gradient} opacity-0 group-hover:opacity-20 transition-opacity duration-300`}
+                className={`absolute inset-0 bg-linear-to-br ${card.gradient} opacity-0 group-hover:opacity-20 transition-opacity duration-300`}
               />
 
               <div className="relative p-8">

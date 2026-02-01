@@ -17,16 +17,6 @@ const formatDate = (dateString: string) => {
   });
 };
 
-const getCategoryColor = (category: string) => {
-  const colors: Record<string, string> = {
-    "Club News": "bg-prim-3",
-    "Player News": "bg-purple-500",
-    "Transfer News": "bg-orange-500",
-    "Match Report": "bg-blue-500",
-  };
-  return colors[category] || "bg-prim-3";
-};
-
 /**
  * Large Featured Card - Main hero card for the primary featured article
  * Full width, larger text, prominent display
@@ -48,7 +38,7 @@ export function FirstFeaturedCard({ article }: FeaturedCardProps) {
         </div>
 
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black via-black/50 to-transparent" />
 
         {/* Content */}
         <div className="absolute inset-0 flex flex-col justify-end p-5 md:p-8 ">
@@ -184,7 +174,7 @@ export function DefaultFeaturedCard({ article }: FeaturedCardProps) {
 
         {/* Content */}
         <div className="flex flex-col gap-[16px] lg:gap-[20px]">
-          <h3 className="line-clamp-2 text-neutral-text text-base font-semibold line-clamp-2">
+          <h3 className="line-clamp-2 text-neutral-text text-base font-semibold">
             {article.title}
           </h3>
           <div className="flex items-center justify-between">

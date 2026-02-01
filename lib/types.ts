@@ -324,7 +324,7 @@ export interface NewsletterSettings {
 // PAST HIGHLIGHTS SETTINGS INTERFACE
 export interface PastHighlightsSettings {
   pageTitle: string;
-  pageBanner: SanityImage;
+  pageBanner?: SanityImage;
   sectionTitle: string;
   sectionSubtitle: string;
   viewMoreText: string;

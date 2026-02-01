@@ -31,7 +31,7 @@ export default async function PastHighlights() {
   // Default settings in case Sanity data is missing
   const defaultSettings: PastHighlightsSettings = {
     pageTitle: "Past Highlights",
-    pageBanner: {} as any,
+    pageBanner: undefined,
     sectionTitle: "MATCH ARCHIVES",
     sectionSubtitle:
       "Browse team or player highlights from this season and beyond",

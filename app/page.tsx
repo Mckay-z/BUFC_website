@@ -20,7 +20,6 @@ import {
   Product,
   LiveMatchesSettings,
   NewsletterSettings,
-  FixtureWithClubData,
 } from "@/lib/types";
 import { getUpcomingFixtures } from "@/lib/mockFixtures";
 import { enrichFixturesWithClubData } from "@/lib/fixtureHelpers";
