@@ -212,6 +212,8 @@ export default async function NewsArticlePage({
               <SectionHeader
                 title="Other News Articles"
                 subtext="Browse additional articles, announcements, and club updates."
+                showLine
+                uppercase
               />
             </div>
 

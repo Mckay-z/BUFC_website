@@ -13,11 +13,11 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   return (
-    <div className="flex flex-col h-full max-w-[300px] xl:max-w-[350px] mx-auto">
+    <div className="flex flex-col h-full w-full max-w-[380px] mx-auto">
       {/* Product Image */}
       <Link
         href={`/shop/${product.slug.current}`}
-        className="group relative flex flex-col justify-end items-start w-[300px] h-[318px] xl:w-[350px] xl:h-[370px] py-4 px-4.5 xl:py-5 xl:px-6 rounded-[20px] xl:rounded-[24px] overflow-hidden aspect-50/53 md:aspect-auto"
+        className="group relative flex flex-col justify-end items-start w-full aspect-5/6 py-5 px-6 rounded-[24px] overflow-hidden"
       >
         {product.image ? (
           <>

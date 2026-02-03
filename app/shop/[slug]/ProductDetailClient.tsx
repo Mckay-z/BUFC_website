@@ -135,6 +135,8 @@ export default function ProductDetailClient({
                             <SectionHeader
                                 title="YOU MIGHT ALSO LIKE"
                                 subtext="Discover the other collections and exclusive items from our store"
+                                showLine
+                                uppercase
                             />
                         </div>
 

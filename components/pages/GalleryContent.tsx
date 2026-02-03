@@ -20,9 +20,16 @@ export default function GalleryContent({
 }: GalleryContentProps) {
     const [activeTab, setActiveTab] = useState("All Photos");
     const [visibleCount, setVisibleCount] = useState(6);
+    const [currentFeaturedIndex, setCurrentFeaturedIndex] = useState(0);
+    const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
 
     // Layout logic for Featured Grid (3-1-3)
-    const centerImage = featuredImages.find((img) => img.featuredPriority === 1);
+    // We'll use the first image as center by default, or cycle through them
+    const mainImages = featuredImages.length > 0 ? featuredImages : [];
+    const centerImage = mainImages[currentFeaturedIndex];
+
+    // For the side images, we'll pick them dynamically to avoid duplicates if possible
+    // or just use the priorities if strictly defined
     const leftSideImages = featuredImages
         .filter(
             (img) =>
@@ -34,6 +41,14 @@ export default function GalleryContent({
     const rightSideImages = featuredImages
         .filter((img) => img.featuredPriority && img.featuredPriority >= 5)
         .sort((a, b) => (a.featuredPriority || 0) - (b.featuredPriority || 0));
+
+    const handlePrevFeatured = () => {
+        setCurrentFeaturedIndex((prev) => (prev === 0 ? mainImages.length - 1 : prev - 1));
+    };
+
+    const handleNextFeatured = () => {
+        setCurrentFeaturedIndex((prev) => (prev === mainImages.length - 1 ? 0 : prev + 1));
+    };
 
     const tabs = [
         "All Photos",
@@ -78,24 +93,27 @@ export default function GalleryContent({
     return (
         <>
             {/* Featured Moments Section */}
-            <section className="container-wide py-16 md:py-28">
-                <div className="mb-12">
+            <section className="container-wide py-10 md:py-16 lg:py-24">
+                <div className="mb-8 md:mb-12">
                     <SectionHeader
                         title={settings.featuredSectionTitle}
                         subtext={settings.featuredSectionSubtext}
+                        showLine
+                        uppercase
                     />
                 </div>
 
                 {/* Featured Grid - 3-1-3 Layout */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 h-auto lg:h-[500px]">
-                    {/* Left Side Images (3) */}
-                    <div className="lg:col-span-2 flex flex-col gap-4 h-full">
+                    {/* Left Side Images (3) - Hidden on Mobile/Tablet */}
+                    <div className="hidden lg:flex lg:col-span-2 flex-col gap-4 h-full">
                         {[0, 1, 2].map((i) => {
                             const img = leftSideImages[i];
                             return (
                                 <div
                                     key={img?._id || `placeholder-left-${i}`}
-                                    className="flex-1 relative rounded-lg overflow-hidden group cursor-pointer bg-neutral-2"
+                                    className="flex-1 relative overflow-hidden group cursor-pointer bg-neutral-2"
+                                    onClick={() => img && setSelectedImage(img)}
                                 >
                                     {img && (
                                         <Image
@@ -103,7 +121,7 @@ export default function GalleryContent({
                                             alt={img.altText}
                                             fill
                                             className="object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
-                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 16vw"
+                                            sizes="16vw"
                                         />
                                     )}
                                 </div>
@@ -112,7 +130,7 @@ export default function GalleryContent({
                     </div>
 
                     {/* Big Center Image */}
-                    <div className="lg:col-span-8 relative h-[300px] lg:h-full rounded-lg overflow-hidden group bg-neutral-2">
+                    <div className="lg:col-span-8 relative aspect-4/3 sm:aspect-video lg:aspect-auto lg:h-full overflow-hidden group bg-neutral-2">
                         {centerImage && (
                             <>
                                 <Image
@@ -122,44 +140,62 @@ export default function GalleryContent({
                                         .url()}
                                     alt={centerImage.altText}
                                     fill
-                                    className="object-cover"
+                                    className="object-cover transition-all duration-700 cursor-pointer"
                                     priority
-                                    sizes="(max-width: 1200px) 100vw, 66vw"
+                                    sizes="(max-width: 1024px) 100vw, 66vw"
+                                    onClick={() => setSelectedImage(centerImage)}
                                 />
-                                <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
+                                <div className="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
 
                                 {/* Date/Caption */}
-                                <div className="absolute bottom-6 right-6 flex items-center gap-2 text-white">
-                                    <span className="w-1 h-6 bg-green-500"></span>
-                                    <span className="font-semibold">
+                                <div className="absolute bottom-6 right-6 flex items-center gap-2 text-white z-10">
+                                    <span className="w-1 h-5 md:h-6 bg-white"></span>
+                                    <span className="text-sm md:text-base font-semibold">
                                         {formatDate(centerImage.uploadDate)}
                                     </span>
                                 </div>
 
-                                {/* Navigation Arrows (Visual Only as per mockup) */}
-                                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-4">
-                                    <button className="text-white hover:text-green-400 transition-colors">
-                                        <Icon icon="heroicons:chevron-left" className="w-8 h-8" />
+                                {/* Slider Navigation Control */}
+                                <div className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-4 md:gap-7 z-20 bg-black/40 md:bg-white/10 backdrop-blur-md px-5 md:px-8 py-3 md:py-4 rounded-full border border-white/20 shadow-2xl transition-all hover:bg-white/20">
+                                    <button
+                                        onClick={handlePrevFeatured}
+                                        className="text-white hover:scale-110 active:scale-95 transition-all p-1"
+                                        aria-label="Previous image"
+                                    >
+                                        <Icon icon="ph:caret-left-bold" className="w-4 h-4 md:w-5 md:h-5" />
                                     </button>
-                                    <button className="text-white hover:text-green-400 transition-colors">
-                                        <Icon
-                                            icon="heroicons:chevron-right"
-                                            className="w-8 h-8"
-                                        />
+
+                                    <div className="flex items-center gap-2 md:gap-3">
+                                        <span className="text-white font-black text-sm md:text-[16px] tracking-tighter">
+                                            {(currentFeaturedIndex + 1).toString().padStart(2, '0')}
+                                        </span>
+                                        <div className="w-px h-3 bg-white/20" />
+                                        <span className="text-white/50 font-bold text-[11px] md:text-[13px]">
+                                            {mainImages.length.toString().padStart(2, '0')}
+                                        </span>
+                                    </div>
+
+                                    <button
+                                        onClick={handleNextFeatured}
+                                        className="text-white hover:scale-110 active:scale-95 transition-all p-1"
+                                        aria-label="Next image"
+                                    >
+                                        <Icon icon="ph:caret-right-bold" className="w-4 h-4 md:w-5 md:h-5" />
                                     </button>
                                 </div>
                             </>
                         )}
                     </div>
 
-                    {/* Right Side Images (3) */}
-                    <div className="lg:col-span-2 flex flex-col gap-4 h-full">
+                    {/* Right Side Images (3) - Hidden on Mobile/Tablet */}
+                    <div className="hidden lg:flex lg:col-span-2 flex-col gap-4 h-full">
                         {[0, 1, 2].map((i) => {
                             const img = rightSideImages[i];
                             return (
                                 <div
                                     key={img?._id || `placeholder-right-${i}`}
-                                    className="flex-1 relative rounded-lg overflow-hidden group cursor-pointer bg-neutral-2"
+                                    className="flex-1 relative overflow-hidden group cursor-pointer bg-neutral-2"
+                                    onClick={() => img && setSelectedImage(img)}
                                 >
                                     {img && (
                                         <Image
@@ -167,7 +203,7 @@ export default function GalleryContent({
                                             alt={img.altText}
                                             fill
                                             className="object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
-                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 16vw"
+                                            sizes="16vw"
                                         />
                                     )}
                                 </div>
@@ -180,22 +216,24 @@ export default function GalleryContent({
 
             {/* Filter Tabs */}
             <section className="container-wide py-8">
-                <div className="flex flex-wrap gap-3 mb-12 justify-center">
-                    {tabs.map((tab) => (
-                        <button
-                            key={tab}
-                            onClick={() => {
-                                setActiveTab(tab);
-                                setVisibleCount(6);
-                            }}
-                            className={`px-8 py-2.5 rounded-full text-sm font-medium transition-all ${activeTab === tab
-                                ? "bg-[#1e103c] text-white shadow-lg"
-                                : "bg-white text-gray-600 hover:bg-gray-100"
-                                }`}
-                        >
-                            {tab}
-                        </button>
-                    ))}
+                <div className="flex justify-start md:justify-center mb-12 overflow-x-auto pb-4 scrollbar-hide">
+                    <div className="inline-flex items-center bg-white p-1.5 rounded-full shadow-lg shadow-black/5 border border-black/5 min-w-max">
+                        {tabs.map((tab) => (
+                            <button
+                                key={tab}
+                                onClick={() => {
+                                    setActiveTab(tab);
+                                    setVisibleCount(6);
+                                }}
+                                className={`px-6 md:px-10 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-semibold transition-all duration-300 whitespace-nowrap ${activeTab === tab
+                                    ? "bg-[#1e103c] text-white"
+                                    : "text-[#1e103c] hover:bg-black/5"
+                                    }`}
+                            >
+                                {tab}
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
                 {/* Gallery Grid */}
@@ -204,6 +242,7 @@ export default function GalleryContent({
                         <div
                             key={img._id}
                             className="relative aspect-4/3 rounded-2xl overflow-hidden group cursor-pointer shadow-sm hover:shadow-md transition-shadow bg-neutral-2"
+                            onClick={() => setSelectedImage(img)}
                         >
                             <Image
                                 src={urlFor(img.image).width(600).height(450).url()}
@@ -216,7 +255,7 @@ export default function GalleryContent({
                                 <div className="flex items-center gap-2 text-white">
                                     <Icon
                                         icon="heroicons:calendar-days-20-solid"
-                                        className="w-4 h-4 text-green-400"
+                                        className="w-4 h-4 text-[#3F2A78] group-hover:text-white transition-colors"
                                     />
                                     <span className="text-sm font-medium">
                                         {formatDate(img.uploadDate)}
@@ -249,6 +288,55 @@ export default function GalleryContent({
                     </div>
                 )}
             </section>
+            {/* Lightbox Modal */}
+            {selectedImage && (
+                <div
+                    className="fixed inset-0 z-200 bg-black/95 flex flex-col items-center justify-center p-4 md:p-10 animate-in fade-in duration-300"
+                    onClick={() => setSelectedImage(null)}
+                >
+                    <button
+                        className="fixed top-6 right-6 text-white/70 hover:text-white transition-colors z-220 bg-black/20 rounded-full p-2"
+                        onClick={() => setSelectedImage(null)}
+                    >
+                        <Icon icon="heroicons:x-mark-20-solid" className="w-8 h-8 md:w-10 md:h-10" />
+                    </button>
+
+                    <div className="w-full h-full overflow-y-auto scrollbar-hide flex flex-col items-center py-12 px-2 md:px-0">
+                        <div className="w-full max-w-7xl mx-auto flex flex-col items-center gap-6 md:gap-10 min-h-full justify-center">
+                            <div
+                                className="relative w-full max-w-5xl aspect-4/3 md:aspect-auto md:h-[70vh] shrink-0"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <Image
+                                    src={urlFor(selectedImage.image).url()}
+                                    alt={selectedImage.altText || "Full Moment"}
+                                    fill
+                                    className="object-contain"
+                                    sizes="95vw"
+                                />
+                            </div>
+
+                            <div
+                                className="bg-white/10 backdrop-blur-md p-5 md:p-8 rounded-2xl max-w-3xl w-full flex flex-col gap-3 shrink-0"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                    <h3 className="text-white font-bold text-lg md:text-xl lg:text-2xl uppercase tracking-wider">
+                                        {selectedImage.altText || "Moment Details"}
+                                    </h3>
+                                    <div className="flex items-center gap-2 text-[#9D7AFF]">
+                                        <Icon icon="heroicons:calendar-days-20-solid" className="w-5 h-5" />
+                                        <span className="font-semibold">{formatDate(selectedImage.uploadDate)}</span>
+                                    </div>
+                                </div>
+                                <p className="text-white/70 text-sm leading-relaxed">
+                                    {selectedImage.caption || "Relive this historic moment from the Bechem United FC archives. Every image tells a story of passion, grit, and victory."}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     );
 }

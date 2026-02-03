@@ -1,6 +1,6 @@
 import { client } from "./sanity.client";
 import { gplClubsByNamesQuery } from "./sanity.queries";
-import { GPLClub, Fixture, FixtureWithClubData } from "./types";
+import { GPLClub, Fixture, FixtureWithClubData, MatchFixture } from "./types";
 
 /**
  * Enriches fixture data with club information from Sanity
@@ -43,4 +43,37 @@ export async function enrichFixturesWithClubData(
   });
 
   return enrichedFixtures;
+}
+
+/**
+ * Converts MatchFixture (from Sanity) to Fixture and enriches it with club data
+ *
+ * @param matchFixtures - Array of MatchFixture from Sanity
+ * @returns Array of FixtureWithClubData
+ */
+export async function convertAndEnrichMatchFixtures(
+  matchFixtures: MatchFixture[]
+): Promise<FixtureWithClubData[]> {
+  const convertedFixtures: Fixture[] = matchFixtures.map((mf) => {
+    const date = new Date(mf.matchDate);
+    const dateStr = date.toISOString().split("T")[0];
+    const timeStr = date.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+
+    return {
+      id: mf._id,
+      homeTeam: mf.homeTeam,
+      awayTeam: mf.awayTeam,
+      date: dateStr,
+      time: timeStr,
+      competition: mf.competition,
+      matchday: mf.matchday ? parseInt(mf.matchday) : 0,
+      venue: mf.venue,
+    };
+  });
+
+  return enrichFixturesWithClubData(convertedFixtures);
 }

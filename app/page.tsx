@@ -12,6 +12,7 @@ import {
   threeJerseysQuery,
   liveMatchesSettingsQuery,
   newsletterSettingsQuery,
+  featuredGalleryImagesQuery,
 } from "@/lib/sanity.queries";
 import {
   NewsArticle,
@@ -20,6 +21,7 @@ import {
   Product,
   LiveMatchesSettings,
   NewsletterSettings,
+  GalleryImage,
 } from "@/lib/types";
 import { getUpcomingFixtures } from "@/lib/mockFixtures";
 import { enrichFixturesWithClubData } from "@/lib/fixtureHelpers";
@@ -33,6 +35,7 @@ export default async function Home() {
     jerseysData,
     liveMatchesSettings,
     newsletterSettings,
+    highlights,
   ] = await Promise.all([
     client.fetch<NewsArticle>(mostRecentNewsQuery),
     client.fetch<NewsArticle[]>(nextFourRecentNewsQuery),
@@ -45,6 +48,7 @@ export default async function Home() {
     }>(featuredJerseysQuery),
     client.fetch<LiveMatchesSettings>(liveMatchesSettingsQuery),
     client.fetch<NewsletterSettings>(newsletterSettingsQuery),
+    client.fetch<GalleryImage[]>(featuredGalleryImagesQuery),
   ]);
 
   // Fetch upcoming fixtures and enrich with club data from Sanity
@@ -114,6 +118,7 @@ export default async function Home() {
         featuredProducts={featuredProducts}
         nextFixture={nextFixture}
         upcomingFixtures={upcomingFixtures}
+        highlights={highlights}
       />
     </main>
   );

@@ -35,15 +35,15 @@ export default function Footer({ settings }: FooterProps) {
     {
       title: "CLUB",
       links: [
-        { label: "Club Profile", href: "/club" },
-        { label: "Partners", href: "/club#partners" },
+        { label: "Club Profile", href: "/clubs" },
+        { label: "Partners", href: "/clubs#partners" },
       ],
     },
     {
       title: "TEAM",
       links: [
         { label: "Players", href: "/players" },
-        { label: "Managers & Staff", href: "/club#staff" },
+        { label: "Managers & Staff", href: "/clubs#management" },
       ],
     },
     {
@@ -51,8 +51,8 @@ export default function Footer({ settings }: FooterProps) {
       links: [
         { label: "Fixtures & Results", href: "/fixtures" },
         { label: "Live", href: "/#live" },
-        { label: "Highlights", href: "/highlights" },
-        { label: "GPL Table", href: "/highlights#table" },
+        { label: "Highlights", href: "/pastHighlights" },
+        { label: "GPL Table", href: "/fixtures?tab=table" },
         { label: "Gallery", href: "/gallery" },
       ],
     },
@@ -61,7 +61,7 @@ export default function Footer({ settings }: FooterProps) {
       links: [
         { label: "News", href: "/news" },
         { label: "Shop", href: "/shop" },
-        { label: "Tickets", href: "/tickets" },
+        { label: "Tickets", href: "/fixtures" },
         { label: "Contact Us", href: "/contact" },
       ],
     },

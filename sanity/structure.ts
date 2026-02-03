@@ -187,6 +187,10 @@ export const structure: StructureResolver = (S) =>
         .child(S.documentTypeList("matchFixture").title("Match Fixtures")),
 
       S.listItem()
+        .title("League Standings")
+        .child(S.documentTypeList("leagueStandings").title("League Standings")),
+
+      S.listItem()
         .title("Match Highlights")
         .child(S.documentTypeList("matchHighlight").title("Match Highlights")),
 

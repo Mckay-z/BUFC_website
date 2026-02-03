@@ -6,13 +6,18 @@ import { useEffect, useState } from "react";
 import { FiX, FiSearch, FiChevronDown, FiLogIn } from "react-icons/fi";
 import Button from "../ui/Button";
 import { Icon } from "@iconify/react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+
+import { useUI } from "@/context/UIContext";
 
 export default function Navbar() {
+  const { openAuthModal } = useUI();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
   const [isSearchInputFocused, setIsSearchInputFocused] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const webScroll = () => {
     const scrolled = window.scrollY;
@@ -76,6 +81,15 @@ export default function Navbar() {
 
   const isActiveLink = (href: string) => {
     return pathname === href;
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim() && router) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setOpen(false); // Close sidebar on redirect
+      setSearchQuery(""); // Clear search
+    }
   };
 
   return (
@@ -151,7 +165,8 @@ export default function Navbar() {
           {/* Right: Sign In */}
           <Button
             size="md"
-            href="/auth/sign-in"
+            type="button"
+            onClick={openAuthModal}
             rightIcon={<FiLogIn size="16" />}
           >
             Sign In
@@ -203,19 +218,21 @@ export default function Navbar() {
             </div>
 
             {/* Search Bar */}
-            <div className="relative">
+            <form onSubmit={handleSearch} className="relative">
               <FiSearch
                 className={`absolute left-3 top-1/2 -translate-y-1/2  ${isSearchInputFocused ? "text-primary" : "text-neutral-6"}`}
                 size={18}
               />
               <input
                 type="text"
-                placeholder="Search for..."
+                placeholder="Search news, players, kits..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => setIsSearchInputFocused(true)}
                 onBlur={() => setIsSearchInputFocused(false)}
                 className="w-full pl-10 pr-4 py-2.5 md:py-3  placeholder:text-neutral-5 text-neutral-9 bg-transparent border border-neutral-5 focus:border-primary rounded-xl text-base focus:outline-none transition-colors duration-300 ease-in-out"
               />
-            </div>
+            </form>
           </div>
 
           {/* Menu Items */}

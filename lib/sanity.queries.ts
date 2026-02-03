@@ -611,6 +611,25 @@ export const shopPageSettingsQuery = groq`
   }
 `;
 
+// LEAGUE TABLE
+export const leagueTableQuery = groq`
+  *[_type == "leagueStandings"] | order(rank asc) {
+    rank,
+    teamName,
+    teamLogo,
+    played,
+    won,
+    drawn,
+    lost,
+    gf,
+    ga,
+    gd,
+    points,
+    lastFive,
+    isHighlight
+  }
+`;
+
 // GALLERY PAGE SETTINGS
 export const galleryPageSettingsQuery = groq`
   *[_id == "galleryPageSettings"][0] {
@@ -647,4 +666,145 @@ export const featuredGalleryImagesQuery = groq`
     isFeatured,
     featuredPriority
   }
+`;
+
+// CLUB PROFILE PAGE QUERIES
+export const clubPageSettingsQuery = groq`
+  *[_type == "clubPageSettings"][0] {
+    clubNameOnBanner,
+    clubSloganOnBanner,
+    clubPageBannerImage,
+    sections,
+    joinHuntersPack {
+      title,
+      description,
+      buttonText,
+      images[] {
+        image,
+        order
+      } | order(order asc)
+    }
+  }
+`;
+
+export const clubIdentitySettingsQuery = groq`
+  *[_type == "clubIdentitySettings"][0] {
+    clubName,
+    nickname,
+    slogan,
+    tagline,
+    founded,
+    location,
+    colors,
+    whoWeAre,
+    huntersMentality,
+    vision,
+    mission,
+    commitment,
+    historyEras
+  }
+`;
+
+export const clubPillarsQuery = groq`
+  *[_type == "clubPillar"] | order(order asc) {
+    _id,
+    title,
+    subtext,
+    icon,
+    order
+  }
+`;
+
+export const facilitiesQuery = groq`
+  *[_type == "facility"] | order(name asc) {
+    _id,
+    name,
+    tag,
+    description,
+    image,
+    features,
+    additionalSpecifications
+  }
+`;
+
+export const staffMembersQuery = groq`
+  *[_type == "staffMember"] | order(order asc) {
+    _id,
+    name,
+    role,
+    customRole,
+    image,
+    bio,
+    socialMediaLinks,
+    order
+  }
+`;
+
+export const trophiesQuery = groq`
+  *[_type == "trophy"] | order(year desc) {
+    _id,
+    name,
+    tag,
+    year,
+    image,
+    description
+  }
+`;
+
+export const wallOfFameQuery = groq`
+  *[_type == "wallOfFameCategory"] | order(order asc) {
+    _id,
+    title,
+    subtext,
+    slug,
+    "members": *[_type == "wallOfFame" && references(^._id)] | order(order asc) {
+      _id,
+      name,
+      period,
+      image,
+      description
+    }
+  }
+`;
+
+export const recordBreakersQuery = groq`
+  *[_type == "recordBreaker"] | order(year asc) {
+    _id,
+    title,
+    recordType,
+    player,
+    customSubtext,
+    year
+  }
+`;
+// GLOBAL SEARCH
+export const globalSearchQuery = groq`
+{
+  "news": *[_type == "news" && (title match $searchTerm || excerpt match $searchTerm || content[].children[].text match $searchTerm)] {
+    _id,
+    _type,
+    title,
+    slug,
+    featuredImage,
+    publishedAt,
+    category
+  },
+  "players": *[_type == "player" && (fullName match $searchTerm || jerseyNumber == $queryInt)] {
+    _id,
+    _type,
+    fullName,
+    jerseyNumber,
+    position,
+    photo
+  },
+  "products": *[_type == "product" && (name match $searchTerm || description match $searchTerm || displayTitle match $searchTerm)] {
+    _id,
+    _type,
+    name,
+    slug,
+    image,
+    price,
+    category
+  }
+}
 `;

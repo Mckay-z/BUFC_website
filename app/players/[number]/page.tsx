@@ -287,6 +287,8 @@ export default async function PlayerPage({ params }: PlayerPageProps) {
           <SectionHeader
             title={`Latest on ${player.fullName.split(' ')[0]}`}
             subtext="Recent articles and club updates involving the player"
+            showLine
+            uppercase
           />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
             {relatedNews.map((news) => (
@@ -310,6 +312,8 @@ export default async function PlayerPage({ params }: PlayerPageProps) {
           <SectionHeader
             title="Player Highlights"
             subtext="Watch outstanding moments and individual performances"
+            showLine
+            uppercase
           />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
             {relatedHighlights.map((highlight) => (

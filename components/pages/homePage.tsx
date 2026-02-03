@@ -8,6 +8,7 @@ import {
   LiveMatchesSettings,
   NewsletterSettings,
   FixtureWithClubData,
+  GalleryImage,
 } from "@/lib/types";
 import { urlFor } from "@/lib/sanity.client";
 import Image from "next/image";
@@ -22,6 +23,7 @@ import ProductCard from "../ui/ProductCard";
 import LiveMatchesSection from "../layout/LiveMatchesSection";
 import Newsletter from "../layout/Newsletter";
 import UpcomingFixtures from "../layout/UpcomingFixtures";
+import PhotoHighlightsSection from "../layout/PhotoHighlightsSection";
 
 interface HomePageProps {
   heroNews: NewsArticle;
@@ -33,6 +35,7 @@ interface HomePageProps {
   newsletterSettings: NewsletterSettings;
   nextFixture: FixtureWithClubData;
   upcomingFixtures: FixtureWithClubData[];
+  highlights: GalleryImage[];
 }
 
 export default function HomePage({
@@ -45,6 +48,7 @@ export default function HomePage({
   newsletterSettings,
   nextFixture,
   upcomingFixtures,
+  highlights,
 }: HomePageProps) {
   return (
     <main>
@@ -117,6 +121,8 @@ export default function HomePage({
             <SectionHeader
               title={settings.newsSectionTitle}
               subtext={settings.newsSectionSubtext}
+              showLine
+              uppercase
             />
 
             {/* News Grid */}
@@ -283,6 +289,8 @@ export default function HomePage({
           <SectionHeader
             title={settings.shopSectionTitle}
             subtext={settings.shopSectionSubtext}
+            showLine
+            uppercase
           />
           <div className="flex flex-col gap-8 md:gap-12">
             {/* Featured Products Grid */}
@@ -312,6 +320,11 @@ export default function HomePage({
             </div>
           </div>
         </section>
+      )}
+
+      {/* Photo Highlights Section */}
+      {highlights && highlights.length > 0 && (
+        <PhotoHighlightsSection settings={settings} images={highlights} />
       )}
 
       {/* Live Matches & Replays Section */}

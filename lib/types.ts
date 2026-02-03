@@ -427,6 +427,7 @@ export interface Fixture {
   time: string; // 24-hour format (HH:MM)
   competition: string;
   matchday: number;
+  venue?: string;
   isFeatured?: boolean;
 }
 
@@ -453,6 +454,7 @@ export interface GalleryImage {
   | "behind-the-scenes";
   isFeatured?: boolean;
   featuredPriority?: number;
+  caption?: string;
 }
 
 // GALLERY PAGE SETTINGS
@@ -462,4 +464,144 @@ export interface GalleryPageSettings {
   featuredSectionTitle: string;
   featuredSectionSubtext: string;
   loadMoreButtonText: string;
+}
+// CLUB PAGE SETTINGS
+export interface ClubPageSettings {
+  clubNameOnBanner: string;
+  clubSloganOnBanner: string;
+  clubPageBannerImage: SanityImage;
+  sections: {
+    clubIdentityTitle: string;
+    clubIdentitySubtitle: string;
+    pillarsTitle: string;
+    pillarsSubtitle: string;
+    managementTitle: string;
+    managementSubtitle: string;
+    historyTitle: string;
+    historySubtitle: string;
+    facilitiesTitle: string;
+    facilitiesSubtitle: string;
+    trophiesTitle: string;
+    trophiesSubtitle: string;
+    wallOfFameTitle: string;
+    wallOfFameSubtitle: string;
+  };
+  joinHuntersPack: {
+    title: string;
+    description: string;
+    buttonText: string;
+    images: Array<{
+      image: SanityImage;
+      order: number;
+    }>;
+  };
+}
+
+// CLUB IDENTITY SETTINGS
+export interface ClubHistoryEra {
+  title: string;
+  period: string;
+  description: string;
+  icon?: string;
+  keyAchievements: string[];
+}
+
+export interface ClubIdentitySettings {
+  clubName: string;
+  nickname: string;
+  slogan: string;
+  tagline: string;
+  founded: number;
+  location: string;
+  colors: {
+    primary: string;
+    secondary: string;
+    description: string;
+  };
+  whoWeAre: string;
+  huntersMentality: string;
+  vision: string;
+  mission: string;
+  commitment: string;
+  historyEras: ClubHistoryEra[];
+}
+
+// CLUB PILLAR
+export interface ClubPillar {
+  _id: string;
+  title: string;
+  subtext: string;
+  icon: string;
+  order: number;
+}
+
+// FACILITY
+export interface Facility {
+  _id: string;
+  name: string;
+  tag: string;
+  description: string;
+  image: SanityImage;
+  features?: {
+    since?: number;
+    location?: string;
+    capacity?: number;
+  };
+  additionalSpecifications?: Array<{
+    title: string;
+    value: string;
+  }>;
+}
+
+// STAFF MEMBER
+export interface StaffMember {
+  _id: string;
+  name: string;
+  role: string;
+  customRole?: string;
+  image: SanityImage;
+  bio: PortableTextBlock[];
+  socialMediaLinks?: {
+    linkedIn?: string;
+    email?: string;
+    phone?: string;
+  };
+  order: number;
+}
+
+// TROPHY
+export interface Trophy {
+  _id: string;
+  name: string;
+  tag?: string;
+  year: string;
+  image: SanityImage;
+  description?: string;
+}
+
+// RECORD BREAKER
+export interface RecordBreaker {
+  _id: string;
+  title: string;
+  recordType: "individual" | "team" | "season";
+  player?: string;
+  customSubtext?: string;
+  year: number;
+}
+
+// WALL OF FAME
+export interface WallOfFameMember {
+  _id: string;
+  name: string;
+  period: string;
+  image: SanityImage;
+  description: string;
+}
+
+export interface WallOfFameCategory {
+  _id: string;
+  title: string;
+  subtext: string;
+  slug: Slug;
+  members: WallOfFameMember[];
 }

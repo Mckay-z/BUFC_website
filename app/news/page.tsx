@@ -39,15 +39,6 @@ export default async function NewsPage() {
     });
   };
 
-  const getCategoryColor = (category: string) => {
-    const colors: Record<string, string> = {
-      "Club News": "bg-prim-3",
-      "Player News": "bg-purple-500",
-      "Transfer News": "bg-orange-500",
-      "Match Report": "bg-blue-500",
-    };
-    return colors[category] || "bg-prim-3";
-  };
 
   return (
     <main className="bg-[#F1EFF6]">
@@ -68,6 +59,8 @@ export default async function NewsPage() {
                 settings?.featuredNewsSectionSubtext ||
                 "Find the most important and timely news about Bechem United FC"
               }
+              showLine
+              uppercase
             />
           </div>
 
@@ -93,11 +86,6 @@ export default async function NewsPage() {
 
                 {/* Content Overlay */}
                 <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 lg:p-14">
-                  <span
-                    className={`inline-block px-4 py-1 mb-4 ${getCategoryColor(featuredNews[0].category)} text-white text-xs font-bold rounded-full uppercase`}
-                  >
-                    {featuredNews[0].category}
-                  </span>
                   <h3 className="text-white text-2xl md:text-3xl lg:text-4xl font-bold mb-4 max-w-4xl group-hover:text-prim-3 transition-colors line-clamp-2">
                     {featuredNews[0].title}
                   </h3>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FixtureWithClubData, HomePageSettings } from "@/lib/types";
 import { getTimeUntilFixture } from "@/lib/mockFixtures";
 import { urlFor } from "@/lib/sanity.client";
@@ -32,6 +32,17 @@ export default function UpcomingFixtures({
   upcomingFixtures,
   settings,
 }: UpcomingFixturesProps) {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const scrollCarousel = (direction: "left" | "right") => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 400; // Adjust scroll distance
+      scrollContainerRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
   // State for countdown timer
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -86,6 +97,8 @@ export default function UpcomingFixtures({
           title={settings.fixtureSectionTitle}
           subtext={settings.fixtureSectionSubtext}
           onColor
+          showLine
+          uppercase
         />
 
         {/* UP NEXT Featured Card */}
@@ -265,44 +278,55 @@ export default function UpcomingFixtures({
         {/* What's Ahead Section */}
         <div className=" w-full xxs:w-[90%] lg:max-w-[1200px] flex flex-col items-start gap-6 md:gap-8">
           {/* Section Title */}
-          <div className="flex items-center justify-between w-full">
-            <div className="flex flex-col gap-1">
-              <h3 className="text-white text-[15px] sm:text-base 2xlg:text-lg xl:text-[22px] font-semibold">
+          {/* Section Title & Arrows */}
+          <div className="w-full flex items-end justify-between mb-2">
+            <div className="flex flex-col gap-2">
+              <h2 className="text-[24px] font-bold text-white tracking-tight">
                 What&apos;s ahead
-              </h3>
-              <p className="text-neutral-4 text-sm lg:text-[15px] 2xlg:text-base">
+              </h2>
+              <p className="text-[16px] font-medium text-white/60">
                 Mark your calendar for these upcoming clashes
               </p>
             </div>
 
             {/* Navigation Arrows - Desktop only */}
-            <div className="hidden md:flex items-center gap-3">
+            <div className="hidden md:flex items-center gap-4 py-2 shrink-0">
               <button
-                className="flex items-center justify-center w-12 h-12 rounded-full border border-neutral-6 hover:border-prim-5 hover:bg-prim-5/10 transition-all duration-200"
+                onClick={() => scrollCarousel("left")}
+                className="flex items-center justify-center w-10 h-10 rounded-full border border-white/20 hover:border-white/50 bg-transparent text-white transition-all duration-300 active:scale-95"
                 aria-label="Previous fixtures"
               >
                 <Icon
-                  icon="mdi:chevron-left"
-                  className="w-6 h-6 text-neutral-4"
+                  icon="ph:arrow-left"
+                  className="w-5 h-5"
                 />
               </button>
               <button
-                className="flex items-center justify-center w-12 h-12 rounded-full border border-neutral-6 hover:border-prim-5 hover:bg-prim-5/10 transition-all duration-200"
+                onClick={() => scrollCarousel("right")}
+                className="flex items-center justify-center w-10 h-10 rounded-full border border-white/20 hover:border-white/50 bg-transparent text-white transition-all duration-300 active:scale-95"
                 aria-label="Next fixtures"
               >
                 <Icon
-                  icon="mdi:chevron-right"
-                  className="w-6 h-6 text-neutral-4"
+                  icon="ph:arrow-right"
+                  className="w-5 h-5"
                 />
               </button>
             </div>
           </div>
 
           {/* Fixtures Carousel */}
-          <div className="w-full overflow-x-auto scrollbar-hide">
+          <div
+            ref={scrollContainerRef}
+            className="w-full overflow-x-auto scrollbar-hide scroll-smooth"
+          >
             <div className="flex gap-4 md:gap-6 pb-4">
               {upcomingFixtures.map((fixture) => (
-                <FixtureCard key={fixture.id} fixture={fixture} />
+                <FixtureCard
+                  key={fixture.id}
+                  fixture={fixture}
+                  hideFeaturedBadge
+                  variant="minimal"
+                />
               ))}
             </div>
           </div>

@@ -51,6 +51,8 @@ export default async function ShopPage() {
               settings?.sectionSubtext ||
               "Discover the latest official merchandise, new collections, and exclusive Bechem United FC store updates."
             }
+            showLine
+            uppercase
           />
         </div>
 

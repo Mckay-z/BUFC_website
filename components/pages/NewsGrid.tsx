@@ -34,15 +34,6 @@ export default function NewsGrid({
     });
   };
 
-  const getCategoryColor = (category: string) => {
-    const colors: Record<string, string> = {
-      "Club News": "bg-prim-3",
-      "Player News": "bg-purple-500",
-      "Transfer News": "bg-orange-500",
-      "Match Report": "bg-blue-500",
-    };
-    return colors[category] || "bg-prim-3";
-  };
 
   // Filter articles by category
   const filteredArticles =
@@ -91,23 +82,25 @@ export default function NewsGrid({
   return (
     <section className="container-wide mt-30 pb-16 md:pb-24">
       <div className="mb-10 lg:mb-14">
-        <SectionHeader title={sectionTitle} subtext={sectionSubtext || ""} />
+        <SectionHeader title={sectionTitle} subtext={sectionSubtext || ""} showLine uppercase />
       </div>
 
       {/* Category Tabs */}
-      <div className="flex flex-wrap items-center justify-center gap-3 mb-10 md:mb-14">
-        {categories.map((category) => (
-          <button
-            key={category}
-            onClick={() => handleCategoryChange(category)}
-            className={`px-6 py-2 rounded-full font-semibold text-sm transition-all duration-300 ${activeCategory === category
-              ? "bg-primary text-white shadow-lg shadow-primary/20"
-              : "bg-white text-neutral-text border border-neutral-2 hover:border-primary/30 hover:bg-neutral-1"
-              }`}
-          >
-            {category}
-          </button>
-        ))}
+      <div className="flex justify-center mb-10 md:mb-14 overflow-x-auto pb-4 scrollbar-hide">
+        <div className="inline-flex items-center bg-white p-1.5 rounded-full shadow-lg shadow-black/5 border border-black/5 min-w-max">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => handleCategoryChange(category)}
+              className={`px-6 md:px-10 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-semibold transition-all duration-300 whitespace-nowrap ${activeCategory === category
+                ? "bg-[#1e103c] text-white"
+                : "text-[#1e103c] hover:bg-black/5"
+                }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Results count */}
@@ -139,14 +132,6 @@ export default function NewsGrid({
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   )}
-                  {/* Category Badge */}
-                  <div className="absolute top-4 left-4">
-                    <span
-                      className={`px-4 py-1.5 ${getCategoryColor(article.category)} text-white text-[10px] font-bold rounded-full uppercase tracking-wider`}
-                    >
-                      {article.category}
-                    </span>
-                  </div>
                 </div>
 
                 {/* Content */}

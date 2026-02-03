@@ -90,7 +90,7 @@ const PositionSection = ({
   return (
     <div className="mb-12">
       <div className="mb-6">
-        <SectionHeader title={title} subtext={subtext} />
+        <SectionHeader title={title} subtext={subtext} showLine uppercase />
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
         {players.map((player) => (

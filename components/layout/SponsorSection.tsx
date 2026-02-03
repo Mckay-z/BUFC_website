@@ -22,7 +22,7 @@ export default function SponsorSection({ settings }: SponsorSectionProps) {
   });
 
   return (
-    <section className="bg-neutral-1 py-10">
+    <section id="partners" className="bg-neutral-1 py-10">
       <div className="container-wide">
         {/* Section Title */}
         <h2 className="text-center text-primary-active text-[15px] md:text-base xl:text-lg font-medium max-w-[250px] sm:max-w-full mx-auto">

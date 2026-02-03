@@ -25,12 +25,14 @@ export default function LiveMatchesSection({
 }: LiveMatchesSectionProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   return (
-    <section className="relative bg-neutral-1 overflow-hidden">
+    <section id="live" className="relative pt-20 bg-neutral-1 overflow-hidden">
       <div className="relative h-screen container-wide section-padding flex flex-col items-center justify-center gap-12 md:gap-20">
         {/* Section Header */}
         <SectionHeader
           title={settings.liveSectionTitle}
           subtext={settings.liveSectionSubtext}
+          showLine
+          uppercase
         />
 
         {/* Video Player Container */}

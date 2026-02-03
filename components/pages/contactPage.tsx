@@ -122,6 +122,8 @@ export default function ContactPage({ contactUsSettings }: ContactPageProps) {
           <SectionHeader
             title={contactUsSettings.mapSectionTitle}
             subtext={contactUsSettings.mapSectionSubtext}
+            showLine
+            uppercase
           />
 
           <div className="h-[400px] rounded-[20px] overflow-hidden">
