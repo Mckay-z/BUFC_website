@@ -1,36 +1,151 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Project Handoff README
 
-## Getting Started
+**Project:** Website Development
+**Handoff To:** Emmanuel
+**Priority:** Urgent
+**Deadline:** February 4, 2026
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 📌 Project Overview
+
+This project is a modern website built to present content, media, and key information in a clean and responsive format. The site is currently in active development and has most core pages and structure completed.
+
+**Purpose:**
+To deliver a functional, responsive, and CMS-driven website that allows easy content updates and a smooth user experience.
+
+**Current Status:**
+Partially complete — core UI implemented, some integrations and refinements pending.
+
+**Tech Stack:**
+
+* Next.js
+* React
+* Tailwind CSS
+* Sanity CMS
+* Vercel (Deployment)
+
+---
+
+## 🔗 Important Links & Access
+
+* **Repository:** [Add GitHub Repo Link]
+* **Live Site (if available):** [Add URL]
+* **Figma/Design Files:** [Add Link]
+* **CMS (Sanity Studio):** [Add Access Instructions]
+* **Hosting Platform:** Vercel
+
+> Note: Environment variables and sensitive keys are stored in `.env.local`.
+
+---
+
+## 📂 Project Structure Guide
+
+```
+/app            → Main pages and routing
+/components     → Reusable UI components
+/lib            → API queries, utilities, configurations
+/public         → Static assets (images, icons)
+/styles         → Global styling
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Key Notes:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+* Pages are built using the Next.js App Router.
+* Reusable UI elements are organized inside `/components`.
+* CMS queries and data fetching logic live inside `/lib`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## ✅ Completed Features
 
-To learn more about Next.js, take a look at the following resources:
+* Homepage layout implemented
+* Gallery page structure completed
+* Contact page UI created
+* CMS integration setup (Sanity)
+* Core component structure established
+* Basic responsiveness applied
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🚧 Pending Tasks / In Progress
 
-## Deploy on Vercel
+* Connect contact form to backend/email service
+* Final mobile responsiveness adjustments
+* SEO optimization (meta tags, performance)
+* Image optimization improvements
+* Final content population from CMS
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🐞 Known Issues
+
+* Gallery performance needs optimization on mobile
+* Some images may not be fully optimized
+* Contact form currently not sending submissions
+* Minor layout spacing inconsistencies on smaller screens
+
+---
+
+## ⚙️ How to Run the Project Locally
+
+1. Clone the repository:
+
+```
+git clone [repo-link]
+```
+
+2. Install dependencies:
+
+```
+npm install
+```
+
+3. Start development server:
+
+```
+npm run dev
+```
+
+4. Open in browser:
+
+```
+http://localhost:3000
+```
+
+5. Ensure `.env.local` is configured with required environment variables.
+
+---
+
+## 🧠 Key Implementation Notes (The “Why”)
+
+* **Next.js** was chosen for performance and SEO benefits.
+* **Tailwind CSS** is used for rapid UI development and consistency.
+* **Sanity CMS** allows non-developers to update content easily.
+* Components were built to be reusable to keep the system scalable.
+
+---
+
+## 🎯 Immediate Priority Tasks
+
+1. Finalize form submission functionality
+2. Review responsiveness across devices
+3. Confirm CMS content syncing correctly
+4. Polish UI spacing and performance
+
+---
+
+## 🤝 Handoff Notes for Emmanuel
+
+* Review `/lib` folder for CMS queries and data flow.
+* Most UI components are reusable and modular.
+* Check environment variables if CMS data does not load.
+* Reach out for clarification on any unclear logic or structure.
+
+---
+
+## 📅 Final Update
+
+This document reflects the latest state of the project at the time of handoff. All core files, updates, and structure have been prepared to support a smooth continuation of development.
+
+---
