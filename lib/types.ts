@@ -605,3 +605,64 @@ export interface WallOfFameCategory {
   slug: Slug;
   members: WallOfFameMember[];
 }
+
+// COMMUNITY PROJECT INTERFACE
+export interface CommunityProject {
+  _id: string;
+  _type: "communityProject";
+  _createdAt: string;
+  _updatedAt: string;
+  title: string;
+  slug: Slug;
+  status: "Ongoing" | "Completed" | "Upcoming";
+  category: "Education" | "Health" | "Youth Development" | "Infrastructure" | "Environment" | "Other";
+  featuredImage: SanityImage;
+  description?: PortableTextBlock[];
+  gallery?: SanityImage[];
+  startDate?: string;
+  endDate?: string;
+  location?: string;
+  partners?: string[];
+  impactMetrics?: {
+    peopleBenefited?: string;
+    fundsRaised?: string;
+    volunteerHours?: string;
+    customMetric?: string;
+    customValue?: string;
+  };
+  isFeatured?: boolean;
+}
+
+// COMMUNITY PAGE SETTINGS INTERFACE
+export interface CommunityPageSettings {
+  heroTitle: string;
+  heroSubtitle: string;
+  heroImage: SanityImage;
+  heroVideoUrl?: string;
+  joinButtonText: string;
+  signInButtonText: string;
+  statsTitle: string;
+  statsSubtext: string;
+  featuredProjectsTitle: string;
+  featuredProjectsSubtext: string;
+  activityTeaserTitle: string;
+  activityTeaserSubtext: string;
+  benefitsTitle: string;
+  benefitsSubtext: string;
+  ctaTitle: string;
+  ctaSubtext: string;
+  ctaButtonText: string;
+  projectsPageTitle?: string;
+  projectsPageSubtitle?: string;
+  projectsPageImage?: SanityImage;
+  statistics?: Array<{
+    label: string;
+    value: string;
+  }>;
+  huntersHub?: {
+    title: string;
+    description: string;
+    buttonText: string;
+    image?: SanityImage;
+  };
+}

@@ -808,3 +808,93 @@ export const globalSearchQuery = groq`
   }
 }
 `;
+
+// COMMUNITY PAGE
+export const communityPageSettingsQuery = groq`
+  *[_id == "communityPageSettings"][0] {
+    heroTitle,
+    heroSubtitle,
+    heroImage,
+    heroVideoUrl,
+    joinButtonText,
+    signinButtonText,
+    statsTitle,
+    statsSubtext,
+    featuredProjectsTitle,
+    featuredProjectsSubtext,
+    activityTeaserTitle,
+    activityTeaserSubtext,
+    benefitsTitle,
+    benefitsSubtext,
+    ctaTitle,
+    ctaSubtext,
+    ctaButtonText,
+    projectsPageTitle,
+    projectsPageSubtitle,
+    projectsPageImage,
+    statistics,
+    huntersHub
+  }
+`;
+
+export const communityProjectsQuery = groq`
+  *[_type == "communityProject"] | order(_createdAt desc) {
+    _id,
+    title,
+    slug,
+    status,
+    category,
+    featuredImage,
+    description,
+    startDate,
+    location,
+    impactMetrics,
+    isFeatured
+  }
+`;
+
+export const featuredCommunityProjectsQuery = groq`
+  *[_type == "communityProject" && isFeatured == true] | order(_createdAt desc) [0...4] {
+    _id,
+    title,
+    slug,
+    status,
+    category,
+    featuredImage,
+    description,
+    startDate,
+    location,
+    impactMetrics,
+    isFeatured
+  }
+`;
+
+export const singleCommunityProjectQuery = groq`
+  *[_type == "communityProject" && slug.current == $slug][0] {
+    _id,
+    title,
+    slug,
+    status,
+    category,
+    featuredImage,
+    gallery,
+    description,
+    startDate,
+    endDate,
+    location,
+    partners,
+    impactMetrics,
+    isFeatured
+  }
+`;
+
+export const relatedCommunityProjectsQuery = groq`
+  *[_type == "communityProject" && category == $category && _id != $projectId] | order(_createdAt desc) [0...3] {
+    _id,
+    title,
+    slug,
+    status,
+    category,
+    featuredImage
+  }
+`;

@@ -30,6 +30,8 @@ import { trophyType } from "./trophy";
 import { recordBreakerType } from "./recordBreaker";
 import { historyType } from "./history";
 import leagueStandings from "./leagueStandings";
+import { communityProjectType } from "./communityProject";
+import { communityPageSettingsType } from "./communityPageSettings";
 
 export const schemaTypes = [
   // Content Types
@@ -50,7 +52,9 @@ export const schemaTypes = [
   clubPillarType,
   wallOfFameCategoryType,
   historyType,
+
   leagueStandings,
+  communityProjectType,
 
   // Settings (Singletons)
   homePageSettingsType,
@@ -67,4 +71,5 @@ export const schemaTypes = [
   pastHighlightsSettingsType,
   playersPageSettingsType,
   shopPageSettingsType,
+  communityPageSettingsType,
 ];

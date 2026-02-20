@@ -8,6 +8,7 @@ import { footerSettingsQuery } from "@/lib/sanity.queries";
 import { FooterSettings } from "@/lib/types";
 import { UIProvider } from "@/context/UIContext";
 import AuthModal from "@/components/auth/AuthModal";
+import BackToTop from "@/components/ui/BackToTop";
 
 const monaSans = Mona_Sans({
   variable: "--font-mona-sans",
@@ -43,6 +44,7 @@ export default async function RootLayout({
           {children}
           <Footer settings={footerSettings} />
           <AuthModal />
+          <BackToTop />
         </UIProvider>
       </body>
     </html>

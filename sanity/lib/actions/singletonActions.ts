@@ -16,6 +16,7 @@ const SINGLETON_TYPES = [
   "pastHighlightsSettings",
   "playersPageSettings",
   "shopPageSettings",
+  "communityPageSettings",
 ];
 
 // Remove the "Delete" action for singleton documents

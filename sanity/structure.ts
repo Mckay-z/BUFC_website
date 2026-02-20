@@ -5,13 +5,26 @@ export const structure: StructureResolver = (S) =>
   S.list()
     .title("Content")
     .items([
+      S.listItem()
+        .title("Community Projects")
+        .child(
+          S.documentTypeList("communityProject").title("Community Projects")
+        ),
       // Settings Section
       S.listItem()
-        .title("Settings")
+        .title("Global Settings")
         .child(
           S.list()
             .title("Site Settings")
             .items([
+              // Community Page Settings
+              S.listItem()
+                .title("Community Page Settings")
+                .child(
+                  S.document()
+                    .schemaType("communityPageSettings")
+                    .documentId("communityPageSettings")
+                ),
               // Home Page Settings
               S.listItem()
                 .title("Home Page Settings")
@@ -124,11 +137,9 @@ export const structure: StructureResolver = (S) =>
                     .schemaType("liveMatchesSettings")
                     .documentId("liveMatchesSettings")
                 ),
+
             ])
         ),
-
-      // Divider
-      S.divider(),
 
       // Content Types (multiple documents allowed)
       S.listItem()
