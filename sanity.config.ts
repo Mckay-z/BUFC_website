@@ -5,7 +5,7 @@ import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { apiVersion, dataset, projectId } from "./sanity/env";
 import { schemaTypes } from "./sanity/schemaTypes";
-import { structure } from "./sanity/structure";
+import { structure } from "./sanity/studioStructure";
 import { singletonActions } from "./sanity/lib/actions/singletonActions";
 import { fetchYouTubeDataAction } from "./sanity/lib/actions/fetchYouTubeData";
 

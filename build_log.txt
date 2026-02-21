@@ -1,0 +1,56 @@
+
+> bechem-united@0.1.0 build
+> next build
+
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+   ▲ Next.js 16.0.10 (Turbopack)
+   - Environments: .env
+
+   Creating an optimized production build ...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+ ✓ Compiled successfully in 79s
+   Running TypeScript ...
+   Collecting page data using 3 workers ...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+   Generating static pages using 3 workers (0/20) ...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+   Generating static pages using 3 workers (5/20) 
+[ComponentShowcase] Mounted
+   Generating static pages using 3 workers (10/20) 
+   Generating static pages using 3 workers (15/20) 
+ ✓ Generating static pages using 3 workers (20/20) in 4.7s
+   Finalizing page optimization ...
+
+Route (app)                     Revalidate  Expire
+┌ ○ /                                   1m      1y
+├ ○ /_not-found
+├ ○ /admin
+├ ○ /auth/sign-in
+├ ○ /auth/sign-up
+├ ƒ /clubs
+├ ƒ /clubs/[clubId]
+├ ○ /community
+├ ○ /community/dashboard
+├ ○ /community/projects
+├ ● /community/projects/[slug]
+├ ○ /contact                            1m      1y
+├ ○ /dev
+├ ƒ /fixtures
+├ ○ /gallery                            1m      1y
+├ ○ /news                               1m      1y
+├ ƒ /news/[slug]
+├ ○ /pastHighlights                     1m      1y
+├ ○ /players                            1m      1y
+├ ƒ /players/[number]
+├ ƒ /search
+├ ○ /shop                               1m      1y
+├ ƒ /shop/[slug]
+└ ƒ /studio/[[...tool]]
+
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+
