@@ -280,7 +280,7 @@ export default function AuthContent({ initialState = "signin", onSuccess }: Auth
                     {isForgotPassword ? (
                         <form className="space-y-6" onSubmit={handleForgotPassword}>
                             <p className="text-sm text-neutral-500 leading-relaxed">
-                                Enter your email address and we'll send you a link to reset your password.
+                                Enter your email address and we&apos;ll send you a link to reset your password.
                             </p>
                             <div className="relative group">
                                 <div className="absolute -top-2.5 left-4 px-1 bg-white text-[11px] font-medium text-[#3F2A78] z-10">Email</div>

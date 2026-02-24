@@ -4,7 +4,7 @@ type HttpMethod = "GET" | "POST" | "PATCH" | "DELETE";
 
 interface RequestOptions {
     method?: HttpMethod;
-    body?: any;
+    body?: unknown;
     headers?: Record<string, string>;
     token?: string;
 }
@@ -64,13 +64,14 @@ export async function apiRequest<T>(endpoint: string, options: RequestOptions = 
         }
 
         return data as T;
-    } catch (error: any) {
+    } catch (error: unknown) {
+        const err = error as { status?: number; message?: string };
         // If it's already our custom error, re-throw it
-        if (error.status !== undefined) throw error;
+        if (err.status !== undefined) throw err;
 
         // Log locally if needed, but avoid cluttering server logs with expected network failures
         if (process.env.NODE_ENV === 'development') {
-            console.log(`[API Client] Connection failed to ${url}: ${error.message || 'Unknown network error'}`);
+            console.log(`[API Client] Connection failed to ${url}: ${err.message || 'Unknown network error'}`);
         }
 
         // Throw a clean error for the caller to catch

@@ -9,8 +9,8 @@ export interface ContactRequest {
 }
 
 export const contactService = {
-    async sendRequest(data: ContactRequest): Promise<any> {
-        return apiRequest("/contacts", {
+    async sendRequest(data: ContactRequest): Promise<{ success: boolean; message: string }> {
+        return apiRequest<{ success: boolean; message: string }>("/contacts", {
             method: "POST",
             body: data,
         });

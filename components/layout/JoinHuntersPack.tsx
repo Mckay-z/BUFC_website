@@ -19,9 +19,12 @@ interface JoinHuntersPackProps {
 }
 
 import { useUI } from "@/context/UIContext";
+import { useAuth } from "@/context/AuthContext";
+import Link from "next/link";
 
 export default function JoinHuntersPack({ settings, fallbackImages }: JoinHuntersPackProps) {
     const { openAuthModal } = useUI();
+    const { isAuthenticated } = useAuth();
 
     const displayTitle = settings?.title || "Join The Hunters Pack";
     const displayDesc = settings?.description || "Be part of something special. Join thousands of passionate fans supporting Bechem United FC at home and away.";
@@ -131,12 +134,21 @@ export default function JoinHuntersPack({ settings, fallbackImages }: JoinHunter
                             )}
                         </div>
 
-                        <button
-                            onClick={() => openAuthModal("signup")}
-                            className="w-full py-5 md:py-6 rounded-full border-2 border-primary-active text-primary-active font-black uppercase tracking-widest hover:bg-primary-active hover:text-white hover:border-white transition-all duration-300 shadow-lg shadow-primary-active/10 text-sm md:text-base"
-                        >
-                            {displayButton}
-                        </button>
+                        {isAuthenticated ? (
+                            <Link
+                                href="/community/dashboard"
+                                className="w-full py-5 md:py-6 rounded-full border-2 border-primary bg-primary text-white font-black uppercase tracking-widest hover:bg-white hover:text-primary transition-all duration-300 shadow-lg shadow-primary/10 text-sm md:text-base flex items-center justify-center"
+                            >
+                                Visit My Dashboard
+                            </Link>
+                        ) : (
+                            <button
+                                onClick={() => openAuthModal("signup")}
+                                className="w-full py-5 md:py-6 rounded-full border-2 border-primary-active text-primary-active font-black uppercase tracking-widest hover:bg-primary-active hover:text-white hover:border-white transition-all duration-300 shadow-lg shadow-primary-active/10 text-sm md:text-base"
+                            >
+                                {displayButton}
+                            </button>
+                        )}
                     </div>
 
                 </div>

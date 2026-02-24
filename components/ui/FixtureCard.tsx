@@ -77,6 +77,13 @@ export default function FixtureCard({
                   fill
                   className="object-contain"
                 />
+              ) : fixture.homeLogo ? (
+                <Image
+                  src={fixture.homeLogo}
+                  alt={fixture.homeTeam}
+                  fill
+                  className="object-contain"
+                />
               ) : (
                 <ImageFallback icon="mdi:shield-outline" width="40" height="40" className="bg-white/10" />
               )}
@@ -100,6 +107,13 @@ export default function FixtureCard({
               {fixture.awayClubData?.clubLogo ? (
                 <Image
                   src={urlFor(fixture.awayClubData.clubLogo).width(120).height(120).url()}
+                  alt={fixture.awayTeam}
+                  fill
+                  className="object-contain"
+                />
+              ) : fixture.awayLogo ? (
+                <Image
+                  src={fixture.awayLogo}
                   alt={fixture.awayTeam}
                   fill
                   className="object-contain"
@@ -142,6 +156,13 @@ export default function FixtureCard({
                   fill
                   className="object-contain"
                 />
+              ) : fixture.homeLogo ? (
+                <Image
+                  src={fixture.homeLogo}
+                  alt={fixture.homeTeam}
+                  fill
+                  className="object-contain"
+                />
               ) : (
                 <ImageFallback icon="mdi:shield-outline" width="50" height="50" className="bg-white/10" />
               )}
@@ -169,6 +190,13 @@ export default function FixtureCard({
               {fixture.awayClubData?.clubLogo ? (
                 <Image
                   src={urlFor(fixture.awayClubData.clubLogo).width(200).height(200).url()}
+                  alt={fixture.awayTeam}
+                  fill
+                  className="object-contain"
+                />
+              ) : fixture.awayLogo ? (
+                <Image
+                  src={fixture.awayLogo}
                   alt={fixture.awayTeam}
                   fill
                   className="object-contain"

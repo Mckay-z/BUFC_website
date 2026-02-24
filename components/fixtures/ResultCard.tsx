@@ -57,6 +57,13 @@ export default function ResultCard({ result, homeClubData, awayClubData }: Resul
                                     fill
                                     className="object-contain"
                                 />
+                            ) : result.homeLogo ? (
+                                <Image
+                                    src={result.homeLogo}
+                                    alt={result.homeTeam}
+                                    fill
+                                    className="object-contain"
+                                />
                             ) : (
                                 <div className="bg-neutral-100 rounded-full w-full h-full" />
                             )}
@@ -73,6 +80,13 @@ export default function ResultCard({ result, homeClubData, awayClubData }: Resul
                             {awayClubData?.clubLogo ? (
                                 <Image
                                     src={urlFor(awayClubData.clubLogo).width(56).height(56).url()}
+                                    alt={result.awayTeam}
+                                    fill
+                                    className="object-contain"
+                                />
+                            ) : result.awayLogo ? (
+                                <Image
+                                    src={result.awayLogo}
                                     alt={result.awayTeam}
                                     fill
                                     className="object-contain"

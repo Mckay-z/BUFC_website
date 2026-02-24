@@ -21,10 +21,10 @@ export default function PhotoHighlightsSection({
     if (displayImages.length === 0) return null;
 
     return (
-        <section className="bg-white py-16 md:py-28 overflow-hidden">
+        <section className="bg-white pt-8 pb-0 md:py-28 overflow-hidden">
             <div className="container-wide">
                 {/* Header Section */}
-                <div className="flex flex-col md:flex-row md:items-start justify-between gap-8 mb-16 lg:mb-24">
+                <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 md:gap-8 mb-4 md:mb-16 lg:mb-24">
                     <div className="flex items-center gap-6">
                         <h2 className="text-[20px] font-bold text-[#1A1A1A] tracking-wider whitespace-nowrap uppercase">
                             {settings.photoHighlightsTitle || "PHOTO HIGHLIGHTS"}
@@ -33,14 +33,14 @@ export default function PhotoHighlightsSection({
                     </div>
 
                     <div className="md:max-w-md lg:max-w-lg">
-                        <p className="text-[15px] lg:text-[16px] text-[#666666] leading-relaxed text-left md:text-right">
+                        <p className="text-[14px] lg:text-[16px] text-[#666666] leading-relaxed text-left md:text-right">
                             {settings.photoHighlightsSubtext || "Relive the best moments from recent matches, training sessions, and club events."}
                         </p>
                     </div>
                 </div>
 
                 {/* Gallery Grid - Staggered Mockup Layout */}
-                <div className="relative h-[588px] w-full max-w-[957px] mx-auto">
+                <div className="relative h-[350px] md:h-[588px] w-full max-w-[957px] mx-auto">
                     <div className="grid grid-cols-4 gap-3 h-full items-center">
                         {/* Column 1 - Leftmost */}
                         <div className="h-full flex flex-col justify-center">
@@ -130,7 +130,7 @@ export default function PhotoHighlightsSection({
                     </div>
 
                     {/* Bottom Controls */}
-                    <div className="mt-16 flex items-center justify-between w-full">
+                    <div className="mt-8 md:mt-16 flex items-center justify-between w-full">
                         {/* Center Pagination Icon Mockup */}
                         <div className="flex-1" />
                         <div className="flex items-center gap-3 text-[#1A1A1A]">

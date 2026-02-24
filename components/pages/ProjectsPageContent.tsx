@@ -8,6 +8,8 @@ import Link from "next/link";
 import { Icon } from "@iconify/react";
 import PageHeader from "@/components/layout/PageHeader";
 import Card from "@/components/ui/Card";
+import PaymentModal from "@/components/ui/PaymentModal";
+import Button from "@/components/ui/Button";
 
 interface ProjectsPageContentProps {
     allProjects: CommunityProject[];
@@ -20,6 +22,16 @@ export default function ProjectsPageContent({
 }: ProjectsPageContentProps) {
     const [activeTab, setActiveTab] = useState("All Projects");
     const [visibleCount, setVisibleCount] = useState(12);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalMode, setModalMode] = useState<"volunteer" | "donate">("donate");
+    const [selectedProjectTitle, setSelectedProjectTitle] = useState("");
+
+    const openModal = (e: React.MouseEvent, title: string, mode: "volunteer" | "donate") => {
+        e.preventDefault(); // Stop link navigation
+        setSelectedProjectTitle(title);
+        setModalMode(mode);
+        setIsModalOpen(true);
+    };
 
     const categories = [
         "All Projects",
@@ -119,21 +131,38 @@ export default function ProjectsPageContent({
                                     <h3 className="font-mona-sans font-extrabold text-xl mb-3 text-neutral-9 group-hover:text-primary transition-colors line-clamp-2 leading-tight">
                                         {project.title}
                                     </h3>
-                                    <div className="mt-auto pt-6 flex items-center justify-between">
-                                        <div className="flex -space-x-2">
-                                            {[1, 2, 3].map((i) => (
-                                                <div key={i} className="w-8 h-8 rounded-full border-2 border-white bg-neutral-3 flex items-center justify-center overflow-hidden">
-                                                    <div className="w-full h-full bg-primary/20 flex items-center justify-center">
-                                                        <Icon icon="ph:user" className="text-primary w-4 h-4" />
+                                    <div className="mt-auto pt-6 flex flex-col gap-4">
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex -space-x-2">
+                                                {[1, 2, 3].map((i) => (
+                                                    <div key={i} className="w-8 h-8 rounded-full border-2 border-white bg-neutral-3 flex items-center justify-center overflow-hidden">
+                                                        <div className="w-full h-full bg-primary/20 flex items-center justify-center">
+                                                            <Icon icon="ph:user" className="text-primary w-4 h-4" />
+                                                        </div>
                                                     </div>
+                                                ))}
+                                                <div className="w-8 h-8 rounded-full border-2 border-white bg-neutral-2 flex items-center justify-center text-[10px] font-bold text-neutral-6">
+                                                    +12
                                                 </div>
-                                            ))}
-                                            <div className="w-8 h-8 rounded-full border-2 border-white bg-neutral-2 flex items-center justify-center text-[10px] font-bold text-neutral-6">
-                                                +12
+                                            </div>
+                                            <div className="flex items-center gap-2 text-primary font-bold text-[10px] uppercase tracking-widest group-hover:gap-3 transition-all">
+                                                Learn More <Icon icon="ph:arrow-right" className="w-4 h-4" />
                                             </div>
                                         </div>
-                                        <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-widest group-hover:gap-3 transition-all">
-                                            Learn More <Icon icon="ph:arrow-right" className="w-4 h-4" />
+
+                                        <div className="grid grid-cols-2 gap-2 pt-4 border-t border-neutral-100">
+                                            <button
+                                                onClick={(e) => openModal(e, project.title, "volunteer")}
+                                                className="py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest border border-primary/20 text-primary hover:bg-primary hover:text-white transition-all"
+                                            >
+                                                Volunteer
+                                            </button>
+                                            <button
+                                                onClick={(e) => openModal(e, project.title, "donate")}
+                                                className="py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-primary text-white hover:bg-primary-active transition-all"
+                                            >
+                                                Donate
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -168,6 +197,13 @@ export default function ProjectsPageContent({
                     </div>
                 )}
             </section>
+
+            <PaymentModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                projectTitle={selectedProjectTitle}
+                initialMode={modalMode}
+            />
         </div>
     );
 }

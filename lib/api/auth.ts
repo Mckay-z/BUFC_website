@@ -3,7 +3,7 @@ import { AuthResponse, User } from "./types";
 
 interface LoginData { email: string; password: string; }
 interface RegisterData { name: string; email: string; password: string; }
-interface ResetPasswordData { token: string; password: string; }
+interface ResetPasswordData { token: string; newPassword: string; }
 interface ChangePasswordData { currentPassword: string; newPassword: string; }
 interface GenericResponse { success: boolean; message: string; }
 

@@ -86,10 +86,12 @@ export default async function FixturesPage({
       matchday: String(f.matchday),
       homeTeam: f.homeTeam,
       awayTeam: f.awayTeam,
+      homeLogo: f.homeLogo,
+      awayLogo: f.awayLogo,
       matchDate: `${f.date}T${f.time}:00Z`,
       status: (new Date(`${f.date}T${f.time}:00Z`) > new Date()) ? "upcoming" : "finished",
-      homeScore: 0,
-      awayScore: 0,
+      homeScore: f.homeScore || 0,
+      awayScore: f.awayScore || 0,
     } as MatchFixture));
   }
 

@@ -21,12 +21,22 @@ function ResetPasswordForm() {
 
     const friendlyError = (raw: string): string => {
         const r = raw.toLowerCase();
+
+        // Specific checks for common password issues
+        if (r.includes("short") || r.includes("at least 8")) {
+            return "Your password is too short. It must be at least 8 characters long.";
+        }
+
         if (r.includes("parameters validation error") || r.includes("validation")) {
-            return "Please check your password. It must be at least 8 characters long.";
+            // General validation could mean length, but also complexity (numbers/symbols) or even a malformed token.
+            return "Password reset failed. Please check that your password is at least 8 characters long and try adding a letter or symbol (e.g., Bechem@2026!). Also, ensure you are using the latest link sent to you.";
         }
+
         if (r.includes("expired") || r.includes("invalid token")) {
-            return "The reset link has expired or is invalid. Please request a new one.";
+            return "The reset link has expired or is invalid. Please request a new one from the sign-in page.";
         }
+
+        // Fallback to the actual error if it's not a standard validation one
         return raw || "An unexpected error occurred. Please try again.";
     };
 
@@ -49,12 +59,14 @@ function ResetPasswordForm() {
         setStatus("idle");
 
         try {
-            await authService.resetPassword({ token, password });
+            await authService.resetPassword({ token, newPassword: password });
             setStatus("success");
             setMessage("Your password has been reset successfully! You can now sign in with your new password.");
             setTimeout(() => router.push("/auth/sign-in"), 3000);
         } catch (err: unknown) {
-            const raw = (err as { message?: string }).message || "";
+            const apiErr = err as { message?: string; status?: number; code?: string };
+            const raw = apiErr.message || "";
+
             setStatus("error");
             setMessage(friendlyError(raw));
         } finally {

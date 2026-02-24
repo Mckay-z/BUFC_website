@@ -12,6 +12,46 @@ import { CommunityPageSettings, CommunityProject, SanityImage } from "@/lib/type
 import { urlFor } from "@/lib/sanity.client";
 import JoinHuntersPack from "@/components/layout/JoinHuntersPack";
 import { useUI } from "@/context/UIContext";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
+import PaymentModal from "@/components/ui/PaymentModal";
+import { motion, useInView, useMotionValue, useSpring } from "framer-motion";
+
+// ── Animated Counter Component ────────────────────────────────────────────────
+const AnimatedCounter = ({ value }: { value: string }) => {
+    const ref = React.useRef(null);
+    const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+    // Parse the numeric part and suffix (e.g., "5,000+" -> 5000, "+")
+    const numericValue = parseFloat(value.replace(/,/g, "").replace(/[^0-9.]/g, "")) || 0;
+    const suffix = value.replace(/[0-9.,]/g, "");
+
+    const motionValue = useMotionValue(0);
+    const springValue = useSpring(motionValue, {
+        damping: 30,
+        stiffness: 100,
+    });
+
+    React.useEffect(() => {
+        if (isInView) {
+            motionValue.set(numericValue);
+        }
+    }, [isInView, motionValue, numericValue]);
+
+    const [display, setDisplay] = React.useState("0");
+
+    React.useEffect(() => {
+        return springValue.on("change", (latest) => {
+            setDisplay(Math.floor(latest).toLocaleString());
+        });
+    }, [springValue]);
+
+    return (
+        <span ref={ref}>
+            {display}{suffix}
+        </span>
+    );
+};
 
 // Helper function for date formatting (matching user image)
 const formatDate = (dateString: string) => {
@@ -100,6 +140,15 @@ export default function CommunityPageContent({
     joinHuntersPackSettings,
 }: CommunityPageContentProps) {
     const { openAuthModal } = useUI();
+    const { isAuthenticated } = useAuth();
+    const router = useRouter();
+    const [isPaymentModalOpen, setIsPaymentModalOpen] = React.useState(false);
+    const [paymentModalMode, setPaymentModalMode] = React.useState<"volunteer" | "donate">("donate");
+
+    const openPaymentModal = (mode: "volunteer" | "donate") => {
+        setPaymentModalMode(mode);
+        setIsPaymentModalOpen(true);
+    };
 
     return (
         <div className="w-full">
@@ -134,40 +183,66 @@ export default function CommunityPageContent({
                                 {settings?.heroSubtitle || "Together we are stronger. Be part of something bigger than just football."}
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-                                <Button
-                                    variant="ghost"
-                                    size="lg"
-                                    onClick={() => openAuthModal("signup")}
-                                    buttonClassName="px-8 py-4 bg-white hover:bg-primary shadow-lg group transition-all duration-300"
-                                    textClassName="text-lg font-bold text-primary group-hover:text-white transition-colors duration-300"
-                                >
-                                    {settings?.joinButtonText || "Join Community"}
-                                </Button>
-                                <Button
-                                    variant="ghost"
-                                    size="lg"
-                                    onClick={() => openAuthModal("signin")}
-                                    buttonClassName="px-8 py-4 border-2 border-white hover:bg-white group"
-                                    textClassName="text-lg font-bold text-white group-hover:text-primary transition-colors"
-                                >
-                                    {settings?.signInButtonText || "Sign In"}
-                                </Button>
+                                {!isAuthenticated ? (
+                                    <>
+                                        <Button
+                                            variant="ghost"
+                                            size="lg"
+                                            onClick={() => openAuthModal("signup")}
+                                            buttonClassName="px-8 py-4 bg-white hover:bg-primary shadow-lg group transition-all duration-300"
+                                            textClassName="text-lg font-bold text-primary group-hover:text-white transition-colors duration-300"
+                                        >
+                                            {settings?.joinButtonText || "Join Community"}
+                                        </Button>
+                                        <Button
+                                            variant="ghost"
+                                            size="lg"
+                                            onClick={() => openAuthModal("signin")}
+                                            buttonClassName="px-8 py-4 border-2 border-white hover:bg-white group"
+                                            textClassName="text-lg font-bold text-white group-hover:text-primary transition-colors"
+                                        >
+                                            {settings?.signInButtonText || "Sign In"}
+                                        </Button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Button
+                                            variant="ghost"
+                                            size="lg"
+                                            onClick={() => openPaymentModal("donate")}
+                                            buttonClassName="px-8 py-4 bg-white hover:bg-primary shadow-lg group transition-all duration-300"
+                                            textClassName="text-lg font-bold text-primary group-hover:text-white transition-colors duration-300"
+                                        >
+                                            Donate Funds
+                                        </Button>
+                                        <Button
+                                            variant="ghost"
+                                            size="lg"
+                                            onClick={() => openPaymentModal("volunteer")}
+                                            buttonClassName="px-8 py-4 border-2 border-white hover:bg-white group"
+                                            textClassName="text-lg font-bold text-white group-hover:text-primary transition-colors"
+                                        >
+                                            Volunteer Now
+                                        </Button>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>
                 </div>
 
+
                 {/* Stats Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-7xl mx-auto w-full px-4">
                     {(settings?.statistics || DUMMY_STATS).map((stat, idx) => (
                         <Card
                             key={idx}
                             variant="default"
                             padding="lg"
-                            cardClassName="text-center group hover:-translate-y-1"
+                            cardClassName="text-center group hover:-translate-y-1 h-full min-h-[160px] flex flex-col justify-center items-center"
                         >
                             <div className="font-mona-sans font-black text-4xl md:text-5xl text-primary mb-2 group-hover:scale-110 transition-transform duration-300">
-                                {stat.value}
+                                <AnimatedCounter value={stat.value} />
                             </div>
                             <div className="font-montserrat font-bold text-neutral-5 uppercase tracking-wider text-xs md:text-sm">
                                 {stat.label}
@@ -535,10 +610,10 @@ export default function CommunityPageContent({
                                     </p>
                                     <Button
                                         fullWidth
-                                        onClick={() => openAuthModal("signup")}
+                                        onClick={() => isAuthenticated ? router.push("/community/dashboard") : openAuthModal("signup")}
                                         buttonClassName="py-4 md:py-5 text-base md:text-lg font-black uppercase tracking-widest shadow-lg shadow-primary/20 group-hover/card:shadow-primary/30 transition-all"
                                     >
-                                        {settings?.huntersHub?.buttonText || "Create Free Account"}
+                                        {isAuthenticated ? "Go to My Dashboard" : (settings?.huntersHub?.buttonText || "Create Free Account")}
                                     </Button>
                                 </div>
                             </div>
@@ -569,13 +644,20 @@ export default function CommunityPageContent({
                     <Button
                         variant="primary"
                         size="lg"
-                        onClick={() => openAuthModal("signup")}
+                        onClick={() => isAuthenticated ? openPaymentModal("donate") : openAuthModal("signup")}
                         buttonClassName="!bg-white !text-[#3F2A78] border-2 border-transparent hover:!bg-[#3F2A78] hover:!text-white hover:!border-white shadow-2xl font-black uppercase tracking-widest px-10 transition-all duration-300"
                     >
-                        {settings?.ctaButtonText || "Get Involved Now"}
+                        {isAuthenticated ? "Contribute Now" : (settings?.ctaButtonText || "Get Involved Now")}
                     </Button>
                 </div>
             </section>
+
+            <PaymentModal
+                isOpen={isPaymentModalOpen}
+                onClose={() => setIsPaymentModalOpen(false)}
+                projectTitle="General Community Support"
+                initialMode={paymentModalMode}
+            />
         </div>
     );
 }

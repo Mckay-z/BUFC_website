@@ -53,6 +53,13 @@ export default function FixtureRow({ fixture }: FixtureRowProps) {
                                     fill
                                     className="object-contain"
                                 />
+                            ) : fixture.homeLogo ? (
+                                <Image
+                                    src={fixture.homeLogo}
+                                    alt={fixture.homeTeam}
+                                    fill
+                                    className="object-contain"
+                                />
                             ) : (
                                 <ImageFallback icon="mdi:shield-outline" width="40" height="40" className="bg-white/10 text-white rounded-full p-2" />
                             )}
@@ -78,6 +85,13 @@ export default function FixtureRow({ fixture }: FixtureRowProps) {
                             {fixture.awayClubData?.clubLogo ? (
                                 <Image
                                     src={urlFor(fixture.awayClubData.clubLogo).width(160).height(160).url()}
+                                    alt={fixture.awayTeam}
+                                    fill
+                                    className="object-contain"
+                                />
+                            ) : fixture.awayLogo ? (
+                                <Image
+                                    src={fixture.awayLogo}
                                     alt={fixture.awayTeam}
                                     fill
                                     className="object-contain"

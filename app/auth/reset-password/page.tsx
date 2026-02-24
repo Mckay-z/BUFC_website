@@ -37,7 +37,7 @@ function ResetPasswordForm() {
         setStatus("idle");
 
         try {
-            await authService.resetPassword({ token, password });
+            await authService.resetPassword({ token, newPassword: password });
             setStatus("success");
             setMessage("Your password has been reset successfully! You can now sign in with your new password.");
             setTimeout(() => router.push("/auth/sign-in"), 3000);

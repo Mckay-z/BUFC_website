@@ -153,11 +153,31 @@ export interface MatchFixture {
   matchday?: string;
   homeTeam: string;
   awayTeam: string;
+  homeLogo?: string; // External fallback logo URL
+  awayLogo?: string; // External fallback logo URL
   matchDate: string;
   venue?: string;
   status: "upcoming" | "live" | "finished" | "postponed" | "cancelled";
   homeScore?: number;
   awayScore?: number;
+}
+
+// FIXTURE TYPES
+// Basic fixture data from mock/API
+export interface Fixture {
+  id: string;
+  homeTeam: string;
+  awayTeam: string;
+  homeScore?: number;
+  awayScore?: number;
+  homeLogo?: string; // External URL from backend
+  awayLogo?: string; // External URL from backend
+  date: string; // ISO 8601 format (YYYY-MM-DD)
+  time: string; // 24-hour format (HH:MM)
+  competition: string;
+  matchday: number;
+  venue?: string;
+  isFeatured?: boolean;
 }
 
 // FIXTURES PAGE SETTINGS
@@ -416,20 +436,6 @@ export interface MatchHighlight {
 //     buttonText: string;
 //   };
 // }
-
-// FIXTURE TYPES
-// Basic fixture data from mock/API
-export interface Fixture {
-  id: string;
-  homeTeam: string;
-  awayTeam: string;
-  date: string; // ISO 8601 format (YYYY-MM-DD)
-  time: string; // 24-hour format (HH:MM)
-  competition: string;
-  matchday: number;
-  venue?: string;
-  isFeatured?: boolean;
-}
 
 // Fixture enriched with club data from Sanity
 export interface FixtureWithClubData extends Fixture {

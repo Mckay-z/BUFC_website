@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { authService } from "@/lib/api/auth";
 import { User } from "@/lib/api/types";
 import ActivityFeed from "@/components/community/ActivityFeed";
+import PaymentModal from "@/components/ui/PaymentModal";
 
 // Mock Data
 const MATCH_HISTORY = [
@@ -63,6 +64,15 @@ export default function CommunityDashboard() {
     const router = useRouter();
     const [activeTab, setActiveTab] = useState("activity");
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+    const [paymentModalMode, setPaymentModalMode] = useState<"volunteer" | "donate">("donate");
+    const [selectedProjectTitle, setSelectedProjectTitle] = useState("General Support");
+
+    const openPaymentModal = (mode: "volunteer" | "donate", project?: string) => {
+        setPaymentModalMode(mode);
+        setSelectedProjectTitle(project || "General Supporters Fund");
+        setIsPaymentModalOpen(true);
+    };
 
     useEffect(() => {
         if (!isLoading && !isAuthenticated) {
@@ -87,7 +97,7 @@ export default function CommunityDashboard() {
             case "tickets":
                 return <SeasonTicketsTab />;
             case "impact":
-                return <ImpactTab user={user!} />;
+                return <ImpactTab user={user!} onAction={openPaymentModal} />;
             case "settings":
                 return (
                     <SettingsTab
@@ -106,6 +116,7 @@ export default function CommunityDashboard() {
             <PageHeader
                 title={`Welcome, ${user?.name?.split(' ')[0] || 'Hunter'}`}
                 subtitle="Manage your community profile, match history, and season tickets."
+                staticImage={user?.headerImage}
                 variant="standard"
             />
 
@@ -115,14 +126,16 @@ export default function CommunityDashboard() {
                     <aside className={`lg:w-72 shrink-0 transition-transform lg:translate-x-0 ${sidebarOpen ? 'translate-x-0 fixed inset-y-0 left-0 z-50 bg-white shadow-xl p-4 w-72' : 'hidden lg:block'}`}>
                         <Card variant="default" padding="none" cardClassName="sticky top-24 overflow-hidden">
                             <div className="p-8 bg-primary text-white text-center">
-                                <div className="w-24 h-24 rounded-full bg-white/20 mx-auto mb-4 flex items-center justify-center border-2 border-white/30 relative overflow-hidden">
-                                    {user?.avatar ? (
-                                        // eslint-disable-next-line @next/next/no-img-element
-                                        <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
-                                    ) : (
-                                        <Icon icon="ph:user-duotone" className="w-12 h-12" />
-                                    )}
-                                    <div className="absolute bottom-1 right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-primary" />
+                                <div className="relative w-24 h-24 mx-auto mb-4">
+                                    <div className="w-full h-full rounded-full bg-white/20 flex items-center justify-center border-2 border-primary/20 overflow-hidden relative">
+                                        {user?.avatar ? (
+                                            // eslint-disable-next-line @next/next/no-img-element
+                                            <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+                                        ) : (
+                                            <Icon icon="ph:user-duotone" className="w-12 h-12" />
+                                        )}
+                                    </div>
+                                    <div className="absolute bottom-0 right-1 w-5 h-5 bg-green-500 rounded-full border-4 border-primary z-10" />
                                 </div>
                                 <h3 className="font-mona-sans font-bold text-xl mb-1 line-clamp-1">{user?.name}</h3>
                                 <p className="text-white/70 text-xs font-bold uppercase tracking-wider">
@@ -149,7 +162,7 @@ export default function CommunityDashboard() {
                             <div className="p-4 border-t border-neutral-3">
                                 <button
                                     onClick={() => logout()}
-                                    className="w-full flex items-center gap-4 px-4 py-3 rounded-xl text-sm font-bold text-red-600 hover:bg-red-50 transition-all"
+                                    className="w-full flex items-center gap-4 px-4 py-3 rounded-xl text-sm font-bold text-red-600 hover:bg-red-50 transition-all font-montserrat uppercase tracking-widest text-[10px]"
                                 >
                                     <Icon icon="ph:sign-out-duotone" className="w-5 h-5" />
                                     Log Out
@@ -170,6 +183,7 @@ export default function CommunityDashboard() {
                         </button>
                     </div>
 
+                    {/* Main Content Area */}
                     <main className="flex-1 min-w-0">
                         <AnimatePresence mode="wait">
                             <motion.div
@@ -183,7 +197,7 @@ export default function CommunityDashboard() {
                                 {activeTab === "activity" ? (
                                     renderContent()
                                 ) : (
-                                    <Card variant="default" padding="lg" cardClassName="min-h-[600px] border-neutral-3">
+                                    <Card variant="default" padding="lg" cardClassName="min-h-[600px] border-neutral-3 shadow-sm">
                                         {renderContent()}
                                     </Card>
                                 )}
@@ -192,6 +206,13 @@ export default function CommunityDashboard() {
                     </main>
                 </div>
             </div>
+
+            <PaymentModal
+                isOpen={isPaymentModalOpen}
+                onClose={() => setIsPaymentModalOpen(false)}
+                projectTitle={selectedProjectTitle}
+                initialMode={paymentModalMode}
+            />
         </div>
     );
 }
@@ -281,16 +302,44 @@ function SeasonTicketsTab() {
 
 function SettingsTab({ user, token, onUpdate }: { user: User, token: string, onUpdate: (user: User) => void }) {
     const [name, setName] = useState(user.name);
+    const [avatar, setAvatar] = useState(user.avatar || "");
+    const [headerImage, setHeaderImage] = useState(user.headerImage || "");
     const [isLoading, setIsLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'avatar' | 'header') => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        // Check file size (max 2MB for base64 safety)
+        if (file.size > 2 * 1024 * 1024) {
+            setError("Image size too large. Please select an image under 2MB.");
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const base64String = reader.result as string;
+            if (type === 'avatar') {
+                setAvatar(base64String);
+            } else {
+                setHeaderImage(base64String);
+            }
+        };
+        reader.readAsDataURL(file);
+    };
 
     const handleUpdateProfile = async () => {
         setIsLoading(true);
         setError(null);
         setSuccess(false);
         try {
-            const updatedUser = await authService.updateProfile(token, { name });
+            const updatedUser = await authService.updateProfile(token, {
+                name,
+                avatar,
+                headerImage
+            });
             onUpdate(updatedUser);
             setSuccess(true);
             setTimeout(() => setSuccess(false), 3000);
@@ -301,6 +350,8 @@ function SettingsTab({ user, token, onUpdate }: { user: User, token: string, onU
         }
     };
 
+    const hasChanges = name !== user.name || avatar !== (user.avatar || "") || headerImage !== (user.headerImage || "");
+
     return (
         <div className="max-w-2xl mx-auto space-y-10">
             <SectionHeader title="Account Settings" showLine uppercase />
@@ -308,8 +359,58 @@ function SettingsTab({ user, token, onUpdate }: { user: User, token: string, onU
             {success && <div className="p-4 bg-green-50 text-green-600 rounded-xl text-sm font-bold">Profile updated successfully!</div>}
             {error && <div className="p-4 bg-red-50 text-red-600 rounded-xl text-sm font-bold">{error}</div>}
 
+            <div className="space-y-8">
+                <h3 className="text-xs font-bold text-neutral-4 uppercase tracking-wider border-b border-neutral-3 pb-3">Profile Customization</h3>
+
+                {/* Profile Picture Upload */}
+                <div className="flex flex-col sm:flex-row items-center gap-6 p-6 bg-neutral-1 rounded-2xl border border-neutral-3">
+                    <div className="relative w-24 h-24 shrink-0 rounded-full bg-white border-2 border-primary/20 overflow-hidden flex items-center justify-center">
+                        {avatar ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img src={avatar} alt="Profile preview" className="w-full h-full object-cover" />
+                        ) : (
+                            <Icon icon="ph:user-duotone" className="w-12 h-12 text-neutral-4" />
+                        )}
+                        <label className="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer">
+                            <Icon icon="ph:camera-fill" className="text-white w-8 h-8" />
+                            <input type="file" className="hidden" accept="image/*" onChange={(e) => handleFileChange(e, 'avatar')} />
+                        </label>
+                    </div>
+                    <div>
+                        <h4 className="font-bold text-neutral-9 mb-1">Profile Picture</h4>
+                        <p className="text-xs text-neutral-5 mb-3">Upload a clean face shot to be recognized in match threads.</p>
+                        <label className="text-xs font-bold text-primary hover:underline cursor-pointer">
+                            Change Avatar
+                            <input type="file" className="hidden" accept="image/*" onChange={(e) => handleFileChange(e, 'avatar')} />
+                        </label>
+                    </div>
+                </div>
+
+                {/* Header Image Upload */}
+                <div className="space-y-3">
+                    <h4 className="text-sm font-bold text-neutral-7">Dashboard Banner</h4>
+                    <div className="relative w-full h-32 md:h-40 bg-neutral-1 rounded-2xl border border-dotted border-neutral-4 overflow-hidden group">
+                        {headerImage ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img src={headerImage} alt="Header preview" className="w-full h-full object-cover" />
+                        ) : (
+                            <div className="w-full h-full flex flex-col items-center justify-center text-neutral-4">
+                                <Icon icon="ph:image-duotone" className="w-10 h-10 mb-2" />
+                                <span className="text-xs">No banner set</span>
+                            </div>
+                        )}
+                        <label className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white cursor-pointer">
+                            <Icon icon="ph:upload-simple-bold" className="w-8 h-8 mb-2" />
+                            <span className="text-xs font-bold uppercase tracking-widest">Update Banner</span>
+                            <input type="file" className="hidden" accept="image/*" onChange={(e) => handleFileChange(e, 'header')} />
+                        </label>
+                    </div>
+                    <p className="text-[10px] text-neutral-4 italic">Recommended size: 1200x400px. Max size 2MB.</p>
+                </div>
+            </div>
+
             <div className="space-y-6">
-                <h3 className="text-xs font-bold text-neutral-4 uppercase tracking-wider border-b border-neutral-3 pb-3">Profile Information</h3>
+                <h3 className="text-xs font-bold text-neutral-4 uppercase tracking-wider border-b border-neutral-3 pb-3">Basic Information</h3>
                 <Input
                     label="Full Name"
                     value={name}
@@ -321,9 +422,9 @@ function SettingsTab({ user, token, onUpdate }: { user: User, token: string, onU
                         variant="primary"
                         size="sm"
                         onClick={handleUpdateProfile}
-                        disabled={isLoading || name === user.name}
+                        disabled={isLoading || !hasChanges}
                     >
-                        {isLoading ? "Updating..." : "Update Profile"}
+                        {isLoading ? "Updating..." : "Save All Changes"}
                     </Button>
                 </div>
             </div>
@@ -340,7 +441,7 @@ function SettingsTab({ user, token, onUpdate }: { user: User, token: string, onU
 }
 
 // ─── My Impact Tab ────────────────────────────────────────────────────────────
-function ImpactTab({ user }: { user: User }) {
+function ImpactTab({ user, onAction }: { user: User, onAction: (mode: "volunteer" | "donate", project?: string) => void }) {
     const BADGES = [
         { icon: "ph:hand-heart-fill", label: "First Volunteer", desc: "Volunteered for your first project", earned: true, color: "text-green-600 bg-green-50 border-green-200" },
         { icon: "ph:currency-circle-dollar-fill", label: "First Donor", desc: "Made your first donation", earned: true, color: "text-blue-600 bg-blue-50 border-blue-200" },
@@ -387,20 +488,39 @@ function ImpactTab({ user }: { user: User }) {
             </div>
 
             {/* Community Rank */}
-            <div className="bg-[#3F2A78] rounded-2xl p-6 text-white relative overflow-hidden">
+            <div className="bg-[#3F2A78] rounded-2xl p-6 text-white relative overflow-hidden flex flex-col md:flex-row gap-6 items-center">
                 <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full -mr-16 -mt-16" />
-                <div className="relative z-10">
+                <div className="flex-1 relative z-10 w-full">
                     <div className="flex items-center justify-between mb-4">
                         <div>
                             <p className="text-white/60 text-xs font-bold uppercase tracking-widest mb-1">Community Rank</p>
                             <p className="text-3xl font-black">Top {100 - rankPct}%</p>
                         </div>
-                        <div className="text-5xl">🏆</div>
+                        <div className="text-5xl md:hidden">🏆</div>
                     </div>
                     <div className="bg-white/10 rounded-full h-2.5 mb-2">
                         <div className="bg-amber-400 h-full rounded-full transition-all duration-1000" style={{ width: `${rankPct}%` }} />
                     </div>
                     <p className="text-white/50 text-xs">You are in the top {100 - rankPct}% of all Hunters community members — keep going! 💛</p>
+                </div>
+
+                <div className="shrink-0 flex gap-3 relative z-10 w-full md:w-auto">
+                    <Button
+                        variant="primary"
+                        size="sm"
+                        onClick={() => onAction("donate")}
+                        buttonClassName="!bg-white !text-primary !border-transparent hover:!bg-primary hover:!text-white hover:!border-white transition-all whitespace-nowrap"
+                    >
+                        Donate Funds
+                    </Button>
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => onAction("volunteer")}
+                        buttonClassName="!border-white/20 !text-white hover:!bg-white hover:!text-primary transition-all whitespace-nowrap"
+                    >
+                        Volunteer
+                    </Button>
                 </div>
             </div>
 

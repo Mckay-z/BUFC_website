@@ -5,6 +5,7 @@ export interface User {
     role: "admin" | "fan";
     isActive: boolean;
     avatar?: string;
+    headerImage?: string;
     isVerified: boolean;
     createdAt: string;
     updatedAt: string;

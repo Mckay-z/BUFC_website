@@ -124,6 +124,13 @@ export default function FixtureHero({ nextFixture }: FixtureHeroProps) {
                                     fill
                                     className="object-contain"
                                 />
+                            ) : nextFixture.homeLogo ? (
+                                <Image
+                                    src={nextFixture.homeLogo}
+                                    alt={nextFixture.homeTeam}
+                                    fill
+                                    className="object-contain"
+                                />
                             ) : (
                                 <ImageFallback
                                     icon="mdi:shield-outline"
@@ -163,6 +170,13 @@ export default function FixtureHero({ nextFixture }: FixtureHeroProps) {
                                         .height(256)
                                         .url()}
                                     alt={nextFixture.awayClubData.clubName}
+                                    fill
+                                    className="object-contain"
+                                />
+                            ) : nextFixture.awayLogo ? (
+                                <Image
+                                    src={nextFixture.awayLogo}
+                                    alt={nextFixture.awayTeam}
                                     fill
                                     className="object-contain"
                                 />
