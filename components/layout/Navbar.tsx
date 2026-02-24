@@ -192,7 +192,7 @@ export default function Navbar() {
                       <p className="text-xs text-neutral-400 truncate">{user.email}</p>
                     </div>
                     <Link
-                      href="/community"
+                      href="/community/dashboard"
                       onClick={() => setUserMenuOpen(false)}
                       className="flex items-center gap-2.5 px-4 py-3 text-sm font-semibold text-neutral-700 hover:bg-neutral-50 hover:text-primary transition-colors"
                     >

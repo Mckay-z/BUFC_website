@@ -22,7 +22,7 @@ export default function SignInPage() {
 
                 <AuthContent
                     initialState="signin"
-                    onSuccess={() => router.push("/community")}
+                    onSuccess={() => router.push("/community/dashboard")}
                 />
             </div>
         </div>

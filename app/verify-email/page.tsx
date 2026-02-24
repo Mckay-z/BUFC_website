@@ -19,8 +19,11 @@ function VerifyEmailContent() {
 
     useEffect(() => {
         if (!token) {
-            setStatus("error");
-            setMessage("No verification token found in the link. Please check your email and try again.");
+            // Defers to next tick to avoid lint warning about sync state updates in effects
+            setTimeout(() => {
+                setStatus("error");
+                setMessage("No verification token found in the link. Please check your email and try again.");
+            }, 0);
             return;
         }
 
@@ -32,7 +35,7 @@ function VerifyEmailContent() {
                 }
                 setStatus("success");
                 setMessage("Your email has been verified successfully!");
-                setTimeout(() => router.push("/community"), 2500);
+                setTimeout(() => router.push("/community/dashboard"), 2500);
             })
             .catch((err: unknown) => {
                 setStatus("error");

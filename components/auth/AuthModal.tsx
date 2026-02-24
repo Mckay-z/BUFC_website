@@ -3,10 +3,12 @@
 import React, { useEffect } from "react";
 import { Icon } from "@iconify/react";
 import { useUI } from "@/context/UIContext";
+import { useRouter } from "next/navigation";
 import AuthContent from "./AuthContent";
 
 export default function AuthModal() {
     const { isAuthModalOpen, closeAuthModal, authMode } = useUI();
+    const router = useRouter();
 
     // Close on Escape key
     useEffect(() => {
@@ -16,6 +18,11 @@ export default function AuthModal() {
         window.addEventListener("keydown", handleEsc);
         return () => window.removeEventListener("keydown", handleEsc);
     }, [closeAuthModal]);
+
+    const handleSuccess = () => {
+        closeAuthModal();
+        router.push("/community/dashboard");
+    };
 
     if (!isAuthModalOpen) return null;
 
@@ -32,7 +39,7 @@ export default function AuthModal() {
                     <Icon icon="mdi:close" className="w-6 h-6" />
                 </button>
 
-                <AuthContent key={authMode} initialState={authMode} onSuccess={closeAuthModal} />
+                <AuthContent key={authMode} initialState={authMode} onSuccess={handleSuccess} />
             </div>
         </div>
     );
