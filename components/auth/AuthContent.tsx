@@ -76,6 +76,7 @@ function friendlyError(raw: string, isSignIn: boolean): string {
 export default function AuthContent({ initialState = "signin", onSuccess }: AuthContentProps) {
     const { login } = useAuth();
     const [isSignIn, setIsSignIn] = useState(initialState === "signin");
+    const [isForgotPassword, setIsForgotPassword] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -147,6 +148,25 @@ export default function AuthContent({ initialState = "signin", onSuccess }: Auth
         }
     };
 
+    const handleForgotPassword = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsLoading(true);
+        setError(null);
+
+        try {
+            const res = await authService.forgotPassword(email);
+            setError(res.message || "Reset link sent! Check your inbox.");
+            // Assuming a state for success message, let's add it if not present
+            // setIsSuccessMessage(true); // This line was in the instruction, but setIsSuccessMessage is not defined.
+            // For now, we'll rely on the error message content to determine success.
+        } catch (err: unknown) {
+            setError((err as { message?: string }).message || "Failed to send reset link.");
+            // setIsSuccessMessage(false); // Same as above
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     const handleResendVerification = async () => {
         setResendStatus("sending");
         try {
@@ -166,13 +186,19 @@ export default function AuthContent({ initialState = "signin", onSuccess }: Auth
 
     const switchMode = () => {
         setIsSignIn(!isSignIn);
+        setIsForgotPassword(false);
         setError(null);
         setNeedsVerification(false);
         setIsDuplicateEmail(false);
         setResendStatus("idle");
     };
 
-    const isSuccessMessage = error?.toLowerCase().includes("successful");
+    const toggleForgotPassword = () => {
+        setIsForgotPassword(!isForgotPassword);
+        setError(null);
+    };
+
+    const isSuccessMessage = error?.toLowerCase().includes("successful") || error?.toLowerCase().includes("sent!");
 
     return (
         <div className="w-full h-full flex flex-col md:flex-row bg-white rounded-[32px] overflow-hidden shadow-2xl">
@@ -251,86 +277,125 @@ export default function AuthContent({ initialState = "signin", onSuccess }: Auth
                         </div>
                     )}
 
-                    <form className="space-y-4" onSubmit={handleSubmit}>
-                        {/* Name Field (Sign Up Only) */}
-                        {!isSignIn && (
+                    {isForgotPassword ? (
+                        <form className="space-y-6" onSubmit={handleForgotPassword}>
+                            <p className="text-sm text-neutral-500 leading-relaxed">
+                                Enter your email address and we'll send you a link to reset your password.
+                            </p>
                             <div className="relative group">
-                                <div className="absolute -top-2.5 left-4 px-1 bg-white text-[11px] font-medium text-[#3F2A78] z-10 transition-all">Name</div>
+                                <div className="absolute -top-2.5 left-4 px-1 bg-white text-[11px] font-medium text-[#3F2A78] z-10">Email</div>
                                 <input
-                                    type="text"
-                                    placeholder="Enter your name"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
+                                    type="email"
+                                    placeholder="your@email.com"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="w-full px-5 py-3 rounded-xl border border-[#3F2A78] focus:border-[#3F2A78] outline-none placeholder:text-neutral-3 text-[#1A1A1A]"
+                                    required
+                                />
+                            </div>
+                            <button
+                                type="submit"
+                                disabled={isLoading}
+                                className="w-full bg-[#3F2A78] hover:bg-[#2A165F] disabled:opacity-70 text-white font-bold py-3.5 rounded-full transition-all flex items-center justify-center gap-2"
+                            >
+                                {isLoading && <Icon icon="line-md:loading-twotone-loop" className="w-5 h-5" />}
+                                Send Reset Link
+                            </button>
+                            <button
+                                type="button"
+                                onClick={toggleForgotPassword}
+                                className="w-full text-sm font-bold text-[#3F2A78] hover:underline"
+                            >
+                                Back to Sign in
+                            </button>
+                        </form>
+                    ) : (
+                        <form className="space-y-4" onSubmit={handleSubmit}>
+                            {/* Name Field (Sign Up Only) */}
+                            {!isSignIn && (
+                                <div className="relative group">
+                                    <div className="absolute -top-2.5 left-4 px-1 bg-white text-[11px] font-medium text-[#3F2A78] z-10 transition-all">Name</div>
+                                    <input
+                                        type="text"
+                                        placeholder="Enter your name"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        className="w-full px-5 py-3 rounded-xl border border-[#3F2A78] focus:border-[#3F2A78] outline-none transition-all placeholder:text-neutral-3 text-[#1A1A1A]"
+                                        required
+                                    />
+                                </div>
+                            )}
+
+                            {/* Email Field */}
+                            <div className="relative group">
+                                <div className="absolute -top-2.5 left-4 px-1 bg-white text-[11px] font-medium text-[#3F2A78] z-10 transition-all">Email</div>
+                                <input
+                                    type="email"
+                                    placeholder="your@email.com"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     className="w-full px-5 py-3 rounded-xl border border-[#3F2A78] focus:border-[#3F2A78] outline-none transition-all placeholder:text-neutral-3 text-[#1A1A1A]"
                                     required
                                 />
                             </div>
-                        )}
 
-                        {/* Email Field */}
-                        <div className="relative group">
-                            <div className="absolute -top-2.5 left-4 px-1 bg-white text-[11px] font-medium text-[#3F2A78] z-10 transition-all">Email</div>
-                            <input
-                                type="email"
-                                placeholder="your@email.com"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className="w-full px-5 py-3 rounded-xl border border-[#3F2A78] focus:border-[#3F2A78] outline-none transition-all placeholder:text-neutral-3 text-[#1A1A1A]"
-                                required
-                            />
-                        </div>
-
-                        {/* Password Field */}
-                        <div className="relative group">
-                            <div className="absolute -top-2.5 left-4 px-1 bg-white text-[11px] font-medium text-[#3F2A78] z-10 transition-all">Password</div>
-                            <input
-                                type={showPassword ? "text" : "password"}
-                                placeholder="••••••••"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="w-full px-5 py-3 rounded-xl border border-neutral-2 focus:border-[#3F2A78] outline-none transition-all placeholder:text-neutral-3 text-[#1A1A1A]"
-                                required
-                            />
-                            <button
-                                type="button"
-                                onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-4"
-                            >
-                                <Icon icon={showPassword ? "ph:eye-slash-light" : "ph:eye-light"} className="w-5 h-5" />
-                            </button>
-                        </div>
-
-                        {/* Remember Me / Forgot Password */}
-                        <div className="flex items-center justify-between py-0.5">
-                            <label className="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" className="w-4 h-4 rounded border-neutral-3 text-[#3F2A78] focus:ring-[#3F2A78]" />
-                                <span className="text-[13px] text-[#1A1A1A] font-medium">Keep me logged in</span>
-                            </label>
-                            {isSignIn && (
-                                <button type="button" className="text-[13px] font-semibold text-[#3F2A78] hover:underline">
-                                    Forgot password?
+                            {/* Password Field */}
+                            <div className="relative group">
+                                <div className="absolute -top-2.5 left-4 px-1 bg-white text-[11px] font-medium text-[#3F2A78] z-10 transition-all">Password</div>
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    placeholder="••••••••"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className="w-full px-5 py-3 rounded-xl border border-neutral-2 focus:border-[#3F2A78] outline-none transition-all placeholder:text-neutral-3 text-[#1A1A1A]"
+                                    required
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-4"
+                                >
+                                    <Icon icon={showPassword ? "ph:eye-slash-light" : "ph:eye-light"} className="w-5 h-5" />
                                 </button>
-                            )}
-                        </div>
+                            </div>
 
-                        {/* Submit */}
-                        <button
-                            type="submit"
-                            disabled={isLoading}
-                            className="w-full bg-[#3F2A78] hover:bg-[#2A165F] disabled:opacity-70 text-white font-bold py-3.5 rounded-full transition-all duration-300 shadow-xl shadow-purple-900/10 active:scale-[0.98] flex items-center justify-center gap-2"
-                        >
-                            {isLoading && <Icon icon="line-md:loading-twotone-loop" className="w-5 h-5" />}
-                            {isSignIn ? "Sign in" : "Sign up"}
-                        </button>
-                    </form>
+                            {/* Remember Me / Forgot Password */}
+                            <div className="flex items-center justify-between py-0.5">
+                                <label className="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" className="w-4 h-4 rounded border-neutral-3 text-[#3F2A78] focus:ring-[#3F2A78]" />
+                                    <span className="text-[13px] text-[#1A1A1A] font-medium">Keep me logged in</span>
+                                </label>
+                                {isSignIn && (
+                                    <button
+                                        type="button"
+                                        onClick={toggleForgotPassword}
+                                        className="text-[13px] font-semibold text-[#3F2A78] hover:underline"
+                                    >
+                                        Forgot password?
+                                    </button>
+                                )}
+                            </div>
 
-                    {/* Switch Mode */}
-                    <p className="mt-6 text-center text-[#666666] text-[13.5px]">
-                        {isSignIn ? "Need an account?" : "Already have an account?"}{" "}
-                        <button onClick={switchMode} className="text-[#3F2A78] font-bold hover:underline">
-                            {isSignIn ? "Create one" : "Sign in here"}
-                        </button>
-                    </p>
+                            {/* Submit */}
+                            <button
+                                type="submit"
+                                disabled={isLoading}
+                                className="w-full bg-[#3F2A78] hover:bg-[#2A165F] disabled:opacity-70 text-white font-bold py-3.5 rounded-full transition-all duration-300 shadow-xl shadow-purple-900/10 active:scale-[0.98] flex items-center justify-center gap-2"
+                            >
+                                {isLoading && <Icon icon="line-md:loading-twotone-loop" className="w-5 h-5" />}
+                                {isSignIn ? "Sign in" : "Sign up"}
+                            </button>
+                        </form>
+                    )}
+
+                    {!isForgotPassword && (
+                        <p className="mt-6 text-center text-[#666666] text-[13.5px]">
+                            {isSignIn ? "Need an account?" : "Already have an account?"}{" "}
+                            <button onClick={switchMode} className="text-[#3F2A78] font-bold hover:underline">
+                                {isSignIn ? "Create one" : "Sign in here"}
+                            </button>
+                        </p>
+                    )}
                 </div>
             </div>
 
