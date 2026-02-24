@@ -18,10 +18,23 @@ function VerifyEmailContent() {
     const [status, setStatus] = useState<"verifying" | "success" | "error">("verifying");
     const [message, setMessage] = useState("");
 
+    const friendlyError = (raw: string): string => {
+        const r = raw.toLowerCase();
+        if (r.includes("parameters validation error") || r.includes("validation") || r.includes("invalid token")) {
+            return "The verification link is invalid or has already been used.";
+        }
+        if (r.includes("expired")) {
+            return "The verification link has expired. Please sign in to request a new one.";
+        }
+        return raw || "Email verification failed. Please try again.";
+    };
+
     useEffect(() => {
         if (!token) {
-            setStatus("error");
-            setMessage("No verification token found in the link. Please check your email and try again.");
+            setTimeout(() => {
+                setStatus("error");
+                setMessage("No verification token found in the link. Please check your email and try again.");
+            }, 0);
             return;
         }
 
@@ -34,15 +47,13 @@ function VerifyEmailContent() {
                 }
                 setStatus("success");
                 setMessage("Your email has been verified successfully!");
-                // Redirect to community page after 2 seconds
-                setTimeout(() => router.push("/community"), 2000);
+                // Redirect to community dashboard after 2 seconds
+                setTimeout(() => router.push("/community/dashboard"), 2000);
             })
             .catch((err: unknown) => {
+                const raw = (err as { message?: string }).message || "";
                 setStatus("error");
-                setMessage(
-                    (err as { message?: string }).message ||
-                    "Verification failed. The link may have expired — please request a new one."
-                );
+                setMessage(friendlyError(raw));
             });
     }, [token, login, router]);
 

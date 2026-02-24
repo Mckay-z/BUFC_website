@@ -17,6 +17,17 @@ function VerifyEmailContent() {
     const [status, setStatus] = useState<"verifying" | "success" | "error">("verifying");
     const [message, setMessage] = useState("");
 
+    const friendlyError = (raw: string): string => {
+        const r = raw.toLowerCase();
+        if (r.includes("parameters validation error") || r.includes("validation") || r.includes("invalid token")) {
+            return "The verification link is invalid or has already been used.";
+        }
+        if (r.includes("expired")) {
+            return "The verification link has expired. Please sign in to request a new one.";
+        }
+        return raw || "Email verification failed. Please try again.";
+    };
+
     useEffect(() => {
         if (!token) {
             // Defers to next tick to avoid lint warning about sync state updates in effects
@@ -38,11 +49,9 @@ function VerifyEmailContent() {
                 setTimeout(() => router.push("/community/dashboard"), 2500);
             })
             .catch((err: unknown) => {
+                const raw = (err as { message?: string }).message || "";
                 setStatus("error");
-                setMessage(
-                    (err as { message?: string }).message ||
-                    "Verification failed. The link may have expired — please request a new one from the sign-in page."
-                );
+                setMessage(friendlyError(raw));
             });
     }, [token, login, router]);
 

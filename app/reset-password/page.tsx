@@ -19,6 +19,17 @@ function ResetPasswordForm() {
     const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
     const [message, setMessage] = useState("");
 
+    const friendlyError = (raw: string): string => {
+        const r = raw.toLowerCase();
+        if (r.includes("parameters validation error") || r.includes("validation")) {
+            return "Please check your password. It must be at least 8 characters long.";
+        }
+        if (r.includes("expired") || r.includes("invalid token")) {
+            return "The reset link has expired or is invalid. Please request a new one.";
+        }
+        return raw || "An unexpected error occurred. Please try again.";
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -43,8 +54,9 @@ function ResetPasswordForm() {
             setMessage("Your password has been reset successfully! You can now sign in with your new password.");
             setTimeout(() => router.push("/auth/sign-in"), 3000);
         } catch (err: unknown) {
+            const raw = (err as { message?: string }).message || "";
             setStatus("error");
-            setMessage((err as { message?: string }).message || "Failed to reset password. The link may have expired.");
+            setMessage(friendlyError(raw));
         } finally {
             setIsLoading(false);
         }
