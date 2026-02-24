@@ -3,8 +3,11 @@
 import AuthContent from "@/components/auth/AuthContent";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
+import { useRouter } from "next/navigation";
 
 export default function SignInPage() {
+    const router = useRouter();
+
     return (
         <div className="min-h-screen bg-neutral-0 flex items-center justify-center p-6 pt-32 pb-20">
             <div className="w-full max-w-[1000px]">
@@ -17,7 +20,10 @@ export default function SignInPage() {
                     <span>Back to Home</span>
                 </Link>
 
-                <AuthContent initialState="signin" />
+                <AuthContent
+                    initialState="signin"
+                    onSuccess={() => router.push("/community")}
+                />
             </div>
         </div>
     );

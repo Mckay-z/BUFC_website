@@ -1,6 +1,7 @@
 import { client } from "./sanity.client";
 import { gplClubsByNamesQuery } from "./sanity.queries";
 import { GPLClub, Fixture, FixtureWithClubData, MatchFixture } from "./types";
+import { BackendFixture } from "./api/fixtures";
 
 /**
  * Enriches fixture data with club information from Sanity
@@ -43,6 +44,30 @@ export async function enrichFixturesWithClubData(
   });
 
   return enrichedFixtures;
+}
+
+/**
+ * Converts BackendFixture to Fixture
+ */
+export function convertBackendFixture(bf: BackendFixture): Fixture {
+  const date = new Date(bf.matchDate);
+  const dateStr = date.toISOString().split("T")[0];
+  const timeStr = date.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+
+  return {
+    id: bf.id,
+    homeTeam: bf.homeTeam,
+    awayTeam: bf.awayTeam,
+    date: dateStr,
+    time: timeStr,
+    competition: bf.competition,
+    matchday: 0, // Backend might not provide this in some cases
+    venue: bf.venue,
+  };
 }
 
 /**

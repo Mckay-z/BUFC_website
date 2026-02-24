@@ -1,8 +1,5 @@
 import HomePage from "@/components/pages/homePage";
 import { client } from "@/lib/sanity.client";
-
-// Revalidate every 60 seconds
-export const revalidate = 60;
 import {
   mostRecentNewsQuery,
   homePageSettingsQuery,
@@ -22,9 +19,13 @@ import {
   LiveMatchesSettings,
   NewsletterSettings,
   GalleryImage,
+  Fixture
 } from "@/lib/types";
-import { getUpcomingFixtures } from "@/lib/mockFixtures";
-import { enrichFixturesWithClubData } from "@/lib/fixtureHelpers";
+import { fixtureService } from "@/lib/api/fixtures";
+import { convertBackendFixture, enrichFixturesWithClubData } from "@/lib/fixtureHelpers";
+
+// Revalidate every 60 seconds
+export const revalidate = 60;
 
 export default async function Home() {
   const [
@@ -51,13 +52,29 @@ export default async function Home() {
     client.fetch<GalleryImage[]>(featuredGalleryImagesQuery),
   ]);
 
-  // Fetch upcoming fixtures and enrich with club data from Sanity
-  const mockFixtures = getUpcomingFixtures(); // Get next 5 fixtures
-  const enrichedFixtures = await enrichFixturesWithClubData(mockFixtures);
+  // Fetch upcoming fixtures from backend
+  let matchFixtures: Fixture[] = [];
+  try {
+    const results = await Promise.allSettled([fixtureService.getUpcoming()]);
+    if (results[0].status === 'fulfilled' && results[0].value.length > 0) {
+      matchFixtures = results[0].value.map(convertBackendFixture);
+    }
+  } catch (err) {
+    // This should technically not be reached with Promise.allSettled, but good for safety
+    console.log("Home: Backend fixtures unavailable, using fallbacks.");
+  }
+
+  // Fallback to mock if empty
+  if (matchFixtures.length === 0) {
+    const { getUpcomingFixtures } = await import("@/lib/mockFixtures");
+    matchFixtures = getUpcomingFixtures();
+  }
+
+  const enrichedFixtures = await enrichFixturesWithClubData(matchFixtures);
 
   // Separate the next fixture and remaining fixtures
   const nextFixture = enrichedFixtures[0];
-  const upcomingFixtures = enrichedFixtures.slice(1);
+  const upcomingFixtures = enrichedFixtures.slice(1, 5); // Take up to next 4
 
   // Prepare featured products - prioritize specific jersey types
   let featuredProducts: Product[] = [];

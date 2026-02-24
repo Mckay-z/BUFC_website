@@ -115,7 +115,7 @@ export default function CommunityPageContent({
             <section className="container-wide py-12 md:py-20">
                 <div className="flex flex-col items-center text-center mb-16">
                     {/* Community Crowd Image with Text Overlay */}
-                    <div className="relative w-full max-w-7xl aspect-[2.35/1] rounded-3xl overflow-hidden mb-8 shadow-xl border-4 border-white flex items-end justify-center">
+                    <div className="relative w-full max-w-7xl aspect-square sm:aspect-video md:aspect-[2.35/1] rounded-2xl md:rounded-3xl overflow-hidden mb-8 shadow-xl border-4 border-white flex items-end justify-center">
                         <Image
                             src="/img/fans.jpg"
                             alt="Bechem United Community Support"
@@ -124,13 +124,13 @@ export default function CommunityPageContent({
                             priority
                         />
                         {/* Overlay gradient for depth and text readability */}
-                        <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent" />
+                        <div className="absolute inset-0 bg-linear-to-t from-black/95 via-black/40 to-transparent" />
 
-                        <div className="relative z-10 p-6 md:p-10 lg:p-12 text-center w-full">
-                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white uppercase mb-3 md:mb-4 max-w-3xl mx-auto leading-tight drop-shadow-lg">
+                        <div className="relative z-10 p-6 sm:p-8 md:p-10 lg:p-12 text-center w-full">
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white uppercase mb-3 md:mb-4 max-w-3xl mx-auto leading-tight drop-shadow-lg">
                                 {settings?.heroTitle || "Join Our Community"}
                             </h2>
-                            <p className="text-white/90 text-base md:text-lg lg:text-xl max-w-2xl mx-auto font-medium drop-shadow-md">
+                            <p className="text-white/90 text-sm sm:text-base md:text-lg lg:text-xl max-w-2xl mx-auto font-medium drop-shadow-md">
                                 {settings?.heroSubtitle || "Together we are stronger. Be part of something bigger than just football."}
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
@@ -177,6 +177,97 @@ export default function CommunityPageContent({
                 </div>
             </section>
 
+            {/* ──── Benefits of Joining ──────────────────────────────────── */}
+            <section className="py-16 md:py-24 bg-white">
+                <div className="container-wide">
+                    <SectionHeader
+                        title="Why Join the Hunters Community?"
+                        subtext="Become part of something bigger. Here's what you unlock when you sign up."
+                        showLine
+                        uppercase
+                        className="mb-12 md:mb-16"
+                    />
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {[
+                            {
+                                icon: "ph:soccer-ball-duotone",
+                                iconBg: "bg-primary/10",
+                                iconColor: "text-primary",
+                                title: "Exclusive Match Threads",
+                                desc: "Join live discussions during every Bechem United match with fellow fans. React in real-time, share predictions, and celebrate goals together.",
+                            },
+                            {
+                                icon: "ph:hand-heart-duotone",
+                                iconBg: "bg-green-50",
+                                iconColor: "text-green-600",
+                                title: "Community Impact",
+                                desc: "Volunteer for our projects, track your impact hours, and earn recognition badges as a Hunter who gives back to the community.",
+                            },
+                            {
+                                icon: "ph:ticket-duotone",
+                                iconBg: "bg-amber-50",
+                                iconColor: "text-amber-600",
+                                title: "Season Ticket Management",
+                                desc: "Manage your season tickets digitally, view seat details, check renewal dates, and access your full attendance history.",
+                            },
+                            {
+                                icon: "ph:microphone-stage-duotone",
+                                iconBg: "bg-blue-50",
+                                iconColor: "text-blue-600",
+                                title: "Player AMAs & Club News",
+                                desc: "Get first access to player Ask-Me-Anything sessions, exclusive club announcements, and behind-the-scenes content unavailable elsewhere.",
+                            },
+                            {
+                                icon: "ph:users-three-duotone",
+                                iconBg: "bg-rose-50",
+                                iconColor: "text-rose-600",
+                                title: "Fan Network",
+                                desc: "Connect with thousands of Hunters fans across Ghana and the world. Organise supporters' buses, share match memories, and make lifelong friends.",
+                            },
+                            {
+                                icon: "ph:trophy-duotone",
+                                iconBg: "bg-purple-50",
+                                iconColor: "text-purple-600",
+                                title: "Leaderboards & Badges",
+                                desc: "Climb the community leaderboard, earn exclusive fan badges, and be recognised as one of the most dedicated Hunters supporters.",
+                            },
+                        ].map((benefit, idx) => (
+                            <div
+                                key={idx}
+                                className="group p-6 md:p-8 rounded-[24px] border border-neutral-100 hover:border-primary/20 bg-neutral-50 hover:bg-white hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-500 cursor-default"
+                            >
+                                <div className={`w-14 h-14 ${benefit.iconBg} rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}>
+                                    <Icon icon={benefit.icon} className={`w-7 h-7 ${benefit.iconColor}`} />
+                                </div>
+                                <h3 className="font-mona-sans font-black text-lg text-neutral-9 mb-3 uppercase tracking-tight leading-snug">
+                                    {benefit.title}
+                                </h3>
+                                <p className="text-sm text-neutral-5 leading-relaxed font-montserrat">
+                                    {benefit.desc}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* CTA Row */}
+                    <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <button
+                            onClick={() => openAuthModal("signup")}
+                            className="w-full sm:w-auto px-10 py-4 rounded-full bg-primary text-white font-black uppercase tracking-widest text-sm shadow-lg shadow-primary/20 hover:bg-primary/90 hover:-translate-y-0.5 transition-all duration-300"
+                        >
+                            Join Free Today
+                        </button>
+                        <button
+                            onClick={() => openAuthModal("signin")}
+                            className="w-full sm:w-auto px-10 py-4 rounded-full border-2 border-neutral-200 text-neutral-7 font-black uppercase tracking-widest text-sm hover:border-primary hover:text-primary transition-all duration-300"
+                        >
+                            Already a Member? Sign In
+                        </button>
+                    </div>
+                </div>
+            </section>
+
             {/* Featured Projects */}
             <section className="bg-neutral-2 py-16 md:py-24">
                 <div className="container-wide">
@@ -189,14 +280,14 @@ export default function CommunityPageContent({
                     >
                         <Link
                             href="/community/projects"
-                            className="hidden md:flex items-center gap-2 text-primary font-bold hover:gap-3 transition-all text-sm uppercase tracking-wider"
+                            className="flex items-center gap-2 text-primary font-bold hover:gap-3 transition-all text-xs md:text-sm uppercase tracking-widest md:tracking-wider"
                         >
                             VIEW ALL <Icon icon="ph:arrow-right" />
                         </Link>
                     </SectionHeader>
 
                     {/* Bento Grid with Fallbacks */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[450px]">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr md:auto-rows-[450px]">
                         {/* Column 1: Hero Project Card */}
                         {(() => {
                             const project = (featuredProjects?.[0] || DUMMY_PROJECTS[0]) as (CommunityProject | DummyProject);
@@ -213,7 +304,7 @@ export default function CommunityPageContent({
                             return (
                                 <Link
                                     href={project.slug?.current === "#" ? "#" : `/community/projects/${project.slug?.current}`}
-                                    className="group relative overflow-hidden rounded-[32px] shadow-sm hover:shadow-2xl transition-all duration-500"
+                                    className="group relative overflow-hidden rounded-[32px] shadow-sm hover:shadow-2xl transition-all duration-500 min-h-[400px] md:min-h-0"
                                 >
                                     <Image
                                         src={imgSrc}
@@ -268,7 +359,7 @@ export default function CommunityPageContent({
                         </div>
 
                         {/* Column 3: Nested Nested Grid */}
-                        <div className="grid grid-cols-2 grid-rows-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
                             {/* Small Card 1 */}
                             {(() => {
                                 const project = (featuredProjects?.[1] || DUMMY_PROJECTS[1]) as (CommunityProject | DummyProject);
@@ -278,7 +369,7 @@ export default function CommunityPageContent({
                                 return (
                                     <Link
                                         href={project.slug?.current === "#" ? "#" : `/community/projects/${project.slug?.current}`}
-                                        className="relative overflow-hidden rounded-[32px] shadow-sm hover:shadow-lg transition-all"
+                                        className="relative overflow-hidden rounded-[32px] shadow-sm hover:shadow-lg transition-all min-h-[200px] md:min-h-0"
                                     >
                                         <Image
                                             src={imgSrc}
@@ -299,7 +390,7 @@ export default function CommunityPageContent({
                                 return (
                                     <Link
                                         href={project.slug?.current === "#" ? "#" : `/community/projects/${project.slug?.current}`}
-                                        className="relative overflow-hidden rounded-[32px] shadow-sm hover:shadow-lg transition-all"
+                                        className="relative overflow-hidden rounded-[32px] shadow-sm hover:shadow-lg transition-all min-h-[200px] md:min-h-0"
                                     >
                                         <Image
                                             src={imgSrc}
@@ -320,7 +411,7 @@ export default function CommunityPageContent({
                                 return (
                                     <Link
                                         href={project.slug?.current === "#" ? "#" : `/community/projects/${project.slug?.current}`}
-                                        className="relative col-span-2 overflow-hidden rounded-[32px] shadow-sm hover:shadow-lg transition-all"
+                                        className="relative col-span-1 sm:col-span-2 overflow-hidden rounded-[32px] shadow-sm hover:shadow-lg transition-all min-h-[200px] md:min-h-0"
                                     >
                                         <Image
                                             src={imgSrc}
@@ -332,6 +423,16 @@ export default function CommunityPageContent({
                                 );
                             })()}
                         </div>
+                    </div>
+
+                    {/* Mobile Only: View All Button */}
+                    <div className="mt-12 flex justify-center md:hidden">
+                        <Link
+                            href="/community/projects"
+                            className="flex items-center gap-2 bg-white px-8 py-4 rounded-full shadow-lg border border-neutral-100 text-primary font-black uppercase tracking-widest text-xs hover:bg-primary hover:text-white transition-all duration-300"
+                        >
+                            View All Projects <Icon icon="ph:arrow-right" />
+                        </Link>
                     </div>
                 </div>
             </section>
@@ -408,9 +509,9 @@ export default function CommunityPageContent({
                         </div>
 
                         {/* Blurred Content Overlay */}
-                        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center -top-12">
-                            <div className="text-center max-w-md bg-white rounded-[40px] shadow-2xl border border-neutral-100 ring-1 ring-black/5 overflow-hidden hover:shadow-[0_48px_96px_-24px_rgba(63,42,120,0.15)] hover:translate-y-[-8px] transition-all duration-700 group/card cursor-default">
-                                <div className="relative h-44 w-full overflow-hidden">
+                        <div className="relative md:absolute md:inset-0 z-20 flex flex-col items-center justify-center py-12 md:py-0 md:-top-12">
+                            <div className="text-center max-w-[90%] sm:max-w-md bg-white rounded-[32px] md:rounded-[40px] shadow-2xl border border-neutral-100 ring-1 ring-black/5 overflow-hidden hover:shadow-[0_48px_96px_-24px_rgba(63,42,120,0.15)] hover:translate-y-[-8px] transition-all duration-700 group/card cursor-default">
+                                <div className="relative h-32 md:h-44 w-full overflow-hidden">
                                     <Image
                                         src={settings?.huntersHub?.image ? urlFor(settings.huntersHub.image).width(800).url() : "/img/fans.jpg"}
                                         alt=""
@@ -419,23 +520,23 @@ export default function CommunityPageContent({
                                     />
                                     <div className="absolute inset-0 bg-primary/60 backdrop-blur-[1px] group-hover/card:bg-primary/50 transition-colors duration-500" />
                                     <div className="absolute inset-0 flex items-center justify-center">
-                                        <div className="w-20 h-20 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/30 group-hover/card:scale-110 group-hover/card:rotate-12 transition-all duration-700">
-                                            <Icon icon="ph:lock-key-duotone" className="w-10 h-10" />
+                                        <div className="w-16 h-16 md:w-20 md:h-20 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/30 group-hover/card:scale-110 group-hover/card:rotate-12 transition-all duration-700">
+                                            <Icon icon="ph:lock-key-duotone" className="w-8 h-8 md:w-10 md:h-10" />
                                         </div>
                                     </div>
                                 </div>
-                                <div className="p-10 pt-8">
-                                    <h3 className="font-mona-sans font-black text-3xl mb-4 text-neutral-9 uppercase tracking-tight leading-none group-hover/card:text-primary transition-colors">
+                                <div className="p-6 sm:p-10 pt-6 md:pt-8">
+                                    <h3 className="font-mona-sans font-black text-2xl md:text-3xl mb-3 md:mb-4 text-neutral-9 uppercase tracking-tight leading-none group-hover/card:text-primary transition-colors">
                                         {settings?.huntersHub?.title || "Hunters Hub"}
                                     </h3>
-                                    <p className="text-neutral-5 mb-10 text-[15px] leading-relaxed font-medium">
+                                    <p className="text-neutral-5 mb-6 md:mb-10 text-sm md:text-[15px] leading-relaxed font-medium">
                                         {settings?.huntersHub?.description ||
                                             "Join our official internal community for exclusive match threads, player AMAs, and premium content."}
                                     </p>
                                     <Button
                                         fullWidth
                                         onClick={() => openAuthModal("signup")}
-                                        buttonClassName="py-5 text-lg font-black uppercase tracking-widest shadow-lg shadow-primary/20 group-hover/card:shadow-primary/30 transition-all"
+                                        buttonClassName="py-4 md:py-5 text-base md:text-lg font-black uppercase tracking-widest shadow-lg shadow-primary/20 group-hover/card:shadow-primary/30 transition-all"
                                     >
                                         {settings?.huntersHub?.buttonText || "Create Free Account"}
                                     </Button>
@@ -453,15 +554,15 @@ export default function CommunityPageContent({
             />
 
             {/* CTA Banner */}
-            <section className="py-28 bg-[#3F2A78] relative overflow-hidden">
+            <section className="py-16 md:py-28 bg-[#3F2A78] relative overflow-hidden">
                 <div className="absolute inset-0 bg-linear-to-br from-[#3F2A78] to-[#25184b]" />
                 <div className="absolute top-0 left-0 w-full h-full bg-[url('/img/cta_pattern.png')] opacity-10" />
 
                 <div className="container-wide relative z-10 text-center">
-                    <h2 className="font-mona-sans font-black text-4xl md:text-6xl text-white uppercase mb-6 max-w-4xl mx-auto leading-none">
+                    <h2 className="font-mona-sans font-black text-3xl sm:text-4xl md:text-6xl text-white uppercase mb-6 max-w-4xl mx-auto leading-none">
                         {settings?.ctaTitle || "Ready to make a difference?"}
                     </h2>
-                    <p className="font-montserrat text-white/80 text-lg md:text-xl max-w-2xl mx-auto mb-10">
+                    <p className="font-montserrat text-white/80 text-base md:text-xl max-w-2xl mx-auto mb-10">
                         {settings?.ctaSubtext ||
                             "Join thousands of fans making an impact in our community today."}
                     </p>

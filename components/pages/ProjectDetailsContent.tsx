@@ -11,6 +11,7 @@ import Button from "@/components/ui/Button";
 import SectionHeader from "@/components/layout/SectionHeader";
 import PaymentModal from "@/components/ui/PaymentModal";
 import JoinHuntersPack from "@/components/layout/JoinHuntersPack";
+import ProjectComments from "@/components/community/ProjectComments";
 
 interface ProjectDetailsContentProps {
     project: CommunityProject;
@@ -51,13 +52,13 @@ export default function ProjectDetailsContent({
             />
 
             {/* Back Button */}
-            <div className="container-wide pt-24 md:pt-32 pb-6 relative z-10">
+            <div className="container-wide pt-20 md:pt-32 pb-4 relative z-10">
                 <Link
                     href="/community"
                     className="inline-flex items-center gap-2 text-neutral-text font-bold transition-all hover:translate-x-[-4px]"
                 >
-                    <Icon icon="lucide:circle-arrow-left" className="w-6 h-6" />
-                    <span className="text-sm uppercase tracking-widest">Go Back</span>
+                    <Icon icon="ph:arrow-left-bold" className="w-5 h-5 md:w-6 md:h-6" />
+                    <span className="text-[10px] md:text-sm uppercase tracking-widest">Go Back</span>
                 </Link>
             </div>
 
@@ -79,19 +80,36 @@ export default function ProjectDetailsContent({
                         </div>
 
                         {/* Title */}
-                        <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-neutral-text mb-6 max-w-4xl leading-tight uppercase">
+                        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-neutral-text mb-6 max-w-4xl leading-tight uppercase">
                             {project.title}
                         </h1>
 
+                        {/* Social Sharing - Mobile */}
+                        <div className="flex lg:hidden gap-3 mb-8">
+                            {[
+                                { icon: "fa6-brands:instagram", color: "text-[#E1306C]" },
+                                { icon: "fa6-brands:facebook-f", color: "text-[#1877F2]" },
+                                { icon: "fa6-brands:x-twitter", color: "text-neutral-10" },
+                                { icon: "fa6-solid:link", color: "text-neutral-6" },
+                            ].map((social, idx) => (
+                                <button
+                                    key={idx}
+                                    className="w-10 h-10 rounded-full bg-neutral-1 flex items-center justify-center shadow-sm border border-neutral-2"
+                                >
+                                    <Icon icon={social.icon} className={`w-4 h-4 ${social.color}`} />
+                                </button>
+                            ))}
+                        </div>
+
                         {/* Meta */}
-                        <div className="flex items-center justify-center gap-3 text-neutral-5 text-[10px] md:text-xs font-bold uppercase tracking-widest">
+                        <div className="flex items-center justify-center gap-3 text-neutral-5 text-[10px] md:text-xs font-bold uppercase tracking-widest font-montserrat">
                             <span className="flex items-center gap-1.5">
-                                <Icon icon="lucide:tag" className="w-3.5 h-3.5" />
+                                <Icon icon="ph:tag-bold" className="w-3.5 h-3.5" />
                                 {project.category}
                             </span>
                             <span className="w-1.5 h-1.5 rounded-full bg-neutral-3" />
                             <span className="flex items-center gap-1.5">
-                                <Icon icon="lucide:calendar" className="w-3.5 h-3.5" />
+                                <Icon icon="ph:calendar-bold" className="w-3.5 h-3.5" />
                                 {project.startDate ? new Date(project.startDate).toLocaleDateString("en-US", {
                                     month: "short",
                                     day: "numeric",
@@ -216,6 +234,10 @@ export default function ProjectDetailsContent({
                             </div>
                         </div>
                     </div>
+
+                    {/* Community Reactions & Comments */}
+                    <ProjectComments projectTitle={project.title} />
+
                 </div>
 
                 {/* Related Projects Section (Matching News Style) */}

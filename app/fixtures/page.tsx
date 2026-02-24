@@ -6,10 +6,11 @@ import {
 } from "@/lib/sanity.queries";
 import { FixturesPageSettings, MatchFixture, GPLClub } from "@/lib/types";
 import { Metadata } from "next";
-import { convertAndEnrichMatchFixtures } from "@/lib/fixtureHelpers";
+import { convertAndEnrichMatchFixtures, convertBackendFixture } from "@/lib/fixtureHelpers";
 import { groq } from "next-sanity";
 import FixturesContent from "@/components/pages/FixturesContent";
 import { TableEntry } from "@/lib/mockTableData";
+import { fixtureService, BackendFixture, LeagueEntry } from "@/lib/api/fixtures";
 
 export const metadata: Metadata = {
   title: "Fixtures & Results | Bechem United FC",
@@ -28,21 +29,70 @@ export default async function FixturesPage({
   const params = await searchParams;
   const initialTab = params.tab || "fixtures";
 
+  // Try fetching from custom backend first
+  let backendUpcoming: BackendFixture[] = [];
+  let backendResults: BackendFixture[] = [];
+  let backendTable: LeagueEntry[] = [];
+
+  try {
+    const results = await Promise.allSettled([
+      fixtureService.getUpcoming(),
+      fixtureService.getResults(),
+      fixtureService.getLeagueTable(),
+    ]);
+
+    if (results[0].status === 'fulfilled') backendUpcoming = results[0].value;
+    if (results[1].status === 'fulfilled') backendResults = results[1].value;
+    if (results[2].status === 'fulfilled') backendTable = results[2].value;
+  } catch (err) {
+    console.error("Failed to fetch from backend API, falling back to Sanity:", err);
+  }
+
   const [settings, allMatchFixtures, leagueTableData] = await Promise.all([
     client.fetch<FixturesPageSettings>(fixturesPageSettingsQuery),
     client.fetch<MatchFixture[]>(groq`*[_type == "matchFixture"] | order(matchDate asc)`),
     client.fetch<TableEntry[]>(leagueTableQuery),
   ]);
 
-  // Use sanity data if available, otherwise fallback to mock
-  let finalLeagueTable = leagueTableData;
+  // Merge/Prioritize Backend Data
+  let finalLeagueTable: TableEntry[] = backendTable.length > 0 ? backendTable.map(entry => ({
+    rank: entry.position,
+    teamName: entry.team,
+    played: entry.played,
+    won: entry.won,
+    drawn: entry.drawn,
+    lost: entry.lost,
+    gf: entry.gf,
+    ga: entry.ga,
+    gd: entry.gd,
+    points: entry.points,
+    lastFive: [], // Backend might not provide this yet
+    isHighlight: entry.team === "Bechem United FC"
+  } as TableEntry)) : (leagueTableData || []);
+
   if (!finalLeagueTable || finalLeagueTable.length === 0) {
     const { mockLeagueTable } = await import("@/lib/mockTableData");
     finalLeagueTable = mockLeagueTable as TableEntry[];
   }
 
-  // fallback to mock if no matches in sanity
-  let matchFixtures = allMatchFixtures;
+  // Process Fixtures
+  let matchFixtures: MatchFixture[] = allMatchFixtures || [];
+  if (backendUpcoming.length > 0 || backendResults.length > 0) {
+    const convertedBackend = [...backendUpcoming, ...backendResults].map(convertBackendFixture);
+    matchFixtures = convertedBackend.map(f => ({
+      _id: f.id,
+      _type: "matchFixture",
+      competition: f.competition,
+      matchday: String(f.matchday),
+      homeTeam: f.homeTeam,
+      awayTeam: f.awayTeam,
+      matchDate: `${f.date}T${f.time}:00Z`,
+      status: (new Date(`${f.date}T${f.time}:00Z`) > new Date()) ? "upcoming" : "finished",
+      homeScore: 0,
+      awayScore: 0,
+    } as MatchFixture));
+  }
+
   if (!matchFixtures || matchFixtures.length === 0) {
     const { mockFixtures } = await import("@/lib/mockFixtures");
     matchFixtures = mockFixtures.map(m => ({

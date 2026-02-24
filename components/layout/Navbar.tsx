@@ -9,15 +9,18 @@ import { Icon } from "@iconify/react";
 import { usePathname, useRouter } from "next/navigation";
 
 import { useUI } from "@/context/UIContext";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Navbar() {
   const { openAuthModal } = useUI();
+  const { user, isAuthenticated, logout } = useAuth();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
   const [isSearchInputFocused, setIsSearchInputFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   const webScroll = () => {
     const scrolled = window.scrollY;
@@ -162,15 +165,61 @@ export default function Navbar() {
             />
           </Link>
 
-          {/* Right: Sign In */}
-          <Button
-            size="md"
-            type="button"
-            onClick={openAuthModal}
-            rightIcon={<FiLogIn size="16" />}
-          >
-            Sign In
-          </Button>
+          {/* Right: Auth */}
+          {isAuthenticated && user ? (
+            <div className="relative">
+              <button
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                className="flex items-center gap-2 group"
+                aria-label="User menu"
+              >
+                <div className="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center text-xs font-black uppercase ring-2 ring-primary/20 group-hover:ring-primary/50 transition-all">
+                  {user.avatar
+                    // Avatar is a user-supplied external URL — next/image requires whitelisting every domain
+                    // eslint-disable-next-line @next/next/no-img-element
+                    ? <img src={user.avatar} alt={user.name} className="w-full h-full object-cover rounded-full" />
+                    : user.name.split(" ").map(n => n[0]).slice(0, 2).join("")}
+                </div>
+                <Icon icon="ph:caret-down-bold" className={`w-3 h-3 text-neutral-6 transition-transform ${userMenuOpen ? "rotate-180" : ""}`} />
+              </button>
+
+              {userMenuOpen && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setUserMenuOpen(false)} />
+                  <div className="absolute right-0 top-12 w-52 bg-white rounded-2xl shadow-xl border border-neutral-100 overflow-hidden z-50">
+                    <div className="px-4 py-3 border-b border-neutral-100">
+                      <p className="text-sm font-black text-neutral-900 truncate">{user.name}</p>
+                      <p className="text-xs text-neutral-400 truncate">{user.email}</p>
+                    </div>
+                    <Link
+                      href="/community"
+                      onClick={() => setUserMenuOpen(false)}
+                      className="flex items-center gap-2.5 px-4 py-3 text-sm font-semibold text-neutral-700 hover:bg-neutral-50 hover:text-primary transition-colors"
+                    >
+                      <Icon icon="ph:layout-duotone" className="w-4 h-4" />
+                      My Dashboard
+                    </Link>
+                    <button
+                      onClick={() => { logout(); setUserMenuOpen(false); router.push("/"); }}
+                      className="w-full flex items-center gap-2.5 px-4 py-3 text-sm font-semibold text-red-500 hover:bg-red-50 transition-colors"
+                    >
+                      <Icon icon="ph:sign-out-duotone" className="w-4 h-4" />
+                      Sign Out
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          ) : (
+            <Button
+              size="md"
+              type="button"
+              onClick={() => openAuthModal("signin")}
+              rightIcon={<FiLogIn size="16" />}
+            >
+              Sign In
+            </Button>
+          )}
         </nav>
       </header>
 

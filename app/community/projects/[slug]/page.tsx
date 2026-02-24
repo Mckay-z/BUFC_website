@@ -24,9 +24,37 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
         };
     }
 
+    // Safe description: strip block content to plain text
+    const rawDescription = project.description?.[0]?.children?.[0]?.text
+        ?? 'A community initiative by Bechem United FC.';
+
+    // Build OG image URL from Sanity if available
+    const ogImageUrl = project.featuredImage
+        ? `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://bufc.com'}/api/og?title=${encodeURIComponent(project.title)}`
+        : undefined;
+
+    const canonicalUrl = `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://bufc.com'}/community/projects/${resolvedParams.slug}`;
+
     return {
-        title: `${project.title} | Community Projects`,
-        description: project.description ? project.description[0].children[0].text : 'Bechem United FC Community Project',
+        title: `${project.title} | Community Projects | Bechem United FC`,
+        description: rawDescription.slice(0, 160),
+        keywords: [project.category, project.status, 'Bechem United FC', 'Ghana community', 'football community'],
+        alternates: { canonical: canonicalUrl },
+        openGraph: {
+            type: 'article',
+            url: canonicalUrl,
+            title: `${project.title} | Bechem United FC Community`,
+            description: rawDescription.slice(0, 160),
+            siteName: 'Bechem United FC',
+            images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630, alt: project.title }] : [],
+            publishedTime: project.startDate,
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: `${project.title} | Bechem United FC`,
+            description: rawDescription.slice(0, 160),
+            images: ogImageUrl ? [ogImageUrl] : [],
+        },
     };
 }
 

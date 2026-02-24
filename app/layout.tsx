@@ -7,6 +7,7 @@ import { client } from "@/lib/sanity.client";
 import { footerSettingsQuery } from "@/lib/sanity.queries";
 import { FooterSettings } from "@/lib/types";
 import { UIProvider } from "@/context/UIContext";
+import { AuthProvider } from "@/context/AuthContext";
 import AuthModal from "@/components/auth/AuthModal";
 import BackToTop from "@/components/ui/BackToTop";
 
@@ -39,13 +40,15 @@ export default async function RootLayout({
         className={`${monaSans.variable} ${montserrat.variable} antialiased relative min-w-[320px] bg-neutral-0`}
         suppressHydrationWarning
       >
-        <UIProvider>
-          <Navbar />
-          {children}
-          <Footer settings={footerSettings} />
-          <AuthModal />
-          <BackToTop />
-        </UIProvider>
+        <AuthProvider>
+          <UIProvider>
+            <Navbar />
+            {children}
+            <Footer settings={footerSettings} />
+            <AuthModal />
+            <BackToTop />
+          </UIProvider>
+        </AuthProvider>
       </body>
     </html>
   );

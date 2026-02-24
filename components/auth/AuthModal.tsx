@@ -32,7 +32,7 @@ export default function AuthModal() {
                     <Icon icon="mdi:close" className="w-6 h-6" />
                 </button>
 
-                <AuthContent initialState={authMode} onSuccess={closeAuthModal} />
+                <AuthContent key={authMode} initialState={authMode} onSuccess={closeAuthModal} />
             </div>
         </div>
     );
